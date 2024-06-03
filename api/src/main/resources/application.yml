@@ -4,10 +4,6 @@ server:
     context-path: /api
 
 spring:
-  security:
-    user:
-      name: fmartinezvidal
-      password: 2908
   datasource:
     url: jdbc:mariadb://localhost:3306/findyourguide
     username: fmartinezvidal
