@@ -3,6 +3,7 @@ version: '3.8'
 services:
   mariadb:
     image: 'mariadb:latest'
+    container_name: 'findyourguide'
     environment:
       - 'MARIADB_DATABASE=findyourguide'
       - 'MARIADB_PASSWORD=2908'
