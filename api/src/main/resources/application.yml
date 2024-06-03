@@ -1,0 +1,30 @@
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/findyourguide
+    username: fmartinezvidal
+    password: 2908
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+logging:
+  level:
+    root: INFO
+    com.api: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
