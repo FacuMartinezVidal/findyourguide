@@ -47,7 +47,8 @@ CREATE TABLE Guide (
     credential_photo VARCHAR(255),
     language VARCHAR(255),
     score FLOAT,
-    FOREIGN KEY (country_id) REFERENCES Country(id)
+    FOREIGN KEY (country_id) REFERENCES Country(id),
+    CONSTRAINT chk_language_type CHECK (language IN ('ES', 'EN', 'RU', 'GER', 'POR'))
 );
 
 CREATE TABLE Tourist (

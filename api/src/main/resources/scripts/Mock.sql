@@ -1,52 +1,54 @@
--- Inserting mock data into 'Country'
+-- Insertando datos en 'Country'
 INSERT INTO Country (name) VALUES 
-('United States'),
-('Spain'),
-('Japan');
+('France'),
+('Italy'),
+('Germany');
 
--- Inserting mock data into 'City'
+-- Insertando datos en 'City'
 INSERT INTO City (name, country_id) VALUES 
-('New York', 1),
-('Madrid', 2),
-('Tokyo', 3);
+('Paris', 1),
+('Rome', 2),
+('Berlin', 3);
 
--- Inserting mock data into 'Service'
+-- Insertando datos en 'Service'
 INSERT INTO Service (country_id, city_id, date, service_type, price, rate, quantity, description) VALUES 
-(1, 1, '2024-06-01', 'TOURS INDIVIDUALES', 120.50, 4.5, 10, 'Personalized tour around Manhattan.'),
-(2, 2, '2024-06-05', 'TOURS GRUPALES', 75.00, 4.3, 20, 'Group tour visiting historical sites in Madrid.'),
-(3, 3, '2024-06-10', 'TRADUCCIONES', 200.00, 4.9, 5, 'Professional translation services in Tokyo.');
+(1, 1, '2024-07-10', 'TOURS INDIVIDUALES', 150.00, 4.8, 5, 'Tour individual por los principales monumentos de París.'),
+(2, 2, '2024-07-15', 'TOURS GRUPALES', 90.00, 4.2, 15, 'Tour grupal por la historia antigua de Roma.'),
+(3, 3, '2024-07-20', 'TRADUCCIONES', 85.00, 4.6, 8, 'Servicios de traducción en conferencias en Berlín.');
 
--- Inserting mock data into 'Guide'
+-- Insertando datos en 'Guide'
 INSERT INTO Guide (dni, phone, user, profile_photo, first_name, last_name, gender, email, password, active, country_id, cities, credential_photo, language, score) VALUES 
-(123456789, 5550123, 'john_doe', 'john_photo.jpg', 'John', 'Doe', 'Male', 'john.doe@example.com', 'password123', TRUE, 1, 'New York', 'credential.jpg', 'English', 4.8),
-(987654321, 5550456, 'jane_smith', 'jane_photo.jpg', 'Jane', 'Smith', 'Female', 'jane.smith@example.com', 'password321', TRUE, 2, 'Madrid', 'credential2.jpg', 'Spanish, English', 4.7);
+(444555666, 555111222, 'claire_rouge', 'claire_photo.jpg', 'Claire', 'Rouge', 'Female', 'claire.rouge@example.com', 'clairepass', TRUE, 1, 'Alemania', 'credential_claire.jpg', 'GER', 4.9),
+(111222333, 555666777, 'luca_verdi', 'luca_photo.jpg', 'Luca', 'Verdi', 'Male', 'luca.verdi@example.com', 'lucapass', TRUE, 2, 'Rusia', 'credential_luca.jpg', 'RU', 4.6);
 
--- Inserting mock data into 'Tourist'
+-- Insertando datos en 'Tourist'
 INSERT INTO Tourist (dni, phone, user, profile_photo, first_name, last_name, gender, email, password, active) VALUES 
-(234567890, 5550789, 'alice_wonder', 'alice_photo.jpg', 'Alice', 'Wonder', 'Female', 'alice.wonder@example.com', 'securepass', TRUE),
-(876543210, 5550321, 'bob_builder', 'bob_photo.jpg', 'Bob', 'Builder', 'Male', 'bob.builder@example.com', 'mypassword', TRUE);
+(777888999, 555888999, 'sophia_bauer', 'sophia_photo.jpg', 'Sophia', 'Bauer', 'Female', 'sophia.bauer@example.com', 'sophiapass', TRUE),
+(333444555, 555999111, 'miguel_santos', 'miguel_photo.jpg', 'Miguel', 'Santos', 'Male', 'miguel.santos@example.com', 'miguelpass', TRUE);
 
--- Inserting mock data into 'GuideService'
+-- Insertando datos en 'GuideService'
 INSERT INTO GuideService (guide_id, service_id) VALUES 
 (1, 1),
 (2, 2);
 
--- Inserting mock data into 'TuristTrips'
+-- Insertando datos en 'TuristTrips'
 INSERT INTO TuristTrips (tourist_id, service_id) VALUES 
 (1, 1),
 (2, 2);
 
--- Inserting mock data into 'Trophy'
+-- Insertando datos en 'Trophy'
 INSERT INTO Trophy (condition_string, date) VALUES 
-('Completed 100 Tours', '2024-05-01'),
-('Highest Rated Guide of the Month', '2024-05-15');
+('Completed 50 Tours', '2024-05-01'),
+('Top Rated Guide of the Year', '2024-06-01');
 
--- Inserting mock data into 'Reviews'
+-- Insertando datos en 'Reviews'
 INSERT INTO Reviews (score, from_tourist, to_guide, date, description) VALUES 
-(5.0, 1, 1, '2024-06-03', 'Fantastic guide, very knowledgeable and friendly.'),
-(4.0, 2, 2, '2024-06-04', 'Good tour, but started late.');
+(5.0, 1, 1, '2024-07-11', 'Claire fue excepcional, conocía todos los rincones de París y su pasión por la historia es contagiosa.'),
+(4.5, 2, 1, '2024-07-12', 'Muy buena guía, aunque el tour se extendió un poco más de lo previsto.'),
+(4.0, 1, 2, '2024-07-16', 'Luca mostró gran conocimiento sobre Roma, pero el grupo era algo grande.'),
+(3.5, NULL, 2, '2024-07-17', 'El tour fue informativo pero empezó tarde y fue algo apresurado.');
 
--- Inserting mock data into 'UserTrophy'
-INSERT INTO UserTrophy (guide_id, tourist_id, trophy_id) VALUES 
-(1, NULL, 1),
-(NULL, 1, 2);
+-- Insertando datos en 'UserTrophy'
+INSERT INTO UserTrophy (guide_id, trophy_id) VALUES 
+(1, 1),
+(2, 2);
