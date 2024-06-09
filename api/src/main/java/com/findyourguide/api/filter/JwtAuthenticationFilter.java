@@ -26,28 +26,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try {
-            final String token = getToken(request);
-            if (token == null) {
-                filterChain.doFilter(request, response);
-                return;
-            }
-
-            final String username = jwtService.getUsernameFromToken(token);
-
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                if (jwtService.validateToken(token, userDetails)) {
-                    setAuthentication(userDetails);
-                }
-            }
-        } catch (Exception ex) {
-            // Log the exception
-            System.err.println("Error during JWT authentication: " + ex.getMessage());
-            // Set the response status to unauthorized
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Unauthorized");
+        final String token = getToken(request);
+        if (token == null) {
+            filterChain.doFilter(request, response);
             return;
+        }
+
+        final String username = jwtService.getUsernameFromToken(token);
+
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if (jwtService.validateToken(token, userDetails)) {
+                setAuthentication(userDetails);
+            }
         }
 
         filterChain.doFilter(request, response);
