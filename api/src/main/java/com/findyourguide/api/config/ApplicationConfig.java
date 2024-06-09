@@ -1,6 +1,6 @@
 package com.findyourguide.api.config;
 
-import com.findyourguide.api.repository.UserRepository;
+import com.findyourguide.api.repository.TouristRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
-    private final UserRepository userRepository;
+    private final TouristRepository touristRepository;
 
     @Bean
     public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration configuration) throws Exception {
@@ -37,7 +37,7 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepository.findUserByUsername(username)
+        return username -> touristRepository.findUserByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
 }
