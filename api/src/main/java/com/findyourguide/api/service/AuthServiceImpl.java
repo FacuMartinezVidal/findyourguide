@@ -9,6 +9,7 @@ import com.findyourguide.api.repository.TouristRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +24,14 @@ public class AuthServiceImpl {
 
     public AuthResponse login(LoginDTO request, String type) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-//        UserDetails user = userRepository.findUserByUsername(request.getUsername())
-//                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-//        String token = jwtService.getToken(user);
-//        return AuthResponse.builder()
-//                .token(token)
-//                .build();
+        if (type.equals("tourist")) {
+            UserDetails user = touristRepository.findUserByUsername(request.getUsername())
+                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+            String token = jwtService.getToken(user);
+            return AuthResponse.builder()
+                    .token(token)
+                    .build();
+        }
         return null;
     }
 
