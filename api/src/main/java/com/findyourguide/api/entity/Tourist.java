@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "Tourist")
+@Table(name = "tourist")
 public class Tourist extends User {
     @Override
     public String getPassword() {

@@ -3,6 +3,7 @@ package com.findyourguide.api.controller;
 
 import com.findyourguide.api.dto.AuthResponse;
 import com.findyourguide.api.dto.LoginDTO;
+import com.findyourguide.api.dto.RegisterGuideDTO;
 import com.findyourguide.api.dto.RegisterTouristDTO;
 import com.findyourguide.api.service.AuthServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,11 @@ public class AuthController {
 
     @PostMapping("/register/tourist")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterTouristDTO request) {
-        return ResponseEntity.ok(authService.register(request));
+        return ResponseEntity.ok(authService.registerTourist(request));
+    }
+
+    @PostMapping("/register/guide")
+    public ResponseEntity<AuthResponse> registerGuide(@RequestBody RegisterGuideDTO request) {
+        return ResponseEntity.ok(authService.registerGuide(request));
     }
 }
