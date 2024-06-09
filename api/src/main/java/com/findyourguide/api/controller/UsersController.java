@@ -1,6 +1,6 @@
 package com.findyourguide.api.controller;
 
-import com.findyourguide.api.dto.ResponseDTO;
+import com.findyourguide.api.response.ResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

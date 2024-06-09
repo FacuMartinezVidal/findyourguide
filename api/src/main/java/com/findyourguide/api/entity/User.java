@@ -18,19 +18,20 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements UserDetails {
+public abstract class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     String Id;
 
-    @Column(name = "username")
+    @Column(name = "user")
     String username;
 
-    @Column(name = "email")
-    String email;
+    String dni;
 
-    @Column(name = "password")
+    @Column(name = "profile_photo")
+    String profilePhoto;
+
+    
     String password;
 
     @Column(name = "role")
