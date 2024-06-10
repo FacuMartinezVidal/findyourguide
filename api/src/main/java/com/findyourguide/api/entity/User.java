@@ -2,10 +2,8 @@ package com.findyourguide.api.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,26 +11,36 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Data
-@Entity
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+
+@MappedSuperclass
+@Setter
+@Getter
 public abstract class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    String Id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
+    Long id;
+
 
     @Column(name = "user")
     String username;
 
+    @Column(name = "first_name")
+    String firstName;
+
+    @Column(name = "last_name")
+    String lastName;
+
+    String email;
+    String password;
+    String phone;
     String dni;
+    String gender;
+    Double score;
+    boolean active;
 
     @Column(name = "profile_photo")
     String profilePhoto;
-
-    
-    String password;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
