@@ -1,13 +1,11 @@
 package com.findyourguide.api.service;
 
-import com.findyourguide.api.dto.AuthResponse;
 import com.findyourguide.api.dto.LoginDTO;
 import com.findyourguide.api.dto.RegisterGuideDTO;
 import com.findyourguide.api.dto.RegisterTouristDTO;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Role;
 import com.findyourguide.api.entity.Tourist;
-import com.findyourguide.api.entity.User;
 import com.findyourguide.api.repository.GuideRepository;
 import com.findyourguide.api.repository.TouristRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,36 +27,32 @@ public class AuthServiceImpl {
     private final TouristRepository touristRepository;
     private final GuideRepository guideRepository;
 
-    public AuthResponse login(LoginDTO request, String type) {
+    public String login(LoginDTO request, String type) {
+
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         if (type.equals("tourist")) {
             UserDetails user = touristRepository.findUserByUsername(request.getUsername())
                     .orElseThrow(() -> new IllegalArgumentException("User not found"));
-            String token = jwtService.getToken(user);
-            return AuthResponse.builder()
-                    .token(token)
-                    .build();
+            return jwtService.getToken(user);
         }
         if (type.equals("guide")) {
             UserDetails user = guideRepository.findUserByUsername(request.getUsername())
                     .orElseThrow(() -> new IllegalArgumentException("User not found"));
-            String token = jwtService.getToken(user);
-            return AuthResponse.builder()
-                    .token(token)
-                    .build();
+            return jwtService.getToken(user);
+
         }
         return null;
     }
 
-    public AuthResponse registerTourist(RegisterTouristDTO request) {
+    public String registerTourist(RegisterTouristDTO request) {
         Tourist tourist = new Tourist();
         populateCommonFields(tourist, request, passwordEncoder);
         tourist.setRole(Role.TOURIST);
         Tourist user = touristRepository.save(tourist);
-        return generateAuthResponse(user);
+        return jwtService.getToken(user);
     }
 
-    public AuthResponse registerGuide(RegisterGuideDTO request) {
+    public String registerGuide(RegisterGuideDTO request) {
         Guide guide = new Guide();
         populateCommonFields(guide, request, passwordEncoder);
         guide.setRole(Role.GUIDE);
@@ -66,14 +60,8 @@ public class AuthServiceImpl {
         guide.setLanguage(request.getLanguage());
         guide.setCities(request.getCities());
         Guide user = guideRepository.save(guide);
-        return generateAuthResponse(user);
+        return jwtService.getToken(user);
     }
 
-
-    private AuthResponse generateAuthResponse(User user) {
-        return AuthResponse.builder()
-                .token(jwtService.getToken(user))
-                .build();
-    }
 }
 
