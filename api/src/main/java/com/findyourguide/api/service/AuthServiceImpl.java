@@ -7,6 +7,7 @@ import com.findyourguide.api.dto.RegisterTouristDTO;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Role;
 import com.findyourguide.api.entity.Tourist;
+import com.findyourguide.api.entity.User;
 import com.findyourguide.api.repository.GuideRepository;
 import com.findyourguide.api.repository.TouristRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import static com.findyourguide.api.util.Populate.populateCommonFields;
 
 @Service
 @RequiredArgsConstructor
@@ -49,44 +52,28 @@ public class AuthServiceImpl {
 
     public AuthResponse registerTourist(RegisterTouristDTO request) {
         Tourist tourist = new Tourist();
-        tourist.setUsername(request.getUsername());
-        tourist.setFirstName(request.getFirstName());
-        tourist.setLastName(request.getLastName());
-        tourist.setEmail(request.getEmail());
-        tourist.setPassword(passwordEncoder.encode(request.getPassword()));
-        tourist.setPhone(request.getPhone());
-        tourist.setDni(request.getDni());
-        tourist.setGender(request.getGender());
-        tourist.setScore(0.0);
+        populateCommonFields(tourist, request, passwordEncoder);
         tourist.setRole(Role.TOURIST);
-        tourist.setProfilePhoto(request.getProfilePhoto());
-        tourist.setActive(true);
         Tourist user = touristRepository.save(tourist);
-        return AuthResponse.builder()
-                .token(jwtService.getToken(user))
-                .build();
+        return generateAuthResponse(user);
     }
 
     public AuthResponse registerGuide(RegisterGuideDTO request) {
         Guide guide = new Guide();
-        guide.setUsername(request.getUsername());
-        guide.setFirstName(request.getFirstName());
-        guide.setLastName(request.getLastName());
-        guide.setEmail(request.getEmail());
-        guide.setPassword(passwordEncoder.encode(request.getPassword()));
-        guide.setPhone(request.getPhone());
-        guide.setDni(request.getDni());
-        guide.setGender(request.getGender());
-        guide.setScore(0.0);
+        populateCommonFields(guide, request, passwordEncoder);
         guide.setRole(Role.GUIDE);
-        guide.setProfilePhoto(request.getProfilePhoto());
-        guide.setActive(true);
         guide.setCredentialPhoto(request.getCredentialPhoto());
         guide.setLanguage(request.getLanguage());
         guide.setCities(request.getCities());
         Guide user = guideRepository.save(guide);
+        return generateAuthResponse(user);
+    }
+
+
+    private AuthResponse generateAuthResponse(User user) {
         return AuthResponse.builder()
                 .token(jwtService.getToken(user))
                 .build();
     }
 }
+
