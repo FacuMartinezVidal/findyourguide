@@ -1,2 +1,2 @@
 # findyourguide
-REST - API Spring Boot | Spring Security | Hibernate
+REST - API Spring Boot | Spring Security | JWT | Spring Data JPA
