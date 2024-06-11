@@ -27,8 +27,9 @@ public class AuthController {
     @PostMapping("/login/{type}")
     public ResponseEntity<ResponseDTO> login(@PathVariable String type, @Valid @RequestBody LoginDTO request) {
         HttpHeaders headers = new HttpHeaders();
+
         headers.setBearerAuth(authService.login(request, type));
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(new ResponseDTO(200,"success"));
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(new ResponseDTO(HttpStatus.OK,"success"));
 
     }
 
