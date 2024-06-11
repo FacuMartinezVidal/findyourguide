@@ -1,6 +1,7 @@
 package com.findyourguide.api.util;
 
 import com.findyourguide.api.dto.RegisterDTO;
+import com.findyourguide.api.dto.UserDTO;
 import com.findyourguide.api.entity.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -19,4 +20,19 @@ public class Populate {
         user.setProfilePhoto(request.getProfilePhoto());
         user.setActive(true);
     }
+
+    public static UserDTO populateUserResponse(User user) {
+        UserDTO response = new UserDTO();
+        response.setId(user.getId());
+        response.setUsername(user.getUsername());
+        response.setFirsName(user.getFirstName());
+        response.setLastName(user.getLastName());
+        response.setEmail(user.getEmail());
+        response.setPhone(user.getPhone());
+        response.setDni(user.getDni());
+        response.setGender(user.getGender());
+        response.setScore(user.getScore());
+        return response;
+    }
+
 }

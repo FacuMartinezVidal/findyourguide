@@ -15,14 +15,14 @@ import java.util.List;
 @MappedSuperclass
 @Setter
 @Getter
-public abstract class User implements UserDetails {
+public abstract class User extends Base implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
     Long id;
 
 
-    @Column(name = "user")
+    @Column(name = "user", nullable = false, unique = true)
     String username;
 
     @Column(name = "first_name")
@@ -31,6 +31,7 @@ public abstract class User implements UserDetails {
     @Column(name = "last_name")
     String lastName;
 
+    @Column(name = "email",nullable = false, unique = true)
     String email;
     String password;
     String phone;

@@ -1,6 +1,7 @@
 package com.findyourguide.api.dto;
 
 
+import com.findyourguide.api.entity.Language;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class RegisterDTO {
+public  class RegisterDTO {
 
     @NotEmpty(message = "username cannot be empty")
     String username;
@@ -38,5 +39,9 @@ public abstract class RegisterDTO {
 
     @NotEmpty(message = "profile_photo cannot be empty")
     String profilePhoto;
+
+    String cities;
+    String credentialPhoto;
+    Language language;
 }
 

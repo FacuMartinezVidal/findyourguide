@@ -1,8 +1,7 @@
 package com.findyourguide.api.service;
 
 import com.findyourguide.api.dto.LoginDTO;
-import com.findyourguide.api.dto.RegisterGuideDTO;
-import com.findyourguide.api.dto.RegisterTouristDTO;
+import com.findyourguide.api.dto.RegisterDTO;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Role;
 import com.findyourguide.api.entity.Tourist;
@@ -44,24 +43,29 @@ public class AuthServiceImpl {
         return null;
     }
 
-    public String registerTourist(RegisterTouristDTO request) {
-        Tourist tourist = new Tourist();
-        populateCommonFields(tourist, request, passwordEncoder);
-        tourist.setRole(Role.TOURIST);
-        Tourist user = touristRepository.save(tourist);
-        return jwtService.getToken(user);
+    public boolean registerTourist(String type, RegisterDTO request) {
+        if (type.equals("tourist")) {
+            Tourist tourist = new Tourist();
+            populateCommonFields(tourist, request, passwordEncoder);
+            tourist.setRole(Role.TOURIST);
+            Tourist user = touristRepository.save(tourist);
+            return true;
+        }
+        if (type.equals("guide")) {
+            Guide guide = new Guide();
+            populateCommonFields(guide, request, passwordEncoder);
+            guide.setRole(Role.GUIDE);
+            guide.setCredentialPhoto(request.getCredentialPhoto());
+            guide.setLanguage(request.getLanguage());
+            guide.setCities(request.getCities());
+            Guide user = guideRepository.save(guide);
+            return true;
+        }
+
+        return false;
+
     }
 
-    public String registerGuide(RegisterGuideDTO request) {
-        Guide guide = new Guide();
-        populateCommonFields(guide, request, passwordEncoder);
-        guide.setRole(Role.GUIDE);
-        guide.setCredentialPhoto(request.getCredentialPhoto());
-        guide.setLanguage(request.getLanguage());
-        guide.setCities(request.getCities());
-        Guide user = guideRepository.save(guide);
-        return jwtService.getToken(user);
-    }
 
 }
 
