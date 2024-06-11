@@ -1,15 +1,19 @@
 package com.findyourguide.api.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import org.springframework.http.HttpStatus;
+import lombok.NoArgsConstructor;
+
 
 @Data
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class ResponseDTO {
+    private Boolean success;
+    private Object data;
 
-    private String message;
-    private HttpStatus status;
 
 
 }
