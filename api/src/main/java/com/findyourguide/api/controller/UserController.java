@@ -28,5 +28,4 @@ public class UserController {
         return ResponseEntity.ok(userService.findById(type, id));
     }
 
-
 }
