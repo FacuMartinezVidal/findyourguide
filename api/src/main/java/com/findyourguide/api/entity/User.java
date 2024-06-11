@@ -22,7 +22,7 @@ public abstract class User extends Base implements UserDetails {
     Long id;
 
 
-    @Column(name = "user")
+    @Column(name = "user", nullable = false, unique = true)
     String username;
 
     @Column(name = "first_name")
@@ -31,6 +31,7 @@ public abstract class User extends Base implements UserDetails {
     @Column(name = "last_name")
     String lastName;
 
+    @Column(name = "email",nullable = false, unique = true)
     String email;
     String password;
     String phone;
