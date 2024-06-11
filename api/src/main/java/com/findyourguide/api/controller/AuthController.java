@@ -25,11 +25,11 @@ public class AuthController {
     final AuthServiceImpl authService;
 
     @PostMapping("/login/{type}")
-    public ResponseEntity<ResponseDTO> login(@PathVariable String type, @Valid @RequestBody LoginDTO request) {
+        public ResponseEntity<String> login(@PathVariable String type, @Valid @RequestBody LoginDTO request) {
         HttpHeaders headers = new HttpHeaders();
 
         headers.setBearerAuth(authService.login(request, type));
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(new ResponseDTO(HttpStatus.OK,"success"));
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body("Successfully Register");
 
     }
 
