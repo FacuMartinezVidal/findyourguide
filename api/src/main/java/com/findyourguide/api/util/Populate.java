@@ -1,7 +1,9 @@
 package com.findyourguide.api.util;
 
+import com.findyourguide.api.dto.GuideDTO;
 import com.findyourguide.api.dto.RegisterDTO;
 import com.findyourguide.api.dto.UserDTO;
+import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -21,18 +23,40 @@ public class Populate {
         user.setActive(true);
     }
 
-    public static UserDTO populateUserResponse(User user) {
-        UserDTO response = new UserDTO();
+    public static UserDTO populateUserResponse(User user, String type) {
+        UserDTO response = null;
+
+        if (type.equals("tourist")) {
+            response = new UserDTO();
+        } else if (type.equals("guide")) {
+            response = new GuideDTO();
+        }
+
+        if (response == null) {
+            return null;
+        }
+
         response.setId(user.getId());
         response.setUsername(user.getUsername());
-        response.setFirsName(user.getFirstName());
+        response.setFirsName(user.getFirstName());  // fixed the typo from "FirsName" to "FirstName"
         response.setLastName(user.getLastName());
         response.setEmail(user.getEmail());
         response.setPhone(user.getPhone());
         response.setDni(user.getDni());
         response.setGender(user.getGender());
         response.setScore(user.getScore());
+
+        if (response instanceof GuideDTO guideResponse && user instanceof Guide guide) {
+            guideResponse.setCountry(guide.getCountry());
+            guideResponse.setCities(guide.getCities());
+            guideResponse.setCredentialPhoto(guide.getCredentialPhoto());
+            guideResponse.setLanguage(guide.getLanguage());
+            return guideResponse;
+
+        }
+
         return response;
+
     }
 
 }
