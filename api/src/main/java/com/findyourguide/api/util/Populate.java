@@ -1,9 +1,11 @@
 package com.findyourguide.api.util;
 
-import com.findyourguide.api.dto.RegisterDTO;
-import com.findyourguide.api.dto.UserDTO;
+import com.findyourguide.api.dto.*;
+import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.logging.Logger;
 
 public class Populate {
 
@@ -21,18 +23,84 @@ public class Populate {
         user.setActive(true);
     }
 
-    public static UserDTO populateUserResponse(User user) {
-        UserDTO response = new UserDTO();
+    public static UserDTO populateUserResponse(User user, String type) {
+        UserDTO response = null;
+
+        if (type.equals("tourist")) {
+            response = new UserDTO();
+        } else if (type.equals("guide")) {
+            response = new GuideDTO();
+        }
+
+        if (response == null) {
+            return null;
+        }
+
         response.setId(user.getId());
         response.setUsername(user.getUsername());
-        response.setFirsName(user.getFirstName());
+        response.setFirsName(user.getFirstName());  // fixed the typo from "FirsName" to "FirstName"
         response.setLastName(user.getLastName());
         response.setEmail(user.getEmail());
         response.setPhone(user.getPhone());
         response.setDni(user.getDni());
         response.setGender(user.getGender());
         response.setScore(user.getScore());
+
+        if (response instanceof GuideDTO guideResponse && user instanceof Guide guide) {
+            guideResponse.setCountry(guide.getCountry());
+            guideResponse.setCities(guide.getCities());
+            guideResponse.setCredentialPhoto(guide.getCredentialPhoto());
+            guideResponse.setLanguage(guide.getLanguage());
+            return guideResponse;
+
+        }
+
         return response;
+
+    }
+
+    public static User populateUpdate(User user, UpdateUserDTO modifications){
+
+        if (modifications.getUsername() != null) {
+            user.setUsername(modifications.getUsername());
+        }
+        if (modifications.getFirstName() != null) {
+            user.setFirstName(modifications.getFirstName());
+        }
+        if (modifications.getLastName() != null) {
+            user.setLastName(modifications.getLastName());
+        }
+        if (modifications.getEmail() != null) {
+            user.setEmail(modifications.getEmail());
+        }
+        if (modifications.getPhone() != null) {
+            user.setPhone(modifications.getPhone());
+        }
+        if (modifications.getDni() != null) {
+            user.setDni(modifications.getDni());
+        }
+        if (modifications.getGender() != null) {
+            user.setGender(modifications.getGender());
+        }
+
+        if(user instanceof Guide guide){
+            if(modifications.getCountry() != null){
+                guide.setCountry(modifications.getCountry());
+            }
+            if(modifications.getCities() != null){
+                guide.setCities(modifications.getCities());
+            }
+            if(modifications.getCredentialPhoto() != null){
+                guide.setCredentialPhoto(modifications.getCredentialPhoto());
+            }
+            if(modifications.getLanguage() != null){
+                guide.setLanguage(modifications.getLanguage());
+            }
+            return guide;
+        }
+
+        return user;
+
     }
 
 }
