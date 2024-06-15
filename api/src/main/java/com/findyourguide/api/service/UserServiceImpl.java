@@ -1,6 +1,7 @@
 package com.findyourguide.api.service;
 
 import com.findyourguide.api.dto.GuideDTO;
+import com.findyourguide.api.dto.UpdateUserDTO;
 import com.findyourguide.api.dto.UserDTO;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Tourist;
@@ -70,6 +71,23 @@ public class UserServiceImpl implements IUserService {
             return optionalGuide.map(guide -> Populate.populateUserResponse(guide, type));
         }
         return Optional.empty();
+    }
+
+    public void update(String type, UpdateUserDTO userDTO) {
+        if (type.equals("tourist")) {
+            Optional<Tourist> optionalTourist = touristRepository.findUserByUsername(userDTO.getUsername());
+            if (optionalTourist.isPresent()) {
+                Tourist updatedTourist = (Tourist) Populate.populateUpdate(optionalTourist.get(), userDTO);
+                touristRepository.save(updatedTourist);
+            }
+        }
+        else if (type.equals("guide")) {
+            Optional<Guide> optionalGuide = guideRepository.findUserByUsername(userDTO.getUsername());
+            if (optionalGuide.isPresent()) {
+                Guide updatedGuide = (Guide) Populate.populateUpdate(optionalGuide.get(), userDTO);
+                guideRepository.save(updatedGuide);
+            }
+        }
     }
 
     public void deleteById(String type, Long id) {

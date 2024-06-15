@@ -1,11 +1,11 @@
 package com.findyourguide.api.util;
 
-import com.findyourguide.api.dto.GuideDTO;
-import com.findyourguide.api.dto.RegisterDTO;
-import com.findyourguide.api.dto.UserDTO;
+import com.findyourguide.api.dto.*;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.logging.Logger;
 
 public class Populate {
 
@@ -56,6 +56,50 @@ public class Populate {
         }
 
         return response;
+
+    }
+
+    public static User populateUpdate(User user, UpdateUserDTO modifications){
+
+        if (modifications.getUsername() != null) {
+            user.setUsername(modifications.getUsername());
+        }
+        if (modifications.getFirstName() != null) {
+            user.setFirstName(modifications.getFirstName());
+        }
+        if (modifications.getLastName() != null) {
+            user.setLastName(modifications.getLastName());
+        }
+        if (modifications.getEmail() != null) {
+            user.setEmail(modifications.getEmail());
+        }
+        if (modifications.getPhone() != null) {
+            user.setPhone(modifications.getPhone());
+        }
+        if (modifications.getDni() != null) {
+            user.setDni(modifications.getDni());
+        }
+        if (modifications.getGender() != null) {
+            user.setGender(modifications.getGender());
+        }
+
+        if(user instanceof Guide guide){
+            if(modifications.getCountry() != null){
+                guide.setCountry(modifications.getCountry());
+            }
+            if(modifications.getCities() != null){
+                guide.setCities(modifications.getCities());
+            }
+            if(modifications.getCredentialPhoto() != null){
+                guide.setCredentialPhoto(modifications.getCredentialPhoto());
+            }
+            if(modifications.getLanguage() != null){
+                guide.setLanguage(modifications.getLanguage());
+            }
+            return guide;
+        }
+
+        return user;
 
     }
 
