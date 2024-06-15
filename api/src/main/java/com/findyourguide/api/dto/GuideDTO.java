@@ -17,7 +17,11 @@ public class GuideDTO extends UserDTO{
     String credentialPhoto;
     Language language;
 
-    public GuideDTO(Long id, String username, String firstName, String lastName, String email, String phone, String dni, String gender, Double score, Country country, String cities, String credentialPhoto) {
+    public GuideDTO(Long id, String username, String firstName, String lastName, String email, String phone, String dni, String gender, Double score, Country country, String cities, String credentialPhoto, Language language) {
+        super(id, username, firstName, lastName, email, phone, dni, gender, score);
+        this.country = country;
+        this.cities = cities;
+        this.credentialPhoto = credentialPhoto;
+        this.language = language;
     }
-
 }

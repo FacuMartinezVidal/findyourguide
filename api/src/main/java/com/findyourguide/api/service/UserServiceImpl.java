@@ -38,8 +38,7 @@ public class UserServiceImpl implements IUserService {
                     ))
                     .collect(Collectors.toList());
 
-        }
-        if (type.equals("guide")){
+        }else if (type.equals("guide")) {
             return guideRepository.findAll().stream()
                     .map(g -> new GuideDTO(
                             g.getId(),
@@ -53,7 +52,8 @@ public class UserServiceImpl implements IUserService {
                             g.getScore(),
                             g.getCountry(),
                             g.getCities(),
-                            g.getCredentialPhoto()
+                            g.getCredentialPhoto(),
+                            g.getLanguage()
                     ))
                     .collect(Collectors.toList());
         }
