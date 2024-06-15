@@ -10,4 +10,6 @@ public interface IUserService {
     List<UserDTO> findAll(String type);
 
     Optional<UserDTO> findById(String type, Long id);
+
+    void deleteById(String type, Long id);
 }

@@ -72,6 +72,15 @@ public class UserServiceImpl implements IUserService {
         return Optional.empty();
     }
 
+    public void deleteById(String type, Long id) {
+        if (type.equals("tourist")) {
+            touristRepository.deleteById(id);
+        }
+        else if (type.equals("guide")) {
+            guideRepository.deleteById(id);
+        }
+    }
+
 
 
 

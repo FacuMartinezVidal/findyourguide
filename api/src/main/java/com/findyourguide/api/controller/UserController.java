@@ -5,10 +5,7 @@ import com.findyourguide.api.entity.User;
 import com.findyourguide.api.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,5 +26,12 @@ public class UserController {
     public ResponseEntity<Optional<UserDTO>> findById(@PathVariable String type, @PathVariable Long id) {
         return ResponseEntity.ok(userService.findById(type, id));
     }
+
+    @DeleteMapping("/user/{type}/{id}")
+    public ResponseEntity<String> deleteById(@PathVariable String type, @PathVariable Long id) {
+        userService.deleteById(type, id);
+        return ResponseEntity.ok("Deleted user with id " + id);
+    }
+
 
 }
