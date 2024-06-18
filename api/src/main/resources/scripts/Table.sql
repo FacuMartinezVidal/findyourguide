@@ -74,7 +74,7 @@ CREATE TABLE Tourist (
     password VARCHAR(255) NOT NULL,
     active BOOLEAN DEFAULT true,
     status VARCHAR(255) NOT NULL DEFAULT "OFFLINE",
-    CONSTRAINT chk_status_guide_type CHECK (
+    CONSTRAINT chk_status_tourist_type CHECK (
         language IN ('ONLINE', 'OFFLINE', 'DONOTBOTHER', 'SILENCE')
     )
 );
@@ -87,7 +87,7 @@ CREATE TABLE GuideService (
     FOREIGN KEY (service_id) REFERENCES Service (id) ON DELETE CASCADE
 );
 
-CREATE TABLE TuristTrips (
+CREATE TABLE TouristTrips (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tourist_id INT NOT NULL,
     service_id INT NOT NULL,
