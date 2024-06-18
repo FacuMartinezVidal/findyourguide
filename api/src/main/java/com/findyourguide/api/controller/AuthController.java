@@ -1,9 +1,8 @@
 package com.findyourguide.api.controller;
 
 
-import com.findyourguide.api.dto.LoginDTO;
-import com.findyourguide.api.dto.RegisterDTO;
-import com.findyourguide.api.dto.ResponseDTO;
+import com.findyourguide.api.dto.user.LoginDTO;
+import com.findyourguide.api.dto.user.RegisterDTO;
 import com.findyourguide.api.service.AuthServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor

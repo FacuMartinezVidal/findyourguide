@@ -1,7 +1,7 @@
 package com.findyourguide.api.service;
 
-import com.findyourguide.api.dto.LoginDTO;
-import com.findyourguide.api.dto.RegisterDTO;
+import com.findyourguide.api.dto.user.LoginDTO;
+import com.findyourguide.api.dto.user.RegisterDTO;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Role;
 import com.findyourguide.api.entity.Tourist;

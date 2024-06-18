@@ -1,8 +1,7 @@
 package com.findyourguide.api.controller;
 
-import com.findyourguide.api.dto.UpdateUserDTO;
-import com.findyourguide.api.dto.UserDTO;
-import com.findyourguide.api.entity.User;
+import com.findyourguide.api.dto.user.UpdateUserDTO;
+import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.service.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

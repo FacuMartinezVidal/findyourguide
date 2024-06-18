@@ -1,4 +1,4 @@
-package com.findyourguide.api.dto;
+package com.findyourguide.api.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,8 +1,7 @@
 package com.findyourguide.api.service;
 
-import com.findyourguide.api.dto.UpdateUserDTO;
-import com.findyourguide.api.dto.UserDTO;
-import com.findyourguide.api.entity.User;
+import com.findyourguide.api.dto.user.UpdateUserDTO;
+import com.findyourguide.api.dto.user.UserDTO;
 
 import java.util.List;
 import java.util.Optional;

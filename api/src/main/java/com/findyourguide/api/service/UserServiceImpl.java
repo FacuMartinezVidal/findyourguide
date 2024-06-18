@@ -1,11 +1,10 @@
 package com.findyourguide.api.service;
 
-import com.findyourguide.api.dto.GuideDTO;
-import com.findyourguide.api.dto.UpdateUserDTO;
-import com.findyourguide.api.dto.UserDTO;
+import com.findyourguide.api.dto.user.GuideDTO;
+import com.findyourguide.api.dto.user.UpdateUserDTO;
+import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Tourist;
-import com.findyourguide.api.entity.User;
 import com.findyourguide.api.repository.GuideRepository;
 import com.findyourguide.api.repository.TouristRepository;
 import com.findyourguide.api.util.Populate;
@@ -13,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 

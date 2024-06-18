@@ -1,11 +1,14 @@
 package com.findyourguide.api.util;
 
-import com.findyourguide.api.dto.*;
+import com.findyourguide.api.dto.service.CreateServiceDTO;
+import com.findyourguide.api.dto.user.GuideDTO;
+import com.findyourguide.api.dto.user.RegisterDTO;
+import com.findyourguide.api.dto.user.UpdateUserDTO;
+import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.entity.Guide;
+import com.findyourguide.api.entity.Service;
 import com.findyourguide.api.entity.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.logging.Logger;
 
 public class Populate {
 
@@ -102,5 +105,6 @@ public class Populate {
         return user;
 
     }
+
 
 }
