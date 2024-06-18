@@ -1,6 +1,6 @@
 package com.findyourguide.api.util;
 
-import com.findyourguide.api.dto.service.CreateServiceDTO;
+import com.findyourguide.api.dto.service.UpdateServiceDTO;
 import com.findyourguide.api.dto.user.GuideDTO;
 import com.findyourguide.api.dto.user.RegisterDTO;
 import com.findyourguide.api.dto.user.UpdateUserDTO;
@@ -62,7 +62,7 @@ public class Populate {
 
     }
 
-    public static User populateUpdate(User user, UpdateUserDTO modifications){
+    public static User populateUpdateUser(User user, UpdateUserDTO modifications) {
 
         if (modifications.getUsername() != null) {
             user.setUsername(modifications.getUsername());
@@ -86,24 +86,50 @@ public class Populate {
             user.setGender(modifications.getGender());
         }
 
-        if(user instanceof Guide guide){
-            if(modifications.getCountry() != null){
+        if (user instanceof Guide guide) {
+            if (modifications.getCountry() != null) {
                 guide.setCountry(modifications.getCountry());
             }
-            if(modifications.getCities() != null){
+            if (modifications.getCities() != null) {
                 guide.setCities(modifications.getCities());
             }
-            if(modifications.getCredentialPhoto() != null){
+            if (modifications.getCredentialPhoto() != null) {
                 guide.setCredentialPhoto(modifications.getCredentialPhoto());
             }
-            if(modifications.getLanguage() != null){
+            if (modifications.getLanguage() != null) {
                 guide.setLanguage(modifications.getLanguage());
             }
             return guide;
         }
-
         return user;
+    }
 
+    public static Service populateUpdateService(Service service, UpdateServiceDTO updateServiceDTO) {
+        if (updateServiceDTO.getName() != null) {
+            service.setName(updateServiceDTO.getName());
+        }
+        if (updateServiceDTO.getDate() != null) {
+            service.setDate(updateServiceDTO.getDate());
+        }
+        if (updateServiceDTO.getServiceType() != null) {
+            service.setServiceType(updateServiceDTO.getServiceType());
+        }
+        if (updateServiceDTO.getPrice() != null) {
+            service.setPrice(updateServiceDTO.getPrice());
+        }
+        if (updateServiceDTO.getQuantity() != 0) {
+            service.setQuantity(updateServiceDTO.getQuantity());
+        }
+        if (updateServiceDTO.getDescription() != null) {
+            service.setDescription(updateServiceDTO.getDescription());
+        }
+        if (updateServiceDTO.getCountry() != null) {
+            service.setCountry(updateServiceDTO.getCountry());
+        }
+        if (updateServiceDTO.getCity() != null) {
+            service.setCity(updateServiceDTO.getCity());
+        }
+        return service;
     }
 
 

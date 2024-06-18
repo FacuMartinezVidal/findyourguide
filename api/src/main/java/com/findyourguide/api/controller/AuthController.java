@@ -21,18 +21,18 @@ public class AuthController {
     final AuthServiceImpl authService;
 
     @PostMapping("/login/{type}")
-        public ResponseEntity<String> login(@PathVariable String type, @Valid @RequestBody LoginDTO request) {
+    public ResponseEntity<String> login(@PathVariable String type, @Valid @RequestBody LoginDTO request) {
         HttpHeaders headers = new HttpHeaders();
 
         headers.setBearerAuth(authService.login(request, type));
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body("Successfully Register");
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body("Successfully Login!");
 
     }
 
     @PostMapping("/register/{type}")
-    public ResponseEntity<String> register( @PathVariable String type, @Valid @RequestBody RegisterDTO request) {
+    public ResponseEntity<String> register(@PathVariable String type, @Valid @RequestBody RegisterDTO request) {
         authService.registerTourist(type, request);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Successfully registered");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Successfully Register!");
     }
 
 }

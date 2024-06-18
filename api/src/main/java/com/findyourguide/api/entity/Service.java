@@ -5,16 +5,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "service")
-public class Service extends Base{
+public class Service extends Base {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String name;
 
     @Column(nullable = false)
     private LocalDate date;
@@ -36,7 +37,6 @@ public class Service extends Base{
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "city_id", referencedColumnName = "id")
     private City city;
-
 
 
 }

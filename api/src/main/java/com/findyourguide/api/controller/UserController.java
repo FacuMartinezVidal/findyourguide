@@ -39,7 +39,7 @@ public class UserController {
     @PutMapping("/user/{type}")
     public ResponseEntity<String> update(@PathVariable String type, @Valid @RequestBody UpdateUserDTO userDTO) {
         userService.update(type, userDTO);
-        return ResponseEntity.ok("Updated Successfully");
+        return ResponseEntity.ok("Updated Successfully!");
     }
 
 

@@ -22,7 +22,7 @@ public class UserServiceImpl implements IUserService {
     private final TouristRepository touristRepository;
 
     public List<UserDTO> findAll(String type) {
-        if (type.equals("tourist")){
+        if (type.equals("tourist")) {
             return touristRepository.findAll().stream()
                     .map(t -> new UserDTO(
                             t.getId(),
@@ -37,7 +37,7 @@ public class UserServiceImpl implements IUserService {
                     ))
                     .collect(Collectors.toList());
 
-        }else if (type.equals("guide")) {
+        } else if (type.equals("guide")) {
             return guideRepository.findAll().stream()
                     .map(g -> new GuideDTO(
                             g.getId(),
@@ -75,14 +75,13 @@ public class UserServiceImpl implements IUserService {
         if (type.equals("tourist")) {
             Optional<Tourist> optionalTourist = touristRepository.findUserByUsername(userDTO.getUsername());
             if (optionalTourist.isPresent()) {
-                Tourist updatedTourist = (Tourist) Populate.populateUpdate(optionalTourist.get(), userDTO);
+                Tourist updatedTourist = (Tourist) Populate.populateUpdateUser(optionalTourist.get(), userDTO);
                 touristRepository.save(updatedTourist);
             }
-        }
-        else if (type.equals("guide")) {
+        } else if (type.equals("guide")) {
             Optional<Guide> optionalGuide = guideRepository.findUserByUsername(userDTO.getUsername());
             if (optionalGuide.isPresent()) {
-                Guide updatedGuide = (Guide) Populate.populateUpdate(optionalGuide.get(), userDTO);
+                Guide updatedGuide = (Guide) Populate.populateUpdateUser(optionalGuide.get(), userDTO);
                 guideRepository.save(updatedGuide);
             }
         }
@@ -91,13 +90,10 @@ public class UserServiceImpl implements IUserService {
     public void deleteById(String type, Long id) {
         if (type.equals("tourist")) {
             touristRepository.deleteById(id);
-        }
-        else if (type.equals("guide")) {
+        } else if (type.equals("guide")) {
             guideRepository.deleteById(id);
         }
     }
-
-
 
 
 }
