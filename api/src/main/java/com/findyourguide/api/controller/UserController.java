@@ -21,6 +21,11 @@ public class UserController {
 
     private final IUserService userService;
 
+    //TODO use ResponseDTO
+    //TODO use try and catch
+    //TODO handler errors
+    //TODO improve body dto
+
     @GetMapping("/user/{type}")
     public ResponseEntity<List<UserDTO>> findAll(@PathVariable String type) {
         return ResponseEntity.ok().body(userService.findAll(type));
@@ -37,7 +42,7 @@ public class UserController {
         return ResponseEntity.ok("Deleted user with id " + id);
     }
 
-    @PutMapping("/user/{type}")
+    @PatchMapping("/user/{type}")
     public ResponseEntity<String> update(@PathVariable String type, @Valid @RequestBody UpdateUserDTO userDTO) {
         userService.update(type, userDTO);
         return ResponseEntity.ok("Updated Successfully");

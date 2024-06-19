@@ -10,7 +10,6 @@ import com.findyourguide.api.entity.Tourist;
 import com.findyourguide.api.entity.User;
 import com.findyourguide.api.repository.GuideRepository;
 import com.findyourguide.api.repository.TouristRepository;
-import com.findyourguide.api.util.Populate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,9 +17,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 import static com.findyourguide.api.util.Populate.populateCommonFields;
+import static com.findyourguide.api.util.Populate.populateUserResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +32,7 @@ public class AuthServiceImpl {
 
     public UserLoginDTO login(LoginDTO request, String type) {
 
+        //TODO only use jwt for authentication don't use authentication manager
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         if (type.equals("tourist")) {
             UserDetails user = touristRepository.findUserByUsername(request.getUsername())
@@ -54,23 +53,30 @@ public class AuthServiceImpl {
         return null;
     }
 
-    public void register(String type, RegisterDTO request) {
+    public UserDTO register(String type, RegisterDTO request) {
         if (type.equals("tourist")) {
             Tourist tourist = new Tourist();
+            //TODO use mapToUser
             populateCommonFields(tourist, request, passwordEncoder);
             tourist.setRole(Role.TOURIST);
-             touristRepository.save(tourist);
+            touristRepository.save(tourist);
+            //TODO use mapToDTO
+            return populateUserResponse(tourist,type);
         }
         if (type.equals("guide")) {
             Guide guide = new Guide();
+            //TODO use mapToUser
             populateCommonFields(guide, request, passwordEncoder);
             guide.setRole(Role.GUIDE);
             guide.setCredentialPhoto(request.getCredentialPhoto());
             guide.setLanguage(request.getLanguage());
             guide.setCities(request.getCities());
-             guideRepository.save(guide);
+            guideRepository.save(guide);
+            //TODO use mapToDTO
+            return populateUserResponse(guide,type);
         }
 
+        return null;
     }
 
 

@@ -19,24 +19,27 @@ import java.util.Map;
 @RequestMapping("/auth")
 @Validated
 public class AuthController {
+    //TODO improve body dto
+    //TODO use try and catch
+    //TODO handler errors
 
+    //TODO use interface dependency
     final AuthServiceImpl authService;
 
     @PostMapping("/login/{type}")
-        public ResponseEntity<Map<String,String>> login(@PathVariable String type, @Valid @RequestBody LoginDTO request) {
+
+    public ResponseEntity<ResponseDTO<String>> login(@PathVariable String type, @Valid @RequestBody LoginDTO request) {
         HttpHeaders headers = new HttpHeaders();
         UserLoginDTO user = authService.login(request, type);
-        headers.setBearerAuth(user.getJwt());
-        Map<String,String> response = new HashMap<>();
-        response.put("username", user.getUsername());
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
 
+        headers.setBearerAuth(user.getJwt());
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(new ResponseDTO<String>(HttpStatus.OK, "Login Successfully", user.getUsername()));
     }
+
 
     @PostMapping("/register/{type}")
     public ResponseEntity<ResponseDTO<UserDTO>> register( @PathVariable String type, @Valid @RequestBody RegisterDTO request) {
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDTO<UserDTO>(true, "mesna", null));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDTO<UserDTO>(HttpStatus.CREATED, "Register Successfully", authService.register(type, request)));
     }
 
 }
