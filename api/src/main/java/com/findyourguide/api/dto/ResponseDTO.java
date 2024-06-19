@@ -10,10 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseDTO {
+public  class ResponseDTO <T> {
     private Boolean success;
-    private Object data;
-
-
+    private String message;
+    private T data;
 
 }

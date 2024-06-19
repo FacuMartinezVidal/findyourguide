@@ -34,9 +34,9 @@ public class AuthController {
     }
 
     @PostMapping("/register/{type}")
-    public ResponseEntity<String> register( @PathVariable String type, @Valid @RequestBody RegisterDTO request) {
-        authService.register(type, request);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Successfully registered");
+    public ResponseEntity<ResponseDTO<UserDTO>> register( @PathVariable String type, @Valid @RequestBody RegisterDTO request) {
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDTO<UserDTO>(true, "mesna", null));
     }
 
 }

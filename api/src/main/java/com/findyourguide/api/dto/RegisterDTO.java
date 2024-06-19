@@ -34,10 +34,8 @@ public  class RegisterDTO {
     @NotEmpty(message = "dni cannot be empty")
     String dni;
 
-    @NotEmpty(message = "gender cannot be empty")
     String gender;
 
-    @NotEmpty(message = "profile_photo cannot be empty")
     String profilePhoto;
 
     String cities;

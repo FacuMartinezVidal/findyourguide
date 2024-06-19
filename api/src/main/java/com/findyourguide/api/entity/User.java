@@ -15,6 +15,7 @@ import java.util.List;
 @MappedSuperclass
 @Setter
 @Getter
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class User extends Base implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

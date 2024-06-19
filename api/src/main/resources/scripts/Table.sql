@@ -47,6 +47,7 @@ CREATE TABLE Guide
     password         VARCHAR(255) NOT NULL,
     active           BOOLEAN DEFAULT TRUE,
     country_id       INT          NOT NULL,
+
     cities           TEXT, -- Usar tabla intermedia
     credential_photo VARCHAR(255),
     language         VARCHAR(255),

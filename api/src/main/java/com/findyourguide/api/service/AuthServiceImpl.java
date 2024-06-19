@@ -7,6 +7,7 @@ import com.findyourguide.api.dto.UserLoginDTO;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Role;
 import com.findyourguide.api.entity.Tourist;
+import com.findyourguide.api.entity.User;
 import com.findyourguide.api.repository.GuideRepository;
 import com.findyourguide.api.repository.TouristRepository;
 import com.findyourguide.api.util.Populate;
@@ -58,7 +59,7 @@ public class AuthServiceImpl {
             Tourist tourist = new Tourist();
             populateCommonFields(tourist, request, passwordEncoder);
             tourist.setRole(Role.TOURIST);
-            Tourist user = touristRepository.save(tourist);
+             touristRepository.save(tourist);
         }
         if (type.equals("guide")) {
             Guide guide = new Guide();
@@ -67,7 +68,7 @@ public class AuthServiceImpl {
             guide.setCredentialPhoto(request.getCredentialPhoto());
             guide.setLanguage(request.getLanguage());
             guide.setCities(request.getCities());
-            Guide user = guideRepository.save(guide);
+             guideRepository.save(guide);
         }
 
     }
