@@ -73,6 +73,7 @@ public class UserServiceImpl implements IUserService {
         return Optional.empty();
     }
 
+    // PUT miSitio/user/123 {body}
     public void update(String type, UpdateUserDTO userDTO) {
         if (type.equals("tourist")) {
             Optional<Tourist> optionalTourist = touristRepository.findUserByUsername(userDTO.getUsername());

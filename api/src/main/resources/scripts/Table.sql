@@ -35,22 +35,22 @@ CREATE TABLE Service (
     )
 );
 
-CREATE TABLE Guide (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    dni INT UNIQUE,
-    phone INT,
-    user VARCHAR(255),
-    profile_photo VARCHAR(255),
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
-    gender VARCHAR(10),
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    active BOOLEAN DEFAULT TRUE,
-    status VARCHAR(255) NOT NULL DEFAULT "OFFLINE",
-    country_id INT NOT NULL,
-    cities TEXT,
-    -- Usar tabla intermedia
+CREATE TABLE Guide
+(
+    id               INT AUTO_INCREMENT PRIMARY KEY,
+    dni              INT UNIQUE,
+    phone            INT,
+    user             VARCHAR(255),
+    profile_photo    VARCHAR(255),
+    first_name       VARCHAR(255) NOT NULL,
+    last_name        VARCHAR(255) NOT NULL,
+    gender           VARCHAR(10),
+    email            VARCHAR(255) NOT NULL UNIQUE,
+    password         VARCHAR(255) NOT NULL,
+    active           BOOLEAN DEFAULT TRUE,
+    country_id       INT          NOT NULL,
+
+    cities           TEXT, -- Usar tabla intermedia
     credential_photo VARCHAR(255),
     language VARCHAR(255),
     score FLOAT,

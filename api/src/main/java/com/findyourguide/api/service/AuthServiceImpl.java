@@ -2,9 +2,12 @@ package com.findyourguide.api.service;
 
 import com.findyourguide.api.dto.LoginDTO;
 import com.findyourguide.api.dto.RegisterDTO;
+import com.findyourguide.api.dto.UserDTO;
+import com.findyourguide.api.dto.UserLoginDTO;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Role;
 import com.findyourguide.api.entity.Tourist;
+import com.findyourguide.api.entity.User;
 import com.findyourguide.api.repository.GuideRepository;
 import com.findyourguide.api.repository.TouristRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static com.findyourguide.api.util.Populate.populateCommonFields;
+import static com.findyourguide.api.util.Populate.populateUserResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -26,44 +30,53 @@ public class AuthServiceImpl {
     private final TouristRepository touristRepository;
     private final GuideRepository guideRepository;
 
-    public String login(LoginDTO request, String type) {
+    public UserLoginDTO login(LoginDTO request, String type) {
 
+        //TODO only use jwt for authentication don't use authentication manager
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         if (type.equals("tourist")) {
             UserDetails user = touristRepository.findUserByUsername(request.getUsername())
                     .orElseThrow(() -> new IllegalArgumentException("User not found"));
-            return jwtService.getToken(user);
+            return new UserLoginDTO(user.getUsername(), jwtService.getToken(user));
+
         }
         if (type.equals("guide")) {
             UserDetails user = guideRepository.findUserByUsername(request.getUsername())
                     .orElseThrow(() -> new IllegalArgumentException("User not found"));
-            return jwtService.getToken(user);
+
+            return new UserLoginDTO(
+                    user.getUsername(),
+                    jwtService.getToken(user)
+            );
 
         }
         return null;
     }
 
-    public boolean registerTourist(String type, RegisterDTO request) {
+    public UserDTO register(String type, RegisterDTO request) {
         if (type.equals("tourist")) {
             Tourist tourist = new Tourist();
+            //TODO use mapToUser
             populateCommonFields(tourist, request, passwordEncoder);
             tourist.setRole(Role.TOURIST);
-            Tourist user = touristRepository.save(tourist);
-            return true;
+            touristRepository.save(tourist);
+            //TODO use mapToDTO
+            return populateUserResponse(tourist,type);
         }
         if (type.equals("guide")) {
             Guide guide = new Guide();
+            //TODO use mapToUser
             populateCommonFields(guide, request, passwordEncoder);
             guide.setRole(Role.GUIDE);
             guide.setCredentialPhoto(request.getCredentialPhoto());
             guide.setLanguage(request.getLanguage());
             guide.setCities(request.getCities());
-            Guide user = guideRepository.save(guide);
-            return true;
+            guideRepository.save(guide);
+            //TODO use mapToDTO
+            return populateUserResponse(guide,type);
         }
 
-        return false;
-
+        return null;
     }
 
 

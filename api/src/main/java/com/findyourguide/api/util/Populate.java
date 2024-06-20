@@ -3,6 +3,7 @@ package com.findyourguide.api.util;
 import com.findyourguide.api.dto.*;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.logging.Logger;
@@ -58,6 +59,7 @@ public class Populate {
         return response;
 
     }
+
 
     public static User populateUpdate(User user, UpdateUserDTO modifications){
 

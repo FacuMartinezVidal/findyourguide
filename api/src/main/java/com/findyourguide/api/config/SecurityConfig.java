@@ -31,6 +31,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/auth/**").permitAll()
+                        //TODO check this, only use jwt
                         .requestMatchers("/api/v1/**").authenticated()
                         .anyRequest().permitAll()
                 )
@@ -49,7 +50,9 @@ public class SecurityConfig {
                 }))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                //TODO check this
                 .authenticationProvider(authenticationProvider)
+                //TODO use more than jwt filter
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
