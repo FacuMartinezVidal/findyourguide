@@ -5,6 +5,7 @@ import com.findyourguide.api.dto.RegisterDTO;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Role;
 import com.findyourguide.api.entity.Tourist;
+import com.findyourguide.api.entity.User;
 import com.findyourguide.api.repository.GuideRepository;
 import com.findyourguide.api.repository.TouristRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +31,12 @@ public class AuthServiceImpl {
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         if (type.equals("tourist")) {
-            UserDetails user = touristRepository.findUserByUsername(request.getUsername())
+            User user = touristRepository.findUserByUsername(request.getUsername())
                     .orElseThrow(() -> new IllegalArgumentException("User not found"));
             return jwtService.getToken(user);
         }
         if (type.equals("guide")) {
-            UserDetails user = guideRepository.findUserByUsername(request.getUsername())
+            User user = guideRepository.findUserByUsername(request.getUsername())
                     .orElseThrow(() -> new IllegalArgumentException("User not found"));
             return jwtService.getToken(user);
 

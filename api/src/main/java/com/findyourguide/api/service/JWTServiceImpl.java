@@ -1,6 +1,8 @@
 package com.findyourguide.api.service;
 
 import com.findyourguide.api.config.LocalVariables;
+import com.findyourguide.api.entity.User;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -14,19 +16,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-
 @Service
 public class JWTServiceImpl {
 
-    public String getToken(UserDetails user) {
+    public String getToken(User user) {
         return createToken(new HashMap<>(), user);
     }
 
-    private String createToken(Map<String, Object> extraClaims, UserDetails user) {
+    private String createToken(Map<String, Object> extraClaims, User user) {
         return Jwts
                 .builder()
                 .issuer("FindYourGuide")
                 .claims(extraClaims)
+                .claim("username", user.getUsername())
+                .claim("email", user.getEmail())
+                // .subject(user.getId().toString())
                 .subject(user.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 600000))
