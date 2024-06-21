@@ -8,6 +8,7 @@ import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Service;
 import com.findyourguide.api.entity.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class Populate {
@@ -62,7 +63,8 @@ public class Populate {
 
     }
 
-    public static User populateUpdateUser(User user, UpdateUserDTO modifications) {
+
+    public static User populateUpdate(User user, UpdateUserDTO modifications){
 
         if (modifications.getUsername() != null) {
             user.setUsername(modifications.getUsername());

@@ -1,6 +1,7 @@
 package com.findyourguide.api.dto.user;
 
 
+import com.findyourguide.api.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,4 +21,10 @@ public class UserDTO {
     private String dni;
     private String gender;
     private Double score;
+/*
+    public User mapToUserDTO() {
+        return new User();
+    }
+
+ */
 }

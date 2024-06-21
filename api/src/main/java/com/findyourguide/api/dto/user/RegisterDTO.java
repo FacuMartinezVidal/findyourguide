@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public  class RegisterDTO {
 
-    @NotEmpty(message = "username cannot be empty")
+    @NotEmpty(message = "email cannot be empty")
     String username;
 
     @NotEmpty(message = "first_name cannot be empty")
@@ -34,10 +34,12 @@ public  class RegisterDTO {
     @NotEmpty(message = "dni cannot be empty")
     String dni;
 
-    @NotEmpty(message = "gender cannot be empty")
+    @NotEmpty(message = "role cannot be empty")
+    String role;
+
     String gender;
 
-    @NotEmpty(message = "profile_photo cannot be empty")
+
     String profilePhoto;
 
     String cities;
