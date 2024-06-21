@@ -1,6 +1,5 @@
 package com.findyourguide.api.entity;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,46 +10,44 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-
-@MappedSuperclass
 @Setter
 @Getter
-//TODO @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-//TODO check tables and use annotations than are available 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User extends Base implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-
+    private Long id;
 
     @Column(name = "user", nullable = false, unique = true)
-    String username;
+    private String username;
 
-    @Column(name = "first_name")
-    String firstName;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
 
-    @Column(name = "last_name")
-    String lastName;
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
-    @Column(name = "email",nullable = false, unique = true)
-    String email;
-    String password;
-    String phone;
-    String dni;
-    String gender;
-    Double score;
-    boolean active;
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
+    private String password;
+    private String phone;
+    private String dni;
+    private String gender;
+    private Double score;
+    private boolean active;
 
     @Column(name = "profile_photo")
-    String profilePhoto;
+    private String profilePhoto;
 
-    @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    Role role;
+    @Column(name = "role")
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority((role.name())));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override

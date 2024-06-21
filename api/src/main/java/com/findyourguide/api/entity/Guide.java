@@ -7,31 +7,26 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "guide")
 public class Guide extends User {
-
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "country_id", referencedColumnName = "id")
-    Country country;
+    private Country country;
 
-    String cities;
-
+    private String cities;
 
     @Column(name = "credential_photo")
-    String credentialPhoto;
+    private String credentialPhoto;
 
     @Enumerated(EnumType.STRING)
-    Language language;
+    private Language language;
 
     @Override
     public String getPassword() {
-        return password;
+        return super.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return super.getUsername();
     }
-
 }
