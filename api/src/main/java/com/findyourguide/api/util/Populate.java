@@ -63,8 +63,7 @@ public class Populate {
 
     }
 
-
-    public static User populateUpdate(User user, UpdateUserDTO modifications){
+    public static User populateUpdateUser(User user, UpdateUserDTO modifications) {
 
         if (modifications.getUsername() != null) {
             user.setUsername(modifications.getUsername());
