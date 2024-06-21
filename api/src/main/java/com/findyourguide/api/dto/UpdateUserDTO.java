@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateUserDTO {
-    @NotEmpty(message = "must have an username")
+    @NotEmpty(message = "must have an email")
     private String username;
     @Email(message = "must be an email")
     private String email;

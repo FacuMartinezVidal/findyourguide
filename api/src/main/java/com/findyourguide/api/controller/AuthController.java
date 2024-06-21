@@ -26,20 +26,20 @@ public class AuthController {
     //TODO use interface dependency
     final AuthServiceImpl authService;
 
-    @PostMapping("/login/{type}")
+    @PostMapping("/login")
 
-    public ResponseEntity<ResponseDTO<String>> login(@PathVariable String type, @Valid @RequestBody LoginDTO request) {
+    public ResponseEntity<ResponseDTO<String>> login( @Valid @RequestBody LoginDTO request) {
         HttpHeaders headers = new HttpHeaders();
-        UserLoginDTO user = authService.login(request, type);
+        UserLoginDTO user = authService.login(request);
 
         headers.setBearerAuth(user.getJwt());
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(new ResponseDTO<String>(HttpStatus.OK, "Login Successfully", user.getUsername()));
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(new ResponseDTO<String>(HttpStatus.OK, "Login Successfully", user.getEmail()));
     }
 
 
-    @PostMapping("/register/{type}")
-    public ResponseEntity<ResponseDTO<UserDTO>> register( @PathVariable String type, @Valid @RequestBody RegisterDTO request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDTO<UserDTO>(HttpStatus.CREATED, "Register Successfully", authService.register(type, request)));
+    @PostMapping("/register")
+    public ResponseEntity<ResponseDTO<UserDTO>> register( @Valid @RequestBody RegisterDTO request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDTO<UserDTO>(HttpStatus.CREATED, "Register Successfully", authService.register(request)));
     }
 
 }
