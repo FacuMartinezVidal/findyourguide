@@ -26,11 +26,16 @@ Asegúrate de tener Java 11 o superior instalado en tu máquina, así como Maven
 
 Clona el repositorio y navega al directorio del proyecto:
 
-[Insertar comando de clonación del repositorio aquí en bloque de código]
+```bash
+git clone https://github.com/FacuMartinezVidal/findyourguide.git
+cd findyourguide
+```
 
 Instala todas las dependencias requeridas:
 
-[Insertar comando 'mvn install' aquí en bloque de código]
+```bash
+mvn install
+```
 
 ### Configuración
 
@@ -40,7 +45,9 @@ Configura las variables de entorno necesarias para la conexión con la base de d
 
 Para iniciar la aplicación en modo de desarrollo, ejecuta:
 
-[Insertar comando 'mvn spring-boot:run' aquí en bloque de código]
+```bash
+mvn spring-boot:run
+```
 
 Esto iniciará el servidor en `localhost:8080`, donde la API estará disponible para interactuar.
 
@@ -48,7 +55,9 @@ Esto iniciará el servidor en `localhost:8080`, donde la API estará disponible 
 
 Para ejecutar los tests unitarios y de integración del proyecto:
 
-[Insertar comando 'mvn test' aquí en bloque de código]
+```bash
+mvn test
+```
 
 ## Contribuyendo
 
