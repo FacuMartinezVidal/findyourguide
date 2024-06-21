@@ -34,7 +34,7 @@ public class AuthServiceImpl {
 
     public UserLoginDTO login(LoginDTO request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        UserDetails user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new IllegalArgumentException("User not founded"));
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new IllegalArgumentException("User not founded"));
         return new UserLoginDTO(user.getUsername(), jwtService.getToken(user));
     }
 

@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
+@Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User extends Base implements UserDetails {
     @Id
@@ -44,6 +45,10 @@ public abstract class User extends Base implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private Status status = Status.OFFLINE;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
