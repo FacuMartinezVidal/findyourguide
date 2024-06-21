@@ -33,36 +33,39 @@ public class AuthServiceImpl {
     private final UserRepository userRepository;
 
     public UserLoginDTO login(LoginDTO request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new IllegalArgumentException("User not founded"));
+        authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("User not founded"));
         return new UserLoginDTO(user.getUsername(), jwtService.getToken(user));
     }
 
-    public UserDTO register( RegisterDTO request) {
-        if (request.getRole().equals("tourist")) {
-            Tourist tourist = new Tourist();
-            //TODO use mapToUser
-            populateCommonFields(tourist, request, passwordEncoder);
-            tourist.setRole(Role.TOURIST);
-            touristRepository.save(tourist);
-            //TODO use mapToDTO
-            return populateUserResponse(tourist,request.getRole());
+    public UserDTO register(RegisterDTO request) {
+
+        switch (request.getRole().toUpperCase()) {
+            case "TOURIST":
+                Tourist tourist = new Tourist();
+                // TODO use mapToUser
+                populateCommonFields(tourist, request, passwordEncoder);
+                tourist.setRole(Role.TOURIST);
+                touristRepository.save(tourist);
+                // TODO use mapToDTO
+                return populateUserResponse(tourist, request.getRole());
+            case "GUIDE":
+                Guide guide = new Guide();
+                // TODO use mapToUser
+                populateCommonFields(guide, request, passwordEncoder);
+                guide.setRole(Role.GUIDE);
+                guide.setCredentialPhoto(request.getCredentialPhoto());
+                guide.setLanguage(request.getLanguage());
+                guide.setCities(request.getCities());
+                guideRepository.save(guide);
+                // TODO use mapToDTO
+                return populateUserResponse(guide, request.getRole());
+
+            default:
+                throw new IllegalArgumentException("Unsupported role type: " + request.getRole());
         }
-        if (request.getRole().equals("guide")) {
-            Guide guide = new Guide();
-            //TODO use mapToUser
-            populateCommonFields(guide, request, passwordEncoder);
-            guide.setRole(Role.GUIDE);
-            guide.setCredentialPhoto(request.getCredentialPhoto());
-            guide.setLanguage(request.getLanguage());
-            guide.setCities(request.getCities());
-            guideRepository.save(guide);
-            //TODO use mapToDTO
-            return populateUserResponse(guide,request.getRole());
-        }
-        return null;
     }
 
-
 }
-

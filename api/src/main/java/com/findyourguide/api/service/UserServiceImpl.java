@@ -5,8 +5,10 @@ import com.findyourguide.api.dto.user.UpdateUserDTO;
 import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Tourist;
+import com.findyourguide.api.entity.User;
 import com.findyourguide.api.repository.GuideRepository;
 import com.findyourguide.api.repository.TouristRepository;
+import com.findyourguide.api.repository.UserRepository;
 import com.findyourguide.api.util.Populate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements IUserService {
     private final GuideRepository guideRepository;
     private final TouristRepository touristRepository;
+    private final UserRepository userRepository;
 
     public List<UserDTO> findAll(String type) {
         if (type.equals("tourist")) {
@@ -33,8 +36,7 @@ public class UserServiceImpl implements IUserService {
                             t.getPhone(),
                             t.getDni(),
                             t.getGender(),
-                            t.getScore()
-                    ))
+                            t.getScore()))
                     .collect(Collectors.toList());
 
         } else if (type.equals("guide")) {
@@ -52,8 +54,7 @@ public class UserServiceImpl implements IUserService {
                             g.getCountry(),
                             g.getCities(),
                             g.getCredentialPhoto(),
-                            g.getLanguage()
-                    ))
+                            g.getLanguage()))
                     .collect(Collectors.toList());
         }
         return null;
@@ -69,6 +70,16 @@ public class UserServiceImpl implements IUserService {
             return optionalGuide.map(guide -> Populate.populateUserResponse(guide, type));
         }
         return Optional.empty();
+    }
+
+    public Optional<UserDTO> findByEmail(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        return optionalUser.map(user -> Populate.populateUserResponse(user, "user"));
+    }
+
+    public Optional<User> findByUsername(String username) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        return optionalUser;
     }
 
     // PUT miSitio/user/123 {body}
@@ -96,7 +107,4 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
-
 }
-
-

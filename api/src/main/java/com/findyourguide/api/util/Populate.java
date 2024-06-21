@@ -30,19 +30,24 @@ public class Populate {
     public static UserDTO populateUserResponse(User user, String type) {
         UserDTO response = null;
 
-        if (type.equals("tourist")) {
-            response = new UserDTO();
-        } else if (type.equals("guide")) {
-            response = new GuideDTO();
-        }
+        switch (type) {
+            case "tourist":
+                response = new UserDTO();
+                break;
+            case "guide":
+                response = new UserDTO();
+                break;
+            case "user":
+                response = new UserDTO();
+                break;
 
-        if (response == null) {
-            return null;
+            default:
+                return null;
         }
 
         response.setId(user.getId());
         response.setUsername(user.getUsername());
-        response.setFirsName(user.getFirstName());  // fixed the typo from "FirsName" to "FirstName"
+        response.setFirsName(user.getFirstName());
         response.setLastName(user.getLastName());
         response.setEmail(user.getEmail());
         response.setPhone(user.getPhone());
@@ -132,6 +137,5 @@ public class Populate {
         }
         return service;
     }
-
 
 }
