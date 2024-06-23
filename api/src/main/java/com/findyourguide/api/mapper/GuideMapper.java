@@ -1,12 +1,10 @@
 package com.findyourguide.api.mapper;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import com.findyourguide.api.dto.user.GuideDTO;
 import com.findyourguide.api.entity.Guide;
-import com.findyourguide.api.entity.Service;
 
 public class GuideMapper {
 
@@ -31,7 +29,7 @@ public class GuideMapper {
 
         if (includeServices) {
             guideDTO.setServices(guide.getGuideServices().stream()
-                    .map(ServiceMapper::toDTO)
+                    .map(ServiceMapper::mapToServiceDTO)
                     .collect(Collectors.toList()));
         } else {
             guideDTO.setServices(Collections.emptyList());

@@ -1,6 +1,12 @@
 package com.findyourguide.api.entity;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.*;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +15,10 @@ import lombok.Setter;
 @Setter
 public class Tourist extends User {
     private String touristCode;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "tourist", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<PurchasedService> purchasedService;
 
     @Override
     public String getPassword() {

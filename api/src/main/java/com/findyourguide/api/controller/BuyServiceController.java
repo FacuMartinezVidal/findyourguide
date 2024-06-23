@@ -23,11 +23,28 @@ import java.util.List;
 @RequestMapping("/api/v1")
 @Validated
 @RequiredArgsConstructor
-public class ServiceController {
+public class BuyServiceController {
     private final IServiceService serviceService;
     private final UserValidations userValidations;
 
-    @PostMapping("/service")
+    @GetMapping("/buys")
+    public ResponseEntity<ResponseDTO<List<ServiceDTO>>> findAll() {
+        return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "All Services", serviceService.findAll()));
+    }
+
+    @GetMapping("/buys/tourist/{id}")
+    public ResponseEntity<ResponseDTO<List<ServiceDTO>>> findAllByGuide(@PathVariable Long id) {
+        return ResponseEntity.ok()
+                .body(new ResponseDTO<>(HttpStatus.OK, "All Services", serviceService.findAllByGuide(id)));
+    }
+
+    @GetMapping("/buys/{id}")
+    public ResponseEntity<ResponseDTO<ServiceDTO>> findById(@PathVariable Long id) {
+        ServiceDTO serviceDTO = serviceService.findById(id);
+        return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "Service Found", serviceDTO));
+    }
+
+    @PostMapping("/buys")
     public ResponseEntity<ResponseDTO<ServiceDTO>> create(@Valid @RequestBody CreateServiceDTO serviceDTO) {
         userValidations.validateRole(Role.GUIDE);
         ServiceDTO createdService = serviceService.create(serviceDTO);
@@ -40,31 +57,14 @@ public class ServiceController {
                 .body(new ResponseDTO<>(HttpStatus.CREATED, "Created", createdService));
     }
 
-    @GetMapping("/service")
-    public ResponseEntity<ResponseDTO<List<ServiceDTO>>> findAll() {
-        return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "All Services", serviceService.findAll()));
-    }
-
-    @GetMapping("/service/guide/{id}")
-    public ResponseEntity<ResponseDTO<List<ServiceDTO>>> findAllByGuide(@PathVariable Long id) {
-        return ResponseEntity.ok()
-                .body(new ResponseDTO<>(HttpStatus.OK, "All Services", serviceService.findAllByGuide(id)));
-    }
-
-    @GetMapping("/service/{id}")
-    public ResponseEntity<ResponseDTO<ServiceDTO>> findById(@PathVariable Long id) {
-        ServiceDTO serviceDTO = serviceService.findById(id);
-        return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "Service Found", serviceDTO));
-    }
-
-    @DeleteMapping("/service/{id}")
+    @DeleteMapping("/buys/{id}")
     public ResponseEntity<ResponseDTO<String>> deleteById(@PathVariable Long id) {
         userValidations.validateRole(Role.GUIDE);
         serviceService.deleteById(id);
         return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "Successfully Deleted", null));
     }
 
-    @PutMapping("service/{id}")
+    @PutMapping("buys/{id}")
     public ResponseEntity<ResponseDTO<ServiceDTO>> update(@PathVariable Long id,
             @Valid @RequestBody UpdateServiceDTO updateServiceDTO) {
         userValidations.validateRole(Role.GUIDE);

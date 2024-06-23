@@ -2,7 +2,8 @@ package com.findyourguide.api.controller;
 
 import com.findyourguide.api.dto.user.UpdateUserDTO;
 import com.findyourguide.api.dto.user.UserDTO;
-import com.findyourguide.api.service.IUserService;
+import com.findyourguide.api.service.interfaces.IUserService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,8 @@ public class UserController {
 
     private final IUserService userService;
 
-    //TODO use ResponseDTO
-    //TODO use try and catch
-    //TODO handler errors
-    //TODO improve body dto
+    // TODO use ResponseDTO
+    // TODO improve body dto
 
     @GetMapping("/user/{type}")
     public ResponseEntity<List<UserDTO>> findAll(@PathVariable String type) {
@@ -33,6 +32,11 @@ public class UserController {
     @GetMapping("/user/{type}/{id}")
     public ResponseEntity<Optional<UserDTO>> findById(@PathVariable String type, @PathVariable Long id) {
         return ResponseEntity.ok(userService.findById(type, id));
+    }
+
+    @GetMapping("/user/email")
+    public ResponseEntity<UserDTO> findById(@RequestBody String email) {
+        return ResponseEntity.ok(userService.findByEmail(email));
     }
 
     @DeleteMapping("/user/{type}/{id}")

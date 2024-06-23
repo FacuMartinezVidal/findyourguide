@@ -6,10 +6,12 @@ import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Tourist;
 import com.findyourguide.api.entity.User;
+import com.findyourguide.api.error.UserNotFoundException;
 import com.findyourguide.api.mapper.ServiceMapper;
 import com.findyourguide.api.repository.GuideRepository;
 import com.findyourguide.api.repository.TouristRepository;
 import com.findyourguide.api.repository.UserRepository;
+import com.findyourguide.api.service.interfaces.IUserService;
 import com.findyourguide.api.util.Populate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,67 +28,75 @@ public class UserServiceImpl implements IUserService {
     private final UserRepository userRepository;
 
     public List<UserDTO> findAll(String type) {
-        if (type.equals("tourist")) {
-            return touristRepository.findAll().stream()
-                    .map(t -> new UserDTO(
-                            t.getId(),
-                            t.getUsername(),
-                            t.getFirstName(),
-                            t.getLastName(),
-                            t.getEmail(),
-                            t.getPhone(),
-                            t.getDni(),
-                            t.getGender(),
-                            t.getScore()))
-                    .collect(Collectors.toList());
 
-        } else if (type.equals("guide")) {
-            return guideRepository.findAll().stream()
-                    .map(g -> new GuideDTO(
-                            g.getId(),
-                            g.getUsername(),
-                            g.getFirstName(),
-                            g.getLastName(),
-                            g.getEmail(),
-                            g.getPhone(),
-                            g.getDni(),
-                            g.getGender(),
-                            g.getScore(),
-                            g.getCountry(),
-                            g.getCities(),
-                            g.getCredentialPhoto(),
-                            g.getLanguage(),
-                            g.getGuideServices().stream()
-                                    .map(ServiceMapper::toDTO)
-                                    .collect(Collectors.toList())))
-                    .collect(Collectors.toList());
+        switch (type.toLowerCase()) {
+            case "tourist":
+                return touristRepository.findAll().stream()
+                        .map(t -> new UserDTO(
+                                t.getId(),
+                                t.getUsername(),
+                                t.getFirstName(),
+                                t.getLastName(),
+                                t.getEmail(),
+                                t.getPhone(),
+                                t.getDni(),
+                                t.getGender(),
+                                t.getScore()))
+                        .collect(Collectors.toList());
+            case "guide":
+                return guideRepository.findAll().stream()
+                        .map(g -> new GuideDTO(
+                                g.getId(),
+                                g.getUsername(),
+                                g.getFirstName(),
+                                g.getLastName(),
+                                g.getEmail(),
+                                g.getPhone(),
+                                g.getDni(),
+                                g.getGender(),
+                                g.getScore(),
+                                g.getCountry(),
+                                g.getCities(),
+                                g.getCredentialPhoto(),
+                                g.getLanguage(),
+                                g.getGuideServices().stream()
+                                        .map(ServiceMapper::mapToServiceDTO)
+                                        .collect(Collectors.toList())))
+                        .collect(Collectors.toList());
+            default:
+                return null;
+
         }
-        return null;
     }
 
-    public Optional<UserDTO> findById(String type, Long id) {
+    public Optional<UserDTO> findById(String type, Long id) throws UserNotFoundException {
 
-        if (type.equals("tourist")) {
-            Optional<Tourist> optionalTourist = touristRepository.findById(id);
-            return optionalTourist.map(tourist -> Populate.populateUserResponse(tourist, type));
-        } else if (type.equals("guide")) {
-            Optional<Guide> optionalGuide = guideRepository.findById(id);
-            return optionalGuide.map(guide -> Populate.populateUserResponse(guide, type));
+        switch (type.toLowerCase()) {
+            case "tourist":
+                Optional<Tourist> optionalTourist = touristRepository.findById(id);
+                return optionalTourist.map(tourist -> Populate.populateUserResponse(tourist, type));
+
+            case "guide":
+                Optional<Guide> optionalGuide = guideRepository.findById(id);
+                return optionalGuide.map(guide -> Populate.populateUserResponse(guide, type));
+
+            default:
+                return Optional.empty();
         }
-        return Optional.empty();
+
     }
 
-    public Optional<UserDTO> findByEmail(String email) {
-        Optional<User> optionalUser = userRepository.findByEmail(email);
-        return optionalUser.map(user -> Populate.populateUserResponse(user, "user"));
+    public UserDTO findByEmail(String email) throws UserNotFoundException {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
+        return Populate.populateUserResponse(user, "user");
     }
 
-    public Optional<User> findByUsername(String username) {
-        Optional<User> optionalUser = userRepository.findByUsername(username);
+    public User findByUsername(String username) throws UserNotFoundException {
+        User optionalUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException());
         return optionalUser;
     }
 
-    // PUT miSitio/user/123 {body}
     public void update(String type, UpdateUserDTO userDTO) {
         if (type.equals("tourist")) {
             Optional<Tourist> optionalTourist = touristRepository.findUserByUsername(userDTO.getUsername());
