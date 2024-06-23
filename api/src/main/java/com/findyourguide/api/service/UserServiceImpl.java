@@ -1,19 +1,19 @@
 package com.findyourguide.api.service;
 
-import com.findyourguide.api.dto.GuideDTO;
-import com.findyourguide.api.dto.UpdateUserDTO;
-import com.findyourguide.api.dto.UserDTO;
+import com.findyourguide.api.dto.user.GuideDTO;
+import com.findyourguide.api.dto.user.UpdateUserDTO;
+import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Tourist;
 import com.findyourguide.api.entity.User;
 import com.findyourguide.api.repository.GuideRepository;
 import com.findyourguide.api.repository.TouristRepository;
+import com.findyourguide.api.repository.UserRepository;
 import com.findyourguide.api.util.Populate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -22,9 +22,10 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements IUserService {
     private final GuideRepository guideRepository;
     private final TouristRepository touristRepository;
+    private final UserRepository userRepository;
 
     public List<UserDTO> findAll(String type) {
-        if (type.equals("tourist")){
+        if (type.equals("tourist")) {
             return touristRepository.findAll().stream()
                     .map(t -> new UserDTO(
                             t.getId(),
@@ -35,11 +36,10 @@ public class UserServiceImpl implements IUserService {
                             t.getPhone(),
                             t.getDni(),
                             t.getGender(),
-                            t.getScore()
-                    ))
+                            t.getScore()))
                     .collect(Collectors.toList());
 
-        }else if (type.equals("guide")) {
+        } else if (type.equals("guide")) {
             return guideRepository.findAll().stream()
                     .map(g -> new GuideDTO(
                             g.getId(),
@@ -54,8 +54,7 @@ public class UserServiceImpl implements IUserService {
                             g.getCountry(),
                             g.getCities(),
                             g.getCredentialPhoto(),
-                            g.getLanguage()
-                    ))
+                            g.getLanguage()))
                     .collect(Collectors.toList());
         }
         return null;
@@ -73,19 +72,28 @@ public class UserServiceImpl implements IUserService {
         return Optional.empty();
     }
 
+    public Optional<UserDTO> findByEmail(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        return optionalUser.map(user -> Populate.populateUserResponse(user, "user"));
+    }
+
+    public Optional<User> findByUsername(String username) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        return optionalUser;
+    }
+
     // PUT miSitio/user/123 {body}
     public void update(String type, UpdateUserDTO userDTO) {
         if (type.equals("tourist")) {
             Optional<Tourist> optionalTourist = touristRepository.findUserByUsername(userDTO.getUsername());
             if (optionalTourist.isPresent()) {
-                Tourist updatedTourist = (Tourist) Populate.populateUpdate(optionalTourist.get(), userDTO);
+                Tourist updatedTourist = (Tourist) Populate.populateUpdateUser(optionalTourist.get(), userDTO);
                 touristRepository.save(updatedTourist);
             }
-        }
-        else if (type.equals("guide")) {
+        } else if (type.equals("guide")) {
             Optional<Guide> optionalGuide = guideRepository.findUserByUsername(userDTO.getUsername());
             if (optionalGuide.isPresent()) {
-                Guide updatedGuide = (Guide) Populate.populateUpdate(optionalGuide.get(), userDTO);
+                Guide updatedGuide = (Guide) Populate.populateUpdateUser(optionalGuide.get(), userDTO);
                 guideRepository.save(updatedGuide);
             }
         }
@@ -94,15 +102,9 @@ public class UserServiceImpl implements IUserService {
     public void deleteById(String type, Long id) {
         if (type.equals("tourist")) {
             touristRepository.deleteById(id);
-        }
-        else if (type.equals("guide")) {
+        } else if (type.equals("guide")) {
             guideRepository.deleteById(id);
         }
     }
 
-
-
-
 }
-
-

@@ -1,4 +1,4 @@
-package com.findyourguide.api.dto;
+package com.findyourguide.api.dto.user;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;

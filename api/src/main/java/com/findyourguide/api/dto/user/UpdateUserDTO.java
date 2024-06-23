@@ -1,4 +1,4 @@
-package com.findyourguide.api.dto;
+package com.findyourguide.api.dto.user;
 
 import com.findyourguide.api.entity.Country;
 import com.findyourguide.api.entity.Language;

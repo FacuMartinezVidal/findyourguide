@@ -21,7 +21,7 @@ public abstract class User extends Base implements UserDetails {
     private Long id;
 
     @Column(name = "user", nullable = false, unique = true)
-    private String username;
+    public String username;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -52,7 +52,7 @@ public abstract class User extends Base implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority(username));
     }
 
     @Override
