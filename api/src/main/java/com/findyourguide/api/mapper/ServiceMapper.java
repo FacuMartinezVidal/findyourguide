@@ -2,7 +2,6 @@ package com.findyourguide.api.mapper;
 
 import com.findyourguide.api.dto.service.ServiceDTO;
 import com.findyourguide.api.entity.Service;
-import com.findyourguide.api.util.Populate;
 
 public class ServiceMapper {
     public static ServiceDTO toDTO(Service service) {
@@ -15,11 +14,14 @@ public class ServiceMapper {
         dto.setDescription(service.getDescription());
         dto.setPrice(service.getPrice());
         dto.setDate(service.getDate());
+        dto.setServiceType(service.getServiceType());
         dto.setQuantity(service.getQuantity());
-        dto.setDescription(service.getDescription());
         dto.setCity(service.getCity());
         dto.setCountry(service.getCountry());
-        dto.setGuide(Populate.populateUserResponse(service.getGuide(), "guide"));
+        if (service.getGuide() != null) {
+            dto.setGuide(GuideMapper.mapToGuideDTO(service.getGuide(), false));
+        }
+
         return dto;
     }
 }

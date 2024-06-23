@@ -3,6 +3,7 @@ package com.findyourguide.api.controller;
 import com.findyourguide.api.dto.service.CreateServiceDTO;
 import com.findyourguide.api.dto.service.ServiceDTO;
 import com.findyourguide.api.dto.service.UpdateServiceDTO;
+import com.findyourguide.api.dto.user.GuideDTO;
 import com.findyourguide.api.dto.user.ResponseDTO;
 import com.findyourguide.api.entity.Service;
 import com.findyourguide.api.service.IServiceService;
@@ -40,6 +41,11 @@ public class ServiceController {
     @GetMapping("/service")
     public ResponseEntity<ResponseDTO<List<ServiceDTO>>> findAll() {
         return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "All Services", serviceService.findAll()));
+    }
+
+    @GetMapping("/service/guide/{id}")
+    public ResponseEntity<ResponseDTO<List<ServiceDTO>>> findAllByGuide(@PathVariable Long id) {
+        return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "All Services", serviceService.findAllByGuide(id)));
     }
 
     @GetMapping("/service/{id}")

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,7 +36,8 @@ public class ServiceServiceImpl implements IServiceService {
         service.setCountry(serviceDTO.getCountry());
         service.setCity(serviceDTO.getCity());
 
-        Optional<Guide> guide = guideRepository.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        Optional<Guide> guide = guideRepository
+                .findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
         guide.ifPresent(service::setGuide);
         serviceRepository.save(service);
@@ -44,8 +46,15 @@ public class ServiceServiceImpl implements IServiceService {
 
     public List<ServiceDTO> findAll() {
         return serviceRepository.findAll().stream().map(
-                ServiceMapper::toDTO
-        ).collect(Collectors.toList());
+                ServiceMapper::toDTO).collect(Collectors.toList());
+    }
+
+    public List<ServiceDTO> findAllByGuide(Long id) {
+        return guideRepository.findById(id)
+                .map(guide -> guide.getGuideServices().stream()
+                        .map(ServiceMapper::toDTO)
+                        .collect(Collectors.toList()))
+                .orElse(Collections.emptyList());
     }
 
     public Optional<Service> findById(Long id) {

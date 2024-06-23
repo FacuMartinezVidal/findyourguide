@@ -3,6 +3,7 @@ package com.findyourguide.api.service;
 import com.findyourguide.api.dto.service.CreateServiceDTO;
 import com.findyourguide.api.dto.service.ServiceDTO;
 import com.findyourguide.api.dto.service.UpdateServiceDTO;
+import com.findyourguide.api.dto.user.GuideDTO;
 import com.findyourguide.api.entity.Service;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public interface IServiceService {
     ServiceDTO update(Long id, UpdateServiceDTO updateServiceDTO);
 
     Optional<Service> findById(Long id);
+
+    List<ServiceDTO> findAllByGuide(Long id);
 
     List<ServiceDTO> findAll();
 }

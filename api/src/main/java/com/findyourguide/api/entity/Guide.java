@@ -24,7 +24,7 @@ public class Guide extends User {
     private Language language;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "guide", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "guide", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Service> guideServices;
 
     @Override

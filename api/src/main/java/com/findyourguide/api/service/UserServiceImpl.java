@@ -6,6 +6,7 @@ import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Tourist;
 import com.findyourguide.api.entity.User;
+import com.findyourguide.api.mapper.ServiceMapper;
 import com.findyourguide.api.repository.GuideRepository;
 import com.findyourguide.api.repository.TouristRepository;
 import com.findyourguide.api.repository.UserRepository;
@@ -54,7 +55,10 @@ public class UserServiceImpl implements IUserService {
                             g.getCountry(),
                             g.getCities(),
                             g.getCredentialPhoto(),
-                            g.getLanguage()))
+                            g.getLanguage(),
+                            g.getGuideServices().stream()
+                                    .map(ServiceMapper::toDTO)
+                                    .collect(Collectors.toList())))
                     .collect(Collectors.toList());
         }
         return null;

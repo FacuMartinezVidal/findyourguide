@@ -36,9 +36,10 @@ public class Service extends Base {
     private Country country;
 
     @JsonBackReference
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "guide_id")
     private Guide guide;
+    
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "city_id", referencedColumnName = "id")
