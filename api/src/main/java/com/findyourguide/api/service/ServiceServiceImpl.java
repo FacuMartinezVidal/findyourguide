@@ -28,7 +28,6 @@ public class ServiceServiceImpl implements IServiceService {
         service.setCountry(serviceDTO.getCountry());
         service.setCity(serviceDTO.getCity());
         serviceRepository.save(service);
-
     }
 
     public List<Service> findAll() {

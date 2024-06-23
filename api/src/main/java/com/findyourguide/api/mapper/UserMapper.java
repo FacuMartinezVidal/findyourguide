@@ -37,7 +37,7 @@ public class UserMapper {
             default:
                 return null; // or throw an exception if type is mandatory
         }
-        user.setId(userDTO.getId());
+        //user.setId(userDTO.getId());
         user.setUsername(userDTO.getUsername());
         user.setFirstName(userDTO.getFirsName());
         user.setLastName(userDTO.getLastName());

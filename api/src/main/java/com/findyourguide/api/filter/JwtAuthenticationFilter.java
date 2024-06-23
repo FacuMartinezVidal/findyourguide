@@ -2,7 +2,6 @@ package com.findyourguide.api.filter;
 
 import com.findyourguide.api.service.JWTServiceImpl;
 import com.findyourguide.api.service.UserDetailServiceImpl;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
