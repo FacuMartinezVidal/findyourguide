@@ -1,15 +1,21 @@
 package com.findyourguide.api.controller;
 
 import com.findyourguide.api.dto.service.CreateServiceDTO;
+import com.findyourguide.api.dto.service.ServiceDTO;
 import com.findyourguide.api.dto.service.UpdateServiceDTO;
+import com.findyourguide.api.dto.user.ResponseDTO;
 import com.findyourguide.api.entity.Service;
 import com.findyourguide.api.service.IServiceService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.parser.HttpParser;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,31 +27,35 @@ public class ServiceController {
     private final IServiceService serviceService;
 
     @PostMapping("/service")
-    public ResponseEntity<String> create(@Valid @RequestBody CreateServiceDTO serviceDTO) {
-        serviceService.create(serviceDTO);
-        return ResponseEntity.ok("Tour Successfully Created!");
+    public ResponseEntity<ResponseDTO<ServiceDTO>> create(@Valid @RequestBody CreateServiceDTO serviceDTO) {
+        ServiceDTO createdService = serviceService.create(serviceDTO);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdService.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(new ResponseDTO<>(HttpStatus.CREATED, "Created", createdService));
     }
 
     @GetMapping("/service")
-    public ResponseEntity<List<Service>> findAll() {
-        return ResponseEntity.ok(serviceService.findAll());
+    public ResponseEntity<ResponseDTO<List<ServiceDTO>>> findAll() {
+        return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "All Services", serviceService.findAll()));
     }
 
     @GetMapping("/service/{id}")
-    public ResponseEntity<Optional<Service>> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(serviceService.findById(id));
+    public ResponseEntity<ResponseDTO<Optional<Service>>> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "Service Found", serviceService.findById(id)));
     }
 
     @DeleteMapping("/service/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable Long id) {
+    public ResponseEntity<ResponseDTO<String>> deleteById(@PathVariable Long id) {
         serviceService.deleteById(id);
-        return ResponseEntity.ok("Delete service with id:" + id);
+        return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "Successfully Deleted", null));
     }
 
     @PutMapping("service/{id}")
-    public ResponseEntity<String> update(@PathVariable Long id, UpdateServiceDTO updateServiceDTO) {
-        serviceService.update(id, updateServiceDTO);
-        return ResponseEntity.ok("Updated Successfully!");
+    public ResponseEntity<ResponseDTO<ServiceDTO>> update(@PathVariable Long id, @Valid @RequestBody UpdateServiceDTO updateServiceDTO) {
+        return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "Successfully Updated", serviceService.update(id, updateServiceDTO)));
     }
 
 }

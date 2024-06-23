@@ -31,14 +31,11 @@ public class Populate {
         UserDTO response = null;
 
         switch (type) {
-            case "tourist":
+            case "tourist", "user":
                 response = new UserDTO();
                 break;
             case "guide":
-                response = new UserDTO();
-                break;
-            case "user":
-                response = new UserDTO();
+                response = new GuideDTO();
                 break;
 
             default:

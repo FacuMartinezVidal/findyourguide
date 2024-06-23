@@ -1,5 +1,6 @@
 package com.findyourguide.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +34,11 @@ public class Service extends Base {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "country_id", referencedColumnName = "id")
     private Country country;
+
+    @JsonBackReference
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "guide_id")
+    private Guide guide;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "city_id", referencedColumnName = "id")
