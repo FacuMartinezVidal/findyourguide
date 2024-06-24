@@ -45,7 +45,7 @@ public class AuthServiceImpl {
                 Tourist tourist = TouristMapper.mapToTouristEntityFromCreateTouristDTO(request,
                         passwordEncoder);
                 touristRepository.save(tourist);
-                return TouristMapper.mapToTouristDTO(tourist, false);
+                return TouristMapper.mapToTouristDTO(tourist, false, false);
             case "GUIDE":
                 Guide guide = GuideMapper.mapToGuideEntityFromCreateGuideDTO(request, passwordEncoder);
                 guideRepository.save(guide);
