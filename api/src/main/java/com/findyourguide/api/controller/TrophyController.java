@@ -2,6 +2,7 @@ package com.findyourguide.api.controller;
 
 import com.findyourguide.api.dto.trophy.TrophyDTO;
 import com.findyourguide.api.dto.user.ResponseDTO;
+import com.findyourguide.api.entity.Trophy.Condition;
 import com.findyourguide.api.service.interfaces.ITrophyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class TrophyController {
 
     @PostMapping("/trophies/")
     public ResponseEntity<ResponseDTO<TrophyDTO>> create() {
-        TrophyDTO createdTrophy = trophyService.create();
+        TrophyDTO createdTrophy = trophyService.create(Condition.SUCCESS);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
