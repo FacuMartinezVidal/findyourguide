@@ -1,7 +1,6 @@
 package com.findyourguide.api.controller;
 
 import com.findyourguide.api.dto.buyservice.BuyTourDTO;
-import com.findyourguide.api.dto.buyservice.CreateBuyTour;
 import com.findyourguide.api.dto.service.UpdateServiceDTO;
 import com.findyourguide.api.dto.user.ResponseDTO;
 import com.findyourguide.api.entity.Role;
@@ -48,10 +47,10 @@ public class BuyTourController {
         return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "Service Found", serviceDTO));
     }
 
-    @PostMapping("/buys")
-    public ResponseEntity<ResponseDTO<BuyTourDTO>> create(@PathVariable Long serviceID) {
+    @PostMapping("/buys/{id}")
+    public ResponseEntity<ResponseDTO<BuyTourDTO>> create(@PathVariable Long id) {
         userValidations.validateRole(Role.TOURIST);
-        BuyTourDTO createdService = buyService.create(serviceID);
+        BuyTourDTO createdService = buyService.create(id);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

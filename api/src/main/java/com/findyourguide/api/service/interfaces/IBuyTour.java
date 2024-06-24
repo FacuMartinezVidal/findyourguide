@@ -1,7 +1,6 @@
 package com.findyourguide.api.service.interfaces;
 
 import com.findyourguide.api.dto.buyservice.BuyTourDTO;
-import com.findyourguide.api.dto.buyservice.CreateBuyTour;
 import com.findyourguide.api.dto.service.UpdateServiceDTO;
 import com.findyourguide.api.error.ServiceNotFoundException;
 import com.findyourguide.api.error.UserNotFoundException;
