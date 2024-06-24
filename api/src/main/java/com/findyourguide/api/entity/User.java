@@ -7,6 +7,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.findyourguide.api.entity.Service.Service;
+import com.findyourguide.api.entity.Trophy.Trophy;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -21,7 +25,7 @@ public abstract class User extends Base implements UserDetails {
     private Long id;
 
     @Column(name = "user", nullable = false, unique = true)
-    public String username;
+    private String username;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -49,6 +53,10 @@ public abstract class User extends Base implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status = Status.OFFLINE;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Trophy> trophyList;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
