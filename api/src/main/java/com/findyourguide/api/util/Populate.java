@@ -43,7 +43,7 @@ public class Populate {
 
         response.setId(user.getId());
         response.setUsername(user.getUsername());
-        response.setFirsName(user.getFirstName());
+        response.setFirstName(user.getFirstName());
         response.setLastName(user.getLastName());
         response.setEmail(user.getEmail());
         response.setPhone(user.getPhone());

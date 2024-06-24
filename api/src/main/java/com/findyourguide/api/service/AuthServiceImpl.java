@@ -5,10 +5,11 @@ import com.findyourguide.api.dto.user.RegisterDTO;
 import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.dto.UserLoginDTO;
 import com.findyourguide.api.entity.Guide;
-import com.findyourguide.api.entity.Role;
 import com.findyourguide.api.entity.Tourist;
 import com.findyourguide.api.entity.User;
 import com.findyourguide.api.error.TypeNotValidException;
+import com.findyourguide.api.mapper.GuideMapper;
+import com.findyourguide.api.mapper.TouristMapper;
 import com.findyourguide.api.repository.GuideRepository;
 import com.findyourguide.api.repository.TouristRepository;
 import com.findyourguide.api.repository.UserRepository;
@@ -17,9 +18,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import static com.findyourguide.api.util.Populate.populateCommonFields;
-import static com.findyourguide.api.util.Populate.populateUserResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -44,24 +42,14 @@ public class AuthServiceImpl {
 
         switch (request.getRole().toUpperCase()) {
             case "TOURIST":
-                Tourist tourist = new Tourist();
-                // TODO use mapToUser
-                populateCommonFields(tourist, request, passwordEncoder);
-                tourist.setRole(Role.TOURIST);
+                Tourist tourist = TouristMapper.mapToTouristEntityFromCreateTouristDTO(request,
+                        passwordEncoder);
                 touristRepository.save(tourist);
-                // TODO use mapToDTO
-                return populateUserResponse(tourist, request.getRole());
+                return TouristMapper.mapToTouristDTO(tourist, false);
             case "GUIDE":
-                Guide guide = new Guide();
-                // TODO use mapToUser
-                populateCommonFields(guide, request, passwordEncoder);
-                guide.setRole(Role.GUIDE);
-                guide.setCredentialPhoto(request.getCredentialPhoto());
-                guide.setLanguage(request.getLanguage());
-                guide.setCities(request.getCities());
+                Guide guide = GuideMapper.mapToGuideEntityFromCreateGuideDTO(request, passwordEncoder);
                 guideRepository.save(guide);
-                // TODO use mapToDTO
-                return populateUserResponse(guide, request.getRole());
+                return GuideMapper.mapToGuideDTO(guide, false);
 
             default:
                 throw new TypeNotValidException(request.getRole());

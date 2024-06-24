@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedService;
 
 import jakarta.persistence.*;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +19,9 @@ public class Tourist extends User {
     @OneToMany(mappedBy = "tourist", cascade = CascadeType.ALL, orphanRemoval = true)
     List<PurchasedService> purchasedService;
 
+    @Column(name = "balance", nullable = false)
+    public Long balance;
+
     @Override
     public String getPassword() {
         return super.getPassword();
@@ -30,4 +31,14 @@ public class Tourist extends User {
     public String getUsername() {
         return super.getUsername();
     }
+
+    public boolean hasSufficientFunds(Long purchaseAmount) {
+        return this.getBalance() >= purchaseAmount;
+    }
+
+    public boolean refundFunds(Long amount) {
+        this.setBalance((this.getBalance() + amount));
+        return true;
+    }
+
 }
