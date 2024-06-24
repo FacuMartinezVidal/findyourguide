@@ -1,6 +1,7 @@
 package com.findyourguide.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.findyourguide.api.entity.Reviews.Review;
 import com.findyourguide.api.entity.Service.Service;
 
 import jakarta.persistence.*;
@@ -26,6 +27,10 @@ public class Guide extends User {
     @JsonManagedReference
     @OneToMany(mappedBy = "guide", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Service> guideServices;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "guide", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> receivedReviews;
 
     @Override
     public String getPassword() {

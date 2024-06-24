@@ -1,5 +1,6 @@
 package com.findyourguide.api.config;
 
+import com.findyourguide.api.error.UserNotFoundException;
 import com.findyourguide.api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 
 @Configuration
 @RequiredArgsConstructor
@@ -39,6 +39,7 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> (UserDetails) userRepository.findByEmail(username).orElse(null);
+        return username -> (UserDetails) userRepository.findByEmail(username)
+                .orElseThrow(() -> new UserNotFoundException());
     }
 }

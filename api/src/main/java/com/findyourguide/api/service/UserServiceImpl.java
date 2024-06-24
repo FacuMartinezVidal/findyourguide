@@ -1,5 +1,6 @@
 package com.findyourguide.api.service;
 
+import com.findyourguide.api.config.SecurityContextService;
 import com.findyourguide.api.dto.user.GuideDTO;
 import com.findyourguide.api.dto.user.UpdateUserDTO;
 import com.findyourguide.api.dto.user.UserDTO;
@@ -27,6 +28,7 @@ public class UserServiceImpl implements IUserService {
     private final GuideRepository guideRepository;
     private final TouristRepository touristRepository;
     private final UserRepository userRepository;
+    private final SecurityContextService contextService;
 
     public List<UserDTO> findAll(String type) {
 
@@ -87,7 +89,13 @@ public class UserServiceImpl implements IUserService {
     }
 
     public UserDTO findByEmail(String email) throws UserNotFoundException {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        return Populate.populateUserResponse(user, "user");
+    }
+
+    public UserDTO findByJwt() throws UserNotFoundException {
+        String username = contextService.getAuthenticatedUser();
+        User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
         return Populate.populateUserResponse(user, "user");
     }
 

@@ -8,7 +8,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.findyourguide.api.entity.Service.Service;
 import com.findyourguide.api.entity.Trophy.Trophy;
 
 import java.util.Collection;
@@ -34,7 +33,7 @@ public abstract class User extends Base implements UserDetails {
     private String lastName;
 
     @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    private String email;   
 
     private String password;
     private String phone;

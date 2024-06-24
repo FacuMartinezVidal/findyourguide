@@ -20,5 +20,7 @@ public interface IUserService {
 
     UserDTO findByEmail(String email) throws UserNotFoundException;
 
+    UserDTO findByJwt() throws UserNotFoundException;
+
     User findByUsername(String username) throws UserNotFoundException;
 }

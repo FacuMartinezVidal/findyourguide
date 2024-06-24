@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedService;
+import com.findyourguide.api.entity.Reviews.Review;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -21,6 +22,10 @@ public class Tourist extends User {
 
     @Column(name = "balance", nullable = false)
     public Long balance;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "tourist", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> givenReviews;
 
     @Override
     public String getPassword() {

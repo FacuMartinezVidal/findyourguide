@@ -34,9 +34,14 @@ public class UserController {
         return ResponseEntity.ok(userService.findById(type, id));
     }
 
-    @GetMapping("/user/email")
-    public ResponseEntity<UserDTO> findById(@RequestBody String email) {
+    @GetMapping("/user/getBy/parameter/email")
+    public ResponseEntity<UserDTO> findByEmail(@Valid @RequestBody String email) {
         return ResponseEntity.ok(userService.findByEmail(email));
+    }
+
+    @GetMapping("/user/getBy/parameter/jwt")
+    public ResponseEntity<UserDTO> findByJwt() {
+        return ResponseEntity.ok(userService.findByJwt());
     }
 
     @DeleteMapping("/user/{type}/{id}")
