@@ -8,13 +8,13 @@ import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Role;
 import com.findyourguide.api.entity.Tourist;
 import com.findyourguide.api.entity.User;
+import com.findyourguide.api.error.TypeNotValidException;
 import com.findyourguide.api.repository.GuideRepository;
 import com.findyourguide.api.repository.TouristRepository;
 import com.findyourguide.api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -64,7 +64,7 @@ public class AuthServiceImpl {
                 return populateUserResponse(guide, request.getRole());
 
             default:
-                throw new IllegalArgumentException("Unsupported role type: " + request.getRole());
+                throw new TypeNotValidException(request.getRole());
         }
     }
 

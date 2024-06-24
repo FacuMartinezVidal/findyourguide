@@ -7,6 +7,7 @@ import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Tourist;
 import com.findyourguide.api.entity.User;
 import com.findyourguide.api.error.UserNotFoundException;
+import com.findyourguide.api.error.TypeNotValidException;
 import com.findyourguide.api.mapper.ServiceMapper;
 import com.findyourguide.api.repository.GuideRepository;
 import com.findyourguide.api.repository.TouristRepository;
@@ -64,7 +65,7 @@ public class UserServiceImpl implements IUserService {
                                         .collect(Collectors.toList())))
                         .collect(Collectors.toList());
             default:
-                return null;
+                throw new TypeNotValidException(type);
 
         }
     }
@@ -81,7 +82,7 @@ public class UserServiceImpl implements IUserService {
                 return optionalGuide.map(guide -> Populate.populateUserResponse(guide, type));
 
             default:
-                return Optional.empty();
+                throw new TypeNotValidException(type);
         }
 
     }
@@ -97,7 +98,7 @@ public class UserServiceImpl implements IUserService {
         return optionalUser;
     }
 
-    public void update(String type, UpdateUserDTO userDTO) {
+    public void update(String type, UpdateUserDTO userDTO) throws TypeNotValidException {
         if (type.equals("tourist")) {
             Optional<Tourist> optionalTourist = touristRepository.findUserByUsername(userDTO.getUsername());
             if (optionalTourist.isPresent()) {

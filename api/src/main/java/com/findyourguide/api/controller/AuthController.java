@@ -17,9 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 public class AuthController {
     // TODO improve body dto
-    // TODO use try and catch
-    // TODO handler errors
-
     // TODO use interface dependency
     final AuthServiceImpl authService;
 
@@ -36,16 +33,9 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<ResponseDTO<UserDTO>> register(@Valid @RequestBody RegisterDTO request) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(
-                    new ResponseDTO<UserDTO>(HttpStatus.CREATED, "Register Successfully",
-                            authService.register(request)));
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDTO<UserDTO>(
-                    HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), null));
-        }
-
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                new ResponseDTO<UserDTO>(HttpStatus.CREATED, "Register Successfully",
+                        authService.register(request)));
     }
 
 }

@@ -10,13 +10,14 @@ import com.findyourguide.api.error.InvalidCredentialsException;
 import com.findyourguide.api.error.ServiceNotFoundException;
 import com.findyourguide.api.error.UnauthorizeCredentialsException;
 import com.findyourguide.api.error.UserNotFoundException;
+import com.findyourguide.api.error.TypeNotValidException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({ MethodArgumentNotValidException.class, TypeNotValidException.class })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleValidationException(MethodArgumentNotValidException ex) {
+    public ErrorResponse handleValidationException(RuntimeException ex) {
         return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 

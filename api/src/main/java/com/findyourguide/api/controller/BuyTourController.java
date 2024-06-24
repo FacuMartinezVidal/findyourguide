@@ -1,15 +1,16 @@
 package com.findyourguide.api.controller;
 
-import com.findyourguide.api.dto.service.CreateServiceDTO;
-import com.findyourguide.api.dto.service.ServiceDTO;
+import com.findyourguide.api.dto.buyservice.BuyTourDTO;
+import com.findyourguide.api.dto.buyservice.CreateBuyTour;
 import com.findyourguide.api.dto.service.UpdateServiceDTO;
 import com.findyourguide.api.dto.user.ResponseDTO;
 import com.findyourguide.api.entity.Role;
-import com.findyourguide.api.service.interfaces.IServiceService;
+import com.findyourguide.api.service.interfaces.IBuyTour;
 import com.findyourguide.api.util.UserValidations;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,31 +24,31 @@ import java.util.List;
 @RequestMapping("/api/v1")
 @Validated
 @RequiredArgsConstructor
-public class BuyServiceController {
-    private final IServiceService serviceService;
+public class BuyTourController {
+    private final IBuyTour buyService;
     private final UserValidations userValidations;
 
     @GetMapping("/buys")
-    public ResponseEntity<ResponseDTO<List<ServiceDTO>>> findAll() {
-        return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "All Services", serviceService.findAll()));
+    public ResponseEntity<ResponseDTO<List<BuyTourDTO>>> findAll() {
+        return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "All Services", buyService.findAll()));
     }
 
     @GetMapping("/buys/tourist/{id}")
-    public ResponseEntity<ResponseDTO<List<ServiceDTO>>> findAllByGuide(@PathVariable Long id) {
+    public ResponseEntity<ResponseDTO<List<BuyTourDTO>>> findAllByGuide(@PathVariable Long id) {
         return ResponseEntity.ok()
-                .body(new ResponseDTO<>(HttpStatus.OK, "All Services", serviceService.findAllByGuide(id)));
+                .body(new ResponseDTO<>(HttpStatus.OK, "All Services", buyService.findAllByTourist(id)));
     }
 
     @GetMapping("/buys/{id}")
-    public ResponseEntity<ResponseDTO<ServiceDTO>> findById(@PathVariable Long id) {
-        ServiceDTO serviceDTO = serviceService.findById(id);
+    public ResponseEntity<ResponseDTO<BuyTourDTO>> findById(@PathVariable Long id) {
+        BuyTourDTO serviceDTO = buyService.findById(id);
         return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "Service Found", serviceDTO));
     }
 
     @PostMapping("/buys")
-    public ResponseEntity<ResponseDTO<ServiceDTO>> create(@Valid @RequestBody CreateServiceDTO serviceDTO) {
-        userValidations.validateRole(Role.GUIDE);
-        ServiceDTO createdService = serviceService.create(serviceDTO);
+    public ResponseEntity<ResponseDTO<BuyTourDTO>> create(@Valid @RequestBody CreateBuyTour createBuyTour) {
+        userValidations.validateRole(Role.TOURIST);
+        BuyTourDTO createdService = buyService.create(createBuyTour);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -59,18 +60,18 @@ public class BuyServiceController {
 
     @DeleteMapping("/buys/{id}")
     public ResponseEntity<ResponseDTO<String>> deleteById(@PathVariable Long id) {
-        userValidations.validateRole(Role.GUIDE);
-        serviceService.deleteById(id);
+        userValidations.validateRole(Role.TOURIST);
+        buyService.deleteById(id);
         return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "Successfully Deleted", null));
     }
 
     @PutMapping("buys/{id}")
-    public ResponseEntity<ResponseDTO<ServiceDTO>> update(@PathVariable Long id,
+    public ResponseEntity<ResponseDTO<BuyTourDTO>> update(@PathVariable Long id,
             @Valid @RequestBody UpdateServiceDTO updateServiceDTO) {
-        userValidations.validateRole(Role.GUIDE);
+        userValidations.validateRole(Role.TOURIST);
         return ResponseEntity.ok().body(
                 new ResponseDTO<>(HttpStatus.OK, "Successfully Updated",
-                        serviceService.update(id, updateServiceDTO)));
+                        buyService.update(id, updateServiceDTO)));
     }
 
 }
