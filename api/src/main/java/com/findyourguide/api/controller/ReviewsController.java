@@ -11,7 +11,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.findyourguide.api.dto.Review.InputReview;
 import com.findyourguide.api.dto.Review.ReviewDTO;
-import com.findyourguide.api.dto.buyservice.BuyTourDTO;
 import com.findyourguide.api.dto.user.ResponseDTO;
 import com.findyourguide.api.entity.Role;
 import com.findyourguide.api.service.interfaces.IReviewService;
