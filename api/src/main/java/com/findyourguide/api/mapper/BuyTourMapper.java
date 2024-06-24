@@ -30,17 +30,6 @@ public class BuyTourMapper {
     }
 
     public static PurchasedService mapToPurchasedServiceEntity(BuyTourDTO buyTourDTO) {
-        // if (buyTourDTO == null) {
-        // return null;
-        // }
-        // PurchasedService purchasedService = new PurchasedService();
-        // purchasedService.setId(buyTourDTO.getId());
-        // // Asumiendo que tienes métodos para buscar entidades existentes por ID
-        // // Estas deben ser manejadas en la capa de servicio, no aquí.
-        // purchasedService.setService(ServiceMapper.mapToServiceEntity(buyTourDTO.getService(),
-        // null));
-        // purchasedService.setTourist((Tourist)
-        // UserMapper.mapToUserEntity(buyTourDTO.getTourist(), "TOURIST"));
         return null;
     }
 }
