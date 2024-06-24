@@ -3,6 +3,7 @@ package com.findyourguide.api.entity;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedService;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;

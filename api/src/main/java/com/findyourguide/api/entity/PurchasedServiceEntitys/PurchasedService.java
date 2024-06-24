@@ -1,6 +1,10 @@
-package com.findyourguide.api.entity;
+package com.findyourguide.api.entity.PurchasedServiceEntitys;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.findyourguide.api.entity.Base;
+import com.findyourguide.api.entity.Service;
+import com.findyourguide.api.entity.Tourist;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,4 +31,8 @@ public class PurchasedService extends Base {
     @ManyToOne(optional = false)
     @JoinColumn(name = "tourist_id", nullable = false)
     private Tourist tourist;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private PurchasedStatus status = PurchasedStatus.PENDING;
 }
