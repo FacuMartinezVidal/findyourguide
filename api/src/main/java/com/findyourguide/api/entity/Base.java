@@ -1,6 +1,5 @@
 package com.findyourguide.api.entity;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -19,16 +18,16 @@ import java.time.LocalDateTime;
 public abstract class Base {
 
     @CreatedDate
-    @Column(updatable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
 
     @CreatedBy
     @Column(updatable = false)
     private String createdBy;
-
-    @LastModifiedDate
-    @Column(insertable = false)
-    private LocalDateTime updatedAt;
 
     @LastModifiedBy
     @Column(insertable = false)

@@ -1,10 +1,12 @@
 package com.findyourguide.api.mapper;
 
+import com.findyourguide.api.dto.service.CreateServiceDTO;
 import com.findyourguide.api.dto.service.ServiceDTO;
+import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Service;
 
 public class ServiceMapper {
-    public static ServiceDTO toDTO(Service service) {
+    public static ServiceDTO mapToServiceDTO(Service service) {
         if (service == null) {
             return null;
         }
@@ -23,5 +25,35 @@ public class ServiceMapper {
         }
 
         return dto;
+    }
+
+    public static Service mapToServiceEntityFromCreateServiceDTO(CreateServiceDTO serviceDTO, Guide guide) {
+        Service service = new Service();
+        service.setName(serviceDTO.getName());
+        service.setDate(serviceDTO.getDate());
+        service.setServiceType(serviceDTO.getServiceType());
+        service.setPrice(serviceDTO.getPrice());
+        service.setRate(0);
+        service.setQuantity(serviceDTO.getQuantity());
+        service.setDescription(serviceDTO.getDescription());
+        service.setCountry(serviceDTO.getCountry());
+        service.setCity(serviceDTO.getCity());
+        service.setGuide(guide);
+        return service;
+    }
+
+    public static Service mapToServiceEntity(ServiceDTO serviceDTO, Guide guide) {
+        Service service = new Service();
+        service.setName(serviceDTO.getName());
+        service.setDate(serviceDTO.getDate());
+        service.setServiceType(serviceDTO.getServiceType());
+        service.setPrice(serviceDTO.getPrice());
+        service.setRate(0);
+        service.setQuantity(serviceDTO.getQuantity());
+        service.setDescription(serviceDTO.getDescription());
+        service.setCountry(serviceDTO.getCountry());
+        service.setCity(serviceDTO.getCity());
+        service.setGuide(guide);
+        return service;
     }
 }

@@ -8,7 +8,6 @@ import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Service;
 import com.findyourguide.api.entity.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class Populate {
@@ -44,7 +43,7 @@ public class Populate {
 
         response.setId(user.getId());
         response.setUsername(user.getUsername());
-        response.setFirsName(user.getFirstName());
+        response.setFirstName(user.getFirstName());
         response.setLastName(user.getLastName());
         response.setEmail(user.getEmail());
         response.setPhone(user.getPhone());

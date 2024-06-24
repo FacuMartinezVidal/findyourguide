@@ -1,10 +1,8 @@
 package com.findyourguide.api.dto.service;
 
-import com.findyourguide.api.dto.user.GuideDTO;
 import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.entity.City;
 import com.findyourguide.api.entity.Country;
-import com.findyourguide.api.entity.Guide;
 import lombok.Data;
 
 import java.time.LocalDate;

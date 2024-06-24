@@ -1,6 +1,11 @@
 package com.findyourguide.api.entity;
 
-import jakarta.persistence.Entity;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedService;
+
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +14,13 @@ import lombok.Setter;
 @Setter
 public class Tourist extends User {
     private String touristCode;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "tourist", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<PurchasedService> purchasedService;
+
+    @Column(name = "balance", nullable = false)
+    public Long balance;
 
     @Override
     public String getPassword() {
@@ -19,4 +31,14 @@ public class Tourist extends User {
     public String getUsername() {
         return super.getUsername();
     }
+
+    public boolean hasSufficientFunds(Long purchaseAmount) {
+        return this.getBalance() >= purchaseAmount;
+    }
+
+    public boolean refundFunds(Long amount) {
+        this.setBalance((this.getBalance() + amount));
+        return true;
+    }
+
 }

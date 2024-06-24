@@ -1,12 +1,14 @@
 package com.findyourguide.api.mapper;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.findyourguide.api.dto.user.GuideDTO;
+import com.findyourguide.api.dto.user.RegisterDTO;
 import com.findyourguide.api.entity.Guide;
-import com.findyourguide.api.entity.Service;
+import com.findyourguide.api.entity.Role;
 
 public class GuideMapper {
 
@@ -17,7 +19,7 @@ public class GuideMapper {
         GuideDTO guideDTO = new GuideDTO();
         guideDTO.setId(guide.getId());
         guideDTO.setUsername(guide.getUsername());
-        guideDTO.setFirsName(guide.getFirstName());
+        guideDTO.setFirstName(guide.getFirstName());
         guideDTO.setLastName(guide.getLastName());
         guideDTO.setEmail(guide.getEmail());
         guideDTO.setPhone(guide.getPhone());
@@ -30,14 +32,38 @@ public class GuideMapper {
         guideDTO.setLanguage(guide.getLanguage());
 
         if (includeServices) {
-            guideDTO.setServices(guide.getGuideServices().stream()
-                    .map(ServiceMapper::toDTO)
-                    .collect(Collectors.toList()));
+            guideDTO.setServices(guide.getGuideServices() != null ? guide.getGuideServices().stream()
+                    .map(ServiceMapper::mapToServiceDTO)
+                    .collect(Collectors.toList()) : Collections.emptyList());
+
         } else {
             guideDTO.setServices(Collections.emptyList());
         }
 
         return guideDTO;
+    }
+
+    public static Guide mapToGuideEntityFromCreateGuideDTO(RegisterDTO request,
+            PasswordEncoder passwordEncoder) {
+        Guide guide = new Guide();
+        guide.setUsername(request.getUsername());
+        guide.setFirstName(request.getFirstName());
+        guide.setLastName(request.getLastName());
+        guide.setEmail(request.getEmail());
+        guide.setPassword(passwordEncoder.encode(request.getPassword()));
+        guide.setPhone(request.getPhone());
+        guide.setDni(request.getDni());
+        guide.setGender(request.getGender());
+        guide.setScore(0.0);
+        guide.setProfilePhoto(request.getProfilePhoto());
+        guide.setActive(true);
+
+        guide.setRole(Role.GUIDE);
+        guide.setCredentialPhoto(request.getCredentialPhoto());
+        guide.setLanguage(request.getLanguage());
+        guide.setCities(request.getCities());
+
+        return guide;
     }
 
     public static Guide mapToGuideEntity(GuideDTO guideDTO) {
@@ -47,7 +73,7 @@ public class GuideMapper {
         Guide guide = new Guide();
         guide.setId(guideDTO.getId());
         guide.setUsername(guideDTO.getUsername());
-        guide.setFirstName(guideDTO.getFirsName());
+        guide.setFirstName(guideDTO.getFirstName());
         guide.setLastName(guideDTO.getLastName());
         guide.setEmail(guideDTO.getEmail());
         guide.setPhone(guideDTO.getPhone());
