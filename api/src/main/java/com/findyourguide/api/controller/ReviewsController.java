@@ -30,7 +30,7 @@ public class ReviewsController {
     private final UserValidations userValidations;
 
     @GetMapping("/reviews/user/{id}")
-    public ResponseEntity<ResponseDTO<List<ReviewDTO>>> findAllByGuide(@PathVariable Long id) {
+    public ResponseEntity<ResponseDTO<List<ReviewDTO>>> findAllByUser(@PathVariable Long id) {
         return ResponseEntity.ok()
                 .body(new ResponseDTO<>(HttpStatus.OK, "All Services", reviewService.findAllByUser(id)));
     }
