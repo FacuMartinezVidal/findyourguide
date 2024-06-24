@@ -30,17 +30,20 @@ public class BuyTourController {
 
     @GetMapping("/buys")
     public ResponseEntity<ResponseDTO<List<BuyTourDTO>>> findAll() {
+        userValidations.validateRole(Role.TOURIST);
         return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "All Services", buyService.findAll()));
     }
 
     @GetMapping("/buys/tourist/{id}")
-    public ResponseEntity<ResponseDTO<List<BuyTourDTO>>> findAllByGuide(@PathVariable Long id) {
+    public ResponseEntity<ResponseDTO<List<BuyTourDTO>>> findAllByTourist(@PathVariable Long id) {
+        userValidations.validateRole(Role.TOURIST);
         return ResponseEntity.ok()
                 .body(new ResponseDTO<>(HttpStatus.OK, "All Services", buyService.findAllByTourist(id)));
     }
 
     @GetMapping("/buys/{id}")
     public ResponseEntity<ResponseDTO<BuyTourDTO>> findById(@PathVariable Long id) {
+        userValidations.validateRole(Role.TOURIST);
         BuyTourDTO serviceDTO = buyService.findById(id);
         return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "Service Found", serviceDTO));
     }

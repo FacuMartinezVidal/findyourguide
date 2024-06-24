@@ -27,19 +27,6 @@ public class ServiceController {
     private final IServiceService serviceService;
     private final UserValidations userValidations;
 
-    @PostMapping("/service")
-    public ResponseEntity<ResponseDTO<ServiceDTO>> create(@Valid @RequestBody CreateServiceDTO serviceDTO) {
-        userValidations.validateRole(Role.GUIDE);
-        ServiceDTO createdService = serviceService.create(serviceDTO);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(createdService.getId())
-                .toUri();
-        return ResponseEntity.created(location)
-                .body(new ResponseDTO<>(HttpStatus.CREATED, "Created", createdService));
-    }
-
     @GetMapping("/service")
     public ResponseEntity<ResponseDTO<List<ServiceDTO>>> findAll() {
         return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "All Services", serviceService.findAll()));
@@ -57,11 +44,17 @@ public class ServiceController {
         return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "Service Found", serviceDTO));
     }
 
-    @DeleteMapping("/service/{id}")
-    public ResponseEntity<ResponseDTO<String>> deleteById(@PathVariable Long id) {
+    @PostMapping("/service")
+    public ResponseEntity<ResponseDTO<ServiceDTO>> create(@Valid @RequestBody CreateServiceDTO serviceDTO) {
         userValidations.validateRole(Role.GUIDE);
-        serviceService.deleteById(id);
-        return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "Successfully Deleted", null));
+        ServiceDTO createdService = serviceService.create(serviceDTO);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdService.getId())
+                .toUri();
+        return ResponseEntity.created(location)
+                .body(new ResponseDTO<>(HttpStatus.CREATED, "Created", createdService));
     }
 
     @PutMapping("service/{id}")
@@ -71,6 +64,13 @@ public class ServiceController {
         return ResponseEntity.ok().body(
                 new ResponseDTO<>(HttpStatus.OK, "Successfully Updated",
                         serviceService.update(id, updateServiceDTO)));
+    }
+
+    @DeleteMapping("/service/{id}")
+    public ResponseEntity<ResponseDTO<String>> deleteById(@PathVariable Long id) {
+        userValidations.validateRole(Role.GUIDE);
+        serviceService.deleteById(id);
+        return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "Successfully Deleted", null));
     }
 
 }
