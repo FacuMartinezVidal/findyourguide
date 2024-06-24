@@ -1,6 +1,5 @@
 package com.findyourguide.api.dto.user;
 
-import com.findyourguide.api.entity.Country;
 import com.findyourguide.api.entity.Language;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -22,7 +21,7 @@ public class UpdateUserDTO {
     private String phone;
     private String dni;
     private String gender;
-    private Country country;
+    private String country;
     private String cities;
     private String credentialPhoto;
     private Language language;

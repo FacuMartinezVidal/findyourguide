@@ -3,7 +3,7 @@ package com.findyourguide.api.mapper;
 import com.findyourguide.api.dto.service.CreateServiceDTO;
 import com.findyourguide.api.dto.service.ServiceDTO;
 import com.findyourguide.api.entity.Guide;
-import com.findyourguide.api.entity.Service;
+import com.findyourguide.api.entity.Service.Service;
 
 public class ServiceMapper {
     public static ServiceDTO mapToServiceDTO(Service service) {

@@ -6,8 +6,9 @@ import com.findyourguide.api.dto.user.RegisterDTO;
 import com.findyourguide.api.dto.user.UpdateUserDTO;
 import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.entity.Guide;
-import com.findyourguide.api.entity.Service;
 import com.findyourguide.api.entity.User;
+import com.findyourguide.api.entity.Service.Service;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class Populate {
@@ -53,7 +54,6 @@ public class Populate {
 
         if (response instanceof GuideDTO guideResponse && user instanceof Guide guide) {
             guideResponse.setCountry(guide.getCountry());
-            guideResponse.setCities(guide.getCities());
             guideResponse.setCredentialPhoto(guide.getCredentialPhoto());
             guideResponse.setLanguage(guide.getLanguage());
             return guideResponse;
@@ -91,9 +91,6 @@ public class Populate {
         if (user instanceof Guide guide) {
             if (modifications.getCountry() != null) {
                 guide.setCountry(modifications.getCountry());
-            }
-            if (modifications.getCities() != null) {
-                guide.setCities(modifications.getCities());
             }
             if (modifications.getCredentialPhoto() != null) {
                 guide.setCredentialPhoto(modifications.getCredentialPhoto());

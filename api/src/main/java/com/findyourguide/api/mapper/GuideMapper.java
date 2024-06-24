@@ -27,7 +27,6 @@ public class GuideMapper {
         guideDTO.setGender(guide.getGender());
         guideDTO.setScore(guide.getScore());
         guideDTO.setCountry(guide.getCountry());
-        guideDTO.setCities(guide.getCities());
         guideDTO.setCredentialPhoto(guide.getCredentialPhoto());
         guideDTO.setLanguage(guide.getLanguage());
 
@@ -61,7 +60,7 @@ public class GuideMapper {
         guide.setRole(Role.GUIDE);
         guide.setCredentialPhoto(request.getCredentialPhoto());
         guide.setLanguage(request.getLanguage());
-        guide.setCities(request.getCities());
+        guide.setCountry(request.getCountry());
 
         return guide;
     }
@@ -81,7 +80,7 @@ public class GuideMapper {
         guide.setGender(guideDTO.getGender());
         guide.setScore(guideDTO.getScore());
         guide.setCountry(guideDTO.getCountry());
-        guide.setCities(guideDTO.getCities());
+        guide.setCountry(guideDTO.getCountry());
         guide.setCredentialPhoto(guideDTO.getCredentialPhoto());
         guide.setLanguage(guideDTO.getLanguage());
         return guide;

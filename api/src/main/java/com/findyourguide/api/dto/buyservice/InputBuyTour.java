@@ -1,7 +1,7 @@
 package com.findyourguide.api.dto.buyservice;
 
-import com.findyourguide.api.entity.Service;
 import com.findyourguide.api.entity.Tourist;
+import com.findyourguide.api.entity.Service.Service;
 
 import lombok.Data;
 

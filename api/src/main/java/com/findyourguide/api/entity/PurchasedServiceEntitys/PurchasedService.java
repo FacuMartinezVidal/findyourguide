@@ -7,8 +7,8 @@ import com.findyourguide.api.State.Purchase.PurchasedState;
 import com.findyourguide.api.State.Purchase.RefundState;
 import com.findyourguide.api.State.Purchase.RevokedState;
 import com.findyourguide.api.entity.Base;
-import com.findyourguide.api.entity.Service;
 import com.findyourguide.api.entity.Tourist;
+import com.findyourguide.api.entity.Service.Service;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 
 import com.findyourguide.api.dto.buyservice.BuyTourDTO;
 import com.findyourguide.api.dto.service.UpdateServiceDTO;
-import com.findyourguide.api.entity.Service;
 import com.findyourguide.api.entity.Tourist;
 import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedService;
+import com.findyourguide.api.entity.Service.Service;
 import com.findyourguide.api.error.ServiceNotFoundException;
 import com.findyourguide.api.error.UserNotFoundException;
 import com.findyourguide.api.mapper.BuyTourMapper;

@@ -1,6 +1,8 @@
 package com.findyourguide.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.findyourguide.api.entity.Service.Service;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,11 +13,9 @@ import java.util.List;
 @Getter
 @Setter
 public class Guide extends User {
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "country_id", referencedColumnName = "id")
-    private Country country;
 
-    private String cities;
+    @Column(name = "Country")
+    private String country;
 
     @Column(name = "credential_photo")
     private String credentialPhoto;

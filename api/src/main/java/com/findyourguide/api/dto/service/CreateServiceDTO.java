@@ -1,11 +1,11 @@
 package com.findyourguide.api.dto.service;
 
-import com.findyourguide.api.entity.City;
-import com.findyourguide.api.entity.Country;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
+
+import com.findyourguide.api.entity.Service.ServiceType;
 
 @Data
 public class CreateServiceDTO {
@@ -13,7 +13,7 @@ public class CreateServiceDTO {
     private LocalDate date;
 
     @NotNull(message = "must hava a type")
-    private String serviceType;
+    private ServiceType serviceType;
 
     @NotNull(message = "must have a price")
     private Long price;
@@ -23,7 +23,13 @@ public class CreateServiceDTO {
 
     @NotNull(message = "must have a name")
     private String name;
+
+    @NotNull(message = "must have a description")
     private String description;
-    private Country country;
-    private City city;
+
+    @NotNull(message = "must have a country")
+    private String country;
+
+    @NotNull(message = "must have a city")
+    private String city;
 }

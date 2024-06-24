@@ -4,7 +4,7 @@ import com.findyourguide.api.dto.service.CreateServiceDTO;
 import com.findyourguide.api.dto.service.ServiceDTO;
 import com.findyourguide.api.dto.service.UpdateServiceDTO;
 import com.findyourguide.api.entity.Guide;
-import com.findyourguide.api.entity.Service;
+import com.findyourguide.api.entity.Service.Service;
 import com.findyourguide.api.error.ServiceNotFoundException;
 import com.findyourguide.api.error.UserNotFoundException;
 import com.findyourguide.api.mapper.ServiceMapper;

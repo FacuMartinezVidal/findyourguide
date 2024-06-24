@@ -57,7 +57,6 @@ public class UserServiceImpl implements IUserService {
                                 g.getGender(),
                                 g.getScore(),
                                 g.getCountry(),
-                                g.getCities(),
                                 g.getCredentialPhoto(),
                                 g.getLanguage(),
                                 g.getGuideServices().stream()

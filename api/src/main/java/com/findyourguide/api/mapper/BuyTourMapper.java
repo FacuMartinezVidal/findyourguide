@@ -3,9 +3,9 @@ package com.findyourguide.api.mapper;
 import java.time.LocalDate;
 
 import com.findyourguide.api.dto.buyservice.BuyTourDTO;
-import com.findyourguide.api.entity.Service;
 import com.findyourguide.api.entity.Tourist;
 import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedService;
+import com.findyourguide.api.entity.Service.Service;
 
 public class BuyTourMapper {
 
