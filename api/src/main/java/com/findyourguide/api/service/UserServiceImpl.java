@@ -7,8 +7,8 @@ import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Tourist;
 import com.findyourguide.api.entity.User;
-import com.findyourguide.api.error.UserNotFoundException;
 import com.findyourguide.api.error.TypeNotValidException;
+import com.findyourguide.api.error.UserNotFoundException;
 import com.findyourguide.api.mapper.ServiceMapper;
 import com.findyourguide.api.repository.GuideRepository;
 import com.findyourguide.api.repository.TouristRepository;
@@ -100,9 +100,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     public User findByUsername(String username) throws UserNotFoundException {
-        User optionalUser = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException());
-        return optionalUser;
+        return userRepository.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
     }
 
     public void update(String type, UpdateUserDTO userDTO) throws TypeNotValidException {

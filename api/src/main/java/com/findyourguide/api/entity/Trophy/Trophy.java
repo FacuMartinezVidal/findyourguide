@@ -1,14 +1,13 @@
 package com.findyourguide.api.entity.Trophy;
 
-import java.time.LocalDate;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.findyourguide.api.entity.Base;
 import com.findyourguide.api.entity.User;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -28,7 +27,7 @@ public class Trophy extends Base {
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
-    @Column(name = "condition", nullable = false)
+    @Column(name = "`condition`", nullable = false)
     private String condition;
 
 }
