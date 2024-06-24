@@ -3,7 +3,6 @@ package com.findyourguide.api.mapper;
 import java.time.LocalDate;
 
 import com.findyourguide.api.dto.buyservice.BuyTourDTO;
-import com.findyourguide.api.dto.buyservice.CreateBuyTour;
 import com.findyourguide.api.entity.PurchasedService;
 import com.findyourguide.api.entity.Service;
 import com.findyourguide.api.entity.Tourist;
@@ -22,8 +21,7 @@ public class BuyTourMapper {
         return dto;
     }
 
-    public static PurchasedService mapToEntityFromCreateService(CreateBuyTour createBuyTour, Tourist tourist,
-            Service service) {
+    public static PurchasedService mapToEntityFromCreateService(Tourist tourist, Service service) {
         PurchasedService purchasedService = new PurchasedService();
         purchasedService.setService(service);
         purchasedService.setTourist(tourist);

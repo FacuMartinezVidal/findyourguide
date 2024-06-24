@@ -49,9 +49,9 @@ public class BuyTourController {
     }
 
     @PostMapping("/buys")
-    public ResponseEntity<ResponseDTO<BuyTourDTO>> create(@Valid @RequestBody CreateBuyTour createBuyTour) {
+    public ResponseEntity<ResponseDTO<BuyTourDTO>> create(@PathVariable Long serviceID) {
         userValidations.validateRole(Role.TOURIST);
-        BuyTourDTO createdService = buyService.create(createBuyTour);
+        BuyTourDTO createdService = buyService.create(serviceID);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

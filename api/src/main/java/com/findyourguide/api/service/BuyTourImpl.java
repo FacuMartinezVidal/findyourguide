@@ -5,7 +5,6 @@ import com.findyourguide.api.service.interfaces.IBuyTour;
 import lombok.RequiredArgsConstructor;
 
 import com.findyourguide.api.dto.buyservice.BuyTourDTO;
-import com.findyourguide.api.dto.buyservice.CreateBuyTour;
 import com.findyourguide.api.dto.service.UpdateServiceDTO;
 import com.findyourguide.api.entity.PurchasedService;
 import com.findyourguide.api.entity.Service;
@@ -55,14 +54,14 @@ public class BuyTourImpl implements IBuyTour {
     }
 
     @Override
-    public BuyTourDTO create(CreateBuyTour createBuyTour) throws UserNotFoundException {
+    public BuyTourDTO create(Long serviceID) throws UserNotFoundException {
         Tourist tourist = touristRepository
                 .findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(() -> new UserNotFoundException());
         Service service = serviceRepository
-                .findById(createBuyTour.getServiceID()).orElseThrow(() -> new ServiceNotFoundException());
+                .findById(serviceID).orElseThrow(() -> new ServiceNotFoundException());
 
-        PurchasedService purchasedService = BuyTourMapper.mapToEntityFromCreateService(createBuyTour, tourist, service);
+        PurchasedService purchasedService = BuyTourMapper.mapToEntityFromCreateService(tourist, service);
         buyTourRepository.save(purchasedService);
         return BuyTourMapper.mapToBuyTourDTO(purchasedService);
     }

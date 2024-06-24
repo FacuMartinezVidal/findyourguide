@@ -16,7 +16,7 @@ public interface IBuyTour {
 
     BuyTourDTO findById(Long id) throws ServiceNotFoundException;
 
-    BuyTourDTO create(CreateBuyTour createBuyTour) throws UserNotFoundException;
+    BuyTourDTO create(Long serviceID) throws UserNotFoundException;
 
     BuyTourDTO update(Long id, UpdateServiceDTO updateServiceDTO) throws ServiceNotFoundException;
 
