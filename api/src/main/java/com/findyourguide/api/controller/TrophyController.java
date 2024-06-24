@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -20,12 +21,18 @@ import java.net.URI;
 public class TrophyController {
     private final ITrophyService trophyService;
 
-    @GetMapping("/trophies/user/{id}")
-    public ResponseEntity<String> findAllByUser(@PathVariable Long id) {
-        return ResponseEntity.ok("All Trophies");
+    @GetMapping("/trophies/user")
+    public ResponseEntity<ResponseDTO<List<TrophyDTO>>> findAllByUser() {
+        return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "All Trophies", trophyService.findAllByUser()));
     }
 
-    @PostMapping("/trophies/")
+    @GetMapping("/trophies/{id}")
+    public ResponseEntity<ResponseDTO<TrophyDTO>> findById(@PathVariable Long id) {
+        TrophyDTO trophyDTO = trophyService.findById(id);
+        return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "Trophy Found", trophyDTO));
+    }
+
+    @PostMapping("/trophies")
     public ResponseEntity<ResponseDTO<TrophyDTO>> create() {
         TrophyDTO createdTrophy = trophyService.create(Condition.SUCCESS);
         URI location = ServletUriComponentsBuilder
@@ -35,4 +42,5 @@ public class TrophyController {
                 .toUri();
         return ResponseEntity.created(location).body(new ResponseDTO<>(HttpStatus.CREATED, "Created", createdTrophy));
     }
+
 }

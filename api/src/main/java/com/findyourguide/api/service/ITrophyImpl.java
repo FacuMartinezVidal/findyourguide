@@ -46,8 +46,8 @@ public class ITrophyImpl implements ITrophyService {
                 .orElseThrow(UserNotFoundException::new);
     }
 
-    public List<TrophyDTO> findAllByUser(Long userId) {
-        User user = userRepository.findById(userId)
+    public List<TrophyDTO> findAllByUser() {
+        User user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(UserNotFoundException::new);
         return trophyRepository.findByUserId(user.getId())
                 .orElseThrow(UserNotFoundException::new).stream().map(TrophyMapper::toDTO).collect(Collectors.toList());
