@@ -9,7 +9,7 @@ import com.findyourguide.api.entity.Tourist;
 
 public class TouristMapper {
 
-    public static TouristDTO mapToTouristDTO(Tourist tourist, boolean includeServices) {
+    public static TouristDTO mapToTouristDTO(Tourist tourist, boolean includeServices, boolean includeBalance) {
         if (tourist == null) {
             return null;
         }

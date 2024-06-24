@@ -4,18 +4,18 @@ import com.findyourguide.api.service.interfaces.IReviewService;
 
 import lombok.RequiredArgsConstructor;
 
-import com.findyourguide.api.dto.buyservice.BuyTourDTO;
-import com.findyourguide.api.dto.service.UpdateServiceDTO;
+import com.findyourguide.api.dto.Review.InputReview;
+import com.findyourguide.api.dto.Review.ReviewDTO;
+import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Tourist;
-import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedService;
+import com.findyourguide.api.entity.User;
 import com.findyourguide.api.entity.Reviews.Review;
-import com.findyourguide.api.entity.Service.Service;
 import com.findyourguide.api.error.ServiceNotFoundException;
+import com.findyourguide.api.error.TypeNotValidException;
 import com.findyourguide.api.error.UserNotFoundException;
-import com.findyourguide.api.mapper.BuyTourMapper;
-import com.findyourguide.api.repository.BuyTourRepository;
+import com.findyourguide.api.mapper.ReviewMapper;
+import com.findyourguide.api.repository.GuideRepository;
 import com.findyourguide.api.repository.ReviewRepository;
-import com.findyourguide.api.repository.ServiceRepository;
 import com.findyourguide.api.repository.TouristRepository;
 import com.findyourguide.api.repository.UserRepository;
 
@@ -30,33 +30,58 @@ public class ReviewServiceImpl implements IReviewService {
 
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
+    private final TouristRepository touristRepository;
+    private final GuideRepository guideRepository;
 
     @Override
-    public List<Review> findAllByUser(Long id) throws UserNotFoundException {
-        // return userRepository.findById(id)
-        // .map(tourist -> tourist.getPurchasedService().stream()
-        // .map(BuyTourMapper::mapToBuyTourDTO)
-        // .collect(Collectors.toList()))
-        // .orElseThrow(() -> new UserNotFoundException());
-        return null;
+    public List<ReviewDTO> findAllByUser(Long userId) throws UserNotFoundException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException());
+
+        List<Review> reviews;
+        if (user instanceof Tourist) {
+            reviews = ((Tourist) user).getGivenReviews();
+        } else if (user instanceof Guide) {
+            reviews = ((Guide) user).getReceivedReviews();
+        } else {
+            throw new TypeNotValidException(user.getRole().name());
+        }
+
+        return reviews.stream()
+                .map(ReviewMapper::mapToReviewDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Review findById(Long id) throws ServiceNotFoundException {
-        // return buyTourRepository.findById(id)
-        // .map(BuyTourMapper::mapToBuyTourDTO)
-        // .orElseThrow(() -> new ServiceNotFoundException());
-        return null;
-
+    public ReviewDTO findById(Long id) throws ServiceNotFoundException {
+        return reviewRepository.findById(id)
+                .map(ReviewMapper::mapToReviewDTO)
+                .orElseThrow(() -> new ServiceNotFoundException());
     }
 
     @Override
-    public void deleteById(Long id) throws ServiceNotFoundException {
-        // if (!buyTourRepository.existsById(id)) {
-        // throw new ServiceNotFoundException();
-        // }
-        // buyTourRepository.deleteById(id);
-        return;
+    public ReviewDTO create(Long guideID, InputReview inputReview) throws UserNotFoundException {
+        Tourist tourist = touristRepository
+                .findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+                .orElseThrow(() -> new UserNotFoundException());
+        Guide guide = guideRepository.findById(guideID).orElseThrow(() -> new ServiceNotFoundException());
+
+        Review review = ReviewMapper.mapToEntityFromCreateReview(tourist, guide, inputReview);
+        reviewRepository.save(review);
+        return ReviewMapper.mapToReviewDTO(review);
+    }
+
+    @Override
+    public boolean deleteById(Long id) throws ServiceNotFoundException {
+        try {
+            if (!reviewRepository.existsById(id)) {
+                throw new ServiceNotFoundException();
+            }
+            reviewRepository.deleteById(id);
+            return true;
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("The ID is not valid");
+        }
 
     }
 }
