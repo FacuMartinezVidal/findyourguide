@@ -4,7 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.findyourguide.api.dto.user.RegisterDTO;
 import com.findyourguide.api.dto.user.TouristDTO;
-
+import com.findyourguide.api.entity.Role;
 import com.findyourguide.api.entity.Tourist;
 
 public class TouristMapper {
@@ -51,7 +51,9 @@ public class TouristMapper {
         tourist.setScore(0.0);
         tourist.setProfilePhoto(request.getProfilePhoto());
         tourist.setActive(true);
+
         tourist.setBalance(100L);
+        tourist.setRole(Role.TOURIST);
         return tourist;
     }
 
