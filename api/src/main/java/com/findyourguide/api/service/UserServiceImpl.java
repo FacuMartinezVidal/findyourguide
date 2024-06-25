@@ -1,6 +1,7 @@
 package com.findyourguide.api.service;
 
 import com.findyourguide.api.config.SecurityContextService;
+import com.findyourguide.api.dto.user.GuideDTO;
 import com.findyourguide.api.dto.user.UpdateUserDTO;
 import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.entity.Guide;
@@ -11,9 +12,7 @@ import com.findyourguide.api.error.UserNotFoundException;
 import com.findyourguide.api.mapper.GuideMapper;
 import com.findyourguide.api.mapper.TouristMapper;
 import com.findyourguide.api.mapper.UserMapper;
-import com.findyourguide.api.repository.GuideRepository;
-import com.findyourguide.api.repository.TouristRepository;
-import com.findyourguide.api.repository.UserRepository;
+import com.findyourguide.api.repository.*;
 import com.findyourguide.api.service.interfaces.IUserService;
 import com.findyourguide.api.util.Populate;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +28,7 @@ public class UserServiceImpl implements IUserService {
     private final GuideRepository guideRepository;
     private final TouristRepository touristRepository;
     private final UserRepository userRepository;
+    private final IGuideSearchDAO guideSearchDAO;
     private final SecurityContextService contextService;
 
     public List<UserDTO> findAll() {
@@ -113,6 +113,10 @@ public class UserServiceImpl implements IUserService {
         } else if (type.equals("guide")) {
             guideRepository.deleteById(id);
         }
+    }
+
+    public List<GuideDTO> findByCriteria(SearchRequest request) {
+        return guideSearchDAO.findAllByCriteria(request).stream().map(guide -> GuideMapper.mapToGuideDTO(guide, true)).collect(Collectors.toList());
     }
 
 }
