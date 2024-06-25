@@ -16,7 +16,7 @@ public interface IUserService {
     List<UserDTO> findAll() throws UserNotFoundException;
 
     UserDTO findById(String type, Long id) throws UserNotFoundException, TypeNotValidException;
-  
+
     UserDTO update(String type, UpdateUserDTO userDTO);
 
     void deleteById(String type, Long id);
@@ -31,7 +31,7 @@ public interface IUserService {
 
     void processPayment(Tourist tourist, PurchasedService service);
 
-    void processRefound(Tourist tourist, PurchasedService service, Double porcentaje);
+    void processRefound(Tourist tourist, Double serviceCharge, Double porcentaje);
 
-   List<GuideDTO> findByCriteria(SearchRequest request) throws UserNotFoundException;
+    List<GuideDTO> findByCriteria(SearchRequest request) throws UserNotFoundException;
 }

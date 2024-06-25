@@ -14,7 +14,7 @@ public class ServiceDTO {
     private String name;
     private LocalDate date;
     private ServiceType serviceType;
-    private Long price;
+    private Double price;
     private int rate;
     private int quantity;
     private String description;
