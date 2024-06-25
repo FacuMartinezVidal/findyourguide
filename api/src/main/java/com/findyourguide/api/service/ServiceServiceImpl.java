@@ -28,7 +28,7 @@ public class ServiceServiceImpl implements IServiceService {
     public ServiceDTO create(CreateServiceDTO serviceDTO) {
         Guide guide = guideRepository
                 .findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
         Service service = ServiceMapper.mapToServiceEntityFromCreateServiceDTO(serviceDTO, guide);
         serviceRepository.save(service);
         return ServiceMapper.mapToServiceDTO(service);
@@ -44,13 +44,13 @@ public class ServiceServiceImpl implements IServiceService {
                 .map(guide -> guide.getGuideServices().stream()
                         .map(ServiceMapper::mapToServiceDTO)
                         .collect(Collectors.toList()))
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(UserNotFoundException::new);
     }
 
     public ServiceDTO findById(Long id) throws ServiceNotFoundException {
         return serviceRepository.findById(id)
                 .map(ServiceMapper::mapToServiceDTO)
-                .orElseThrow(() -> new ServiceNotFoundException());
+                .orElseThrow(ServiceNotFoundException::new);
     }
 
     public void deleteById(Long id) throws ServiceNotFoundException {
