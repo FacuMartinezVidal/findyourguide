@@ -1,6 +1,7 @@
 package com.findyourguide.api.controller;
 
 import com.findyourguide.api.dto.buyservice.BuyTourDTO;
+import com.findyourguide.api.dto.buyservice.InputChangeStatus;
 import com.findyourguide.api.dto.service.UpdateServiceDTO;
 import com.findyourguide.api.dto.user.ResponseDTO;
 import com.findyourguide.api.entity.Role;
@@ -67,13 +68,12 @@ public class BuyTourController {
         return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "Successfully Deleted", null));
     }
 
-    @PutMapping("buys/{id}")
-    public ResponseEntity<ResponseDTO<BuyTourDTO>> update(@PathVariable Long id,
-            @Valid @RequestBody UpdateServiceDTO updateServiceDTO) {
-        userValidations.validateRole(Role.TOURIST);
+    @PutMapping("buys/status")
+    public ResponseEntity<ResponseDTO<BuyTourDTO>> changeStatus(
+            @Valid @RequestBody InputChangeStatus inputChangeStatus) throws Exception {
         return ResponseEntity.ok().body(
                 new ResponseDTO<>(HttpStatus.OK, "Successfully Updated",
-                        buyService.update(id, updateServiceDTO)));
+                        buyService.changeStatus(inputChangeStatus)));
     }
 
 }

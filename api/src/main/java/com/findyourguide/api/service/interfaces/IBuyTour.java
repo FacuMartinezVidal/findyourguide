@@ -1,6 +1,7 @@
 package com.findyourguide.api.service.interfaces;
 
 import com.findyourguide.api.dto.buyservice.BuyTourDTO;
+import com.findyourguide.api.dto.buyservice.InputChangeStatus;
 import com.findyourguide.api.dto.service.UpdateServiceDTO;
 import com.findyourguide.api.error.ServiceNotFoundException;
 import com.findyourguide.api.error.UserNotFoundException;
@@ -18,6 +19,8 @@ public interface IBuyTour {
     BuyTourDTO create(Long serviceID) throws UserNotFoundException;
 
     BuyTourDTO update(Long id, UpdateServiceDTO updateServiceDTO) throws ServiceNotFoundException;
+
+    BuyTourDTO changeStatus(InputChangeStatus inputChangeStatus) throws Exception;
 
     void deleteById(Long id) throws ServiceNotFoundException;
 

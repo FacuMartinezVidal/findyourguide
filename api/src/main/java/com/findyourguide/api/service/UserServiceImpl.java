@@ -120,9 +120,9 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
-
     public List<GuideDTO> findByCriteria(SearchRequest request) {
-        return guideSearchDAO.findAllByCriteria(request).stream().map(guide -> GuideMapper.mapToGuideDTO(guide, true)).collect(Collectors.toList());
+        return guideSearchDAO.findAllByCriteria(request).stream().map(guide -> GuideMapper.mapToGuideDTO(guide, true))
+                .collect(Collectors.toList());
     }
 
     public void processPayment(Tourist tourist, PurchasedService service) {
@@ -132,8 +132,8 @@ public class UserServiceImpl implements IUserService {
         userRepository.save(tourist);
     }
 
-    public void processRefound(Tourist tourist, PurchasedService service, Double porcentaje) {
-        Double balancePaid = service.getBalancePaid();
+    public void processRefound(Tourist tourist, Double serviceCharge, Double porcentaje) {
+        Double balancePaid = serviceCharge;
         Double refundAmount = balancePaid * porcentaje / 100;
         tourist.setBalance(tourist.getBalance() + refundAmount);
 
