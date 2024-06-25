@@ -1,8 +1,10 @@
 package com.findyourguide.api.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.findyourguide.api.Strategis.Observer.IObserver;
 import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedService;
 import com.findyourguide.api.entity.Reviews.Review;
 
@@ -46,4 +48,25 @@ public class Tourist extends User {
         return true;
     }
 
+    @Transient
+    private List<IObserver> observers = new ArrayList<>();
+
+    public void addReview(Review review) {
+        this.givenReviews.add(review);
+        notifyObservers();
+    }
+
+    public void registerObserver(IObserver observer) {
+        observers.add(observer);
+    }
+
+    public void unregisterObserver(IObserver observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyObservers() {
+        for (IObserver observer : observers) {
+            observer.update(this);
+        }
+    }
 }

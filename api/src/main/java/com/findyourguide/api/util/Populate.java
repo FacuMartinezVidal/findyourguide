@@ -22,7 +22,6 @@ public class Populate {
         user.setPhone(request.getPhone());
         user.setDni(request.getDni());
         user.setGender(request.getGender());
-        user.setScore(0.0);
         user.setProfilePhoto(request.getProfilePhoto());
         user.setActive(true);
     }
@@ -50,9 +49,9 @@ public class Populate {
         response.setPhone(user.getPhone());
         response.setDni(user.getDni());
         response.setGender(user.getGender());
-        response.setScore(user.getScore());
 
         if (response instanceof GuideDTO guideResponse && user instanceof Guide guide) {
+            guideResponse.setScore(guide.getScore());
             guideResponse.setCountry(guide.getCountry());
             guideResponse.setCredentialPhoto(guide.getCredentialPhoto());
             guideResponse.setLanguage(guide.getLanguage());

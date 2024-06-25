@@ -9,7 +9,7 @@ public class TrophyMapper {
         trophyDTO.setId(trophy.getId());
         trophyDTO.setUser(UserMapper.mapToUserDTO(trophy.getUser()));
         trophyDTO.setDate(trophy.getDate());
-        trophyDTO.setCondition(trophy.getCondition());
+        trophyDTO.setCondition(trophy.getDescription());
         return trophyDTO;
     }
 
@@ -18,6 +18,5 @@ public class TrophyMapper {
         trophy.setDate(trophyDTO.getDate());
         return trophy;
     }
-
 
 }

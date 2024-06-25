@@ -1,4 +1,4 @@
-package com.findyourguide.api.State.Purchase;
+package com.findyourguide.api.Strategis.State.Purchase;
 
 import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedService;
 
