@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ITrophyImpl implements ITrophyService {
+public class TrophyImpl implements ITrophyService {
     private final TrophyRepository trophyRepository;
     private final UserRepository userRepository;
 
