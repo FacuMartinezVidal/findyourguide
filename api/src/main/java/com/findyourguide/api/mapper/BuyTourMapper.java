@@ -32,9 +32,9 @@ public class BuyTourMapper {
         dto.setService(mapToServiceUserDTO(service.getService()));
         dto.setId(service.getId());
         dto.setDate(service.getDate());
-        //TODO fix this
-//        dto.setStatus(service.getStatus());
-//        dto.setState(service.getState());
+        // TODO fix this
+        // dto.setStatus(service.getStatus());
+        // dto.setState(service.getState());
         return dto;
     }
 
@@ -43,6 +43,7 @@ public class BuyTourMapper {
         purchasedService.setService(service);
         purchasedService.setTourist(tourist);
         purchasedService.setDate(LocalDate.now());
+        purchasedService.setBalancePaid(service.getPrice() * 10 / 100);
         return purchasedService;
     }
 

@@ -40,14 +40,10 @@ public class PurchasedService extends Base {
     private PurchasedStatus status = PurchasedStatus.PENDING;
 
     @Column(name = "balance")
-    private double balancePaid;
+    private Double balancePaid;
 
     @Transient
     private PurchasedState state;
-
-    public PurchasedService() {
-        this.state = new PendingState(); // Estado inicial
-    }
 
     public PurchasedService nextState(PurchasedStatus status, User user) throws Exception {
         return state.process(this, status, user);

@@ -16,7 +16,7 @@ public class CreateServiceDTO {
     private ServiceType serviceType;
 
     @NotNull(message = "must have a price")
-    private Long price;
+    private Double price;
 
     @NotNull(message = "must have a quantity")
     private int quantity;

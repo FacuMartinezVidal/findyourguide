@@ -29,7 +29,7 @@ public class Service extends Base {
     private ServiceType serviceType;
 
     @Column(nullable = false)
-    private Long price;
+    private Double price;
     private int rate;
     @Column(nullable = false)
     private int quantity;

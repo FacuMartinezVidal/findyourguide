@@ -10,7 +10,7 @@ import com.findyourguide.api.entity.Service.ServiceType;
 public class UpdateServiceDTO {
     private LocalDate date;
     private ServiceType serviceType;
-    private Long price;
+    private Double price;
     private int quantity;
     private String name;
     private String description;

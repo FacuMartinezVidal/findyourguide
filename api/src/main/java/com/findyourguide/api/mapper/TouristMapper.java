@@ -52,7 +52,7 @@ public class TouristMapper {
         tourist.setProfilePhoto(request.getProfilePhoto());
         tourist.setActive(true);
 
-        tourist.setBalance(100L);
+        tourist.setBalance(1000D);
         tourist.setRole(Role.TOURIST);
         return tourist;
     }

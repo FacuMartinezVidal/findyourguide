@@ -30,80 +30,86 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @RequiredArgsConstructor
 public class BuyTourImpl implements IBuyTour {
 
-    private final BuyTourRepository buyTourRepository;
-    private final ServiceRepository serviceRepository;
-    private final TouristRepository touristRepository;
-    private final UserRepository userRepository;
-    private final StateFactory stateFactory;
+        private final BuyTourRepository buyTourRepository;
+        private final ServiceRepository serviceRepository;
+        private final TouristRepository touristRepository;
+        private final UserRepository userRepository;
+        private final StateFactory stateFactory;
 
-    @Override
-    public List<BuyTourDTO> findAll() {
-        return buyTourRepository.findAll()
-                .stream().map(
-                        BuyTourMapper::mapToBuyTourDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<BuyTourDTO> findAllByTourist(Long id) throws UserNotFoundException {
-        return touristRepository.findById(id)
-                .map(tourist -> tourist.getPurchasedService().stream()
-                        .map(BuyTourMapper::mapToBuyTourDTO)
-                        .collect(Collectors.toList()))
-                .orElseThrow(() -> new UserNotFoundException());
-    }
-
-    @Override
-    public BuyTourDTO findById(Long id) throws ServiceNotFoundException {
-        return buyTourRepository.findById(id)
-                .map(BuyTourMapper::mapToBuyTourDTO)
-                .orElseThrow(() -> new ServiceNotFoundException());
-    }
-
-    @Override
-    public BuyTourDTO create(Long serviceID) throws UserNotFoundException {
-        Tourist tourist = touristRepository
-                .findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(() -> new UserNotFoundException());
-        Service service = serviceRepository
-                .findById(serviceID).orElseThrow(() -> new ServiceNotFoundException());
-
-        PurchasedService purchasedService = BuyTourMapper.mapToEntityFromCreateService(tourist, service);
-        buyTourRepository.save(purchasedService);
-        return BuyTourMapper.mapToBuyTourDTO(purchasedService);
-    }
-
-    @Override
-    public BuyTourDTO changeStatus(InputChangeStatus inputChangeStatus) throws Exception {
-        User user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(UserNotFoundException::new);
-        PurchasedService purchaseService = buyTourRepository
-                .findById(inputChangeStatus.getId())
-                .orElseThrow(() -> new ServiceNotFoundException());
-        purchaseService.setState(stateFactory.getState(purchaseService.getStatus()));
-
-        purchaseService = purchaseService.nextState(inputChangeStatus.getStatus(), user);
-
-        PurchasedService purchaseServiceSAVED = buyTourRepository.save(purchaseService);
-        BuyTourDTO purchaseService2 = buyTourRepository
-                .findById(purchaseServiceSAVED.getId()).map(BuyTourMapper::mapToBuyTourDTO)
-                .orElseThrow(() -> new ServiceNotFoundException());
-        return purchaseService2;
-
-    }
-
-    @Override
-    public BuyTourDTO update(Long id, UpdateServiceDTO updateServiceDTO) throws ServiceNotFoundException {
-        // ! No corresponde actualizar la compra, la cancelacion se maneja en el delete
-        // ! y el cambio de estado se crea en una funcion aparte
-        return null;
-    }
-
-    @Override
-    public void deleteById(Long id) throws ServiceNotFoundException {
-        if (!buyTourRepository.existsById(id)) {
-            throw new ServiceNotFoundException();
+        @Override
+        public List<BuyTourDTO> findAll() {
+                return buyTourRepository.findAll()
+                                .stream().map(
+                                                BuyTourMapper::mapToBuyTourDTO)
+                                .collect(Collectors.toList());
         }
-        buyTourRepository.deleteById(id);
-    }
+
+        @Override
+        public List<BuyTourDTO> findAllByTourist(Long id) throws UserNotFoundException {
+                return touristRepository.findById(id)
+                                .map(tourist -> tourist.getPurchasedService().stream()
+                                                .map(BuyTourMapper::mapToBuyTourDTO)
+                                                .collect(Collectors.toList()))
+                                .orElseThrow(() -> new UserNotFoundException());
+        }
+
+        @Override
+        public BuyTourDTO findById(Long id) throws ServiceNotFoundException {
+                return buyTourRepository.findById(id)
+                                .map(BuyTourMapper::mapToBuyTourDTO)
+                                .orElseThrow(() -> new ServiceNotFoundException());
+        }
+
+        @Override
+        public BuyTourDTO create(Long serviceID) throws UserNotFoundException {
+                Tourist tourist = touristRepository
+                                .findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+                                .orElseThrow(() -> new UserNotFoundException());
+                Service service = serviceRepository
+                                .findById(serviceID).orElseThrow(() -> new ServiceNotFoundException());
+
+                PurchasedService purchasedService = BuyTourMapper.mapToEntityFromCreateService(tourist, service);
+                buyTourRepository.save(purchasedService);
+
+                tourist.setBalance(tourist.getBalance() - purchasedService.getBalancePaid());
+
+                userRepository.save(tourist);
+
+                return BuyTourMapper.mapToBuyTourDTO(purchasedService);
+        }
+
+        @Override
+        public BuyTourDTO changeStatus(InputChangeStatus inputChangeStatus) throws Exception {
+                User user = userRepository
+                                .findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+                                .orElseThrow(UserNotFoundException::new);
+                PurchasedService purchaseService = buyTourRepository
+                                .findById(inputChangeStatus.getId())
+                                .orElseThrow(() -> new ServiceNotFoundException());
+                purchaseService.setState(stateFactory.getState(purchaseService.getStatus()));
+
+                purchaseService = purchaseService.nextState(inputChangeStatus.getStatus(), user);
+
+                PurchasedService purchaseServiceSAVED = buyTourRepository.save(purchaseService);
+                BuyTourDTO purchaseService2 = buyTourRepository
+                                .findById(purchaseServiceSAVED.getId()).map(BuyTourMapper::mapToBuyTourDTO)
+                                .orElseThrow(() -> new ServiceNotFoundException());
+                return purchaseService2;
+
+        }
+
+        @Override
+        public BuyTourDTO update(Long id, UpdateServiceDTO updateServiceDTO) throws ServiceNotFoundException {
+                // ! No corresponde actualizar la compra, la cancelacion se maneja en el delete
+                // ! y el cambio de estado se crea en una funcion aparte
+                return null;
+        }
+
+        @Override
+        public void deleteById(Long id) throws ServiceNotFoundException {
+                if (!buyTourRepository.existsById(id)) {
+                        throw new ServiceNotFoundException();
+                }
+                buyTourRepository.deleteById(id);
+        }
 }
