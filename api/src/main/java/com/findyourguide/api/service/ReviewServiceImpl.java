@@ -1,5 +1,7 @@
 package com.findyourguide.api.service;
 
+import com.findyourguide.api.Strategis.Observer.ReviewTrophyAwarder;
+import com.findyourguide.api.Strategis.Observer.SuccessTrophyAwarder;
 import com.findyourguide.api.dto.Review.InputReview;
 import com.findyourguide.api.dto.Review.ReviewDTO;
 import com.findyourguide.api.entity.Guide;
@@ -15,7 +17,11 @@ import com.findyourguide.api.repository.ReviewRepository;
 import com.findyourguide.api.repository.TouristRepository;
 import com.findyourguide.api.repository.UserRepository;
 import com.findyourguide.api.service.interfaces.IReviewService;
+
+import org.springframework.transaction.annotation.Transactional;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
@@ -29,6 +35,8 @@ public class ReviewServiceImpl implements IReviewService {
     private final UserRepository userRepository;
     private final TouristRepository touristRepository;
     private final GuideRepository guideRepository;
+    private final SuccessTrophyAwarder successTrophyAwarder;
+    private final ReviewTrophyAwarder reviewTrophyAwarder;
 
     @Override
     public List<ReviewDTO> findAllByUser(Long userId) throws UserNotFoundException {
@@ -57,18 +65,32 @@ public class ReviewServiceImpl implements IReviewService {
     }
 
     @Override
+    @Transactional
     public ReviewDTO create(Long guideID, InputReview inputReview) throws UserNotFoundException {
         Tourist tourist = touristRepository
                 .findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(UserNotFoundException::new);
         Guide guide = guideRepository.findById(guideID).orElseThrow(ServiceNotFoundException::new);
 
+        tourist.registerObserver(reviewTrophyAwarder);
+        guide.registerObserver(successTrophyAwarder);
+
         Review review = ReviewMapper.mapToEntityFromCreateReview(tourist, guide, inputReview);
         reviewRepository.save(review);
+
+        tourist.addReview(review);
+        guide.addReview(review);
+
+        tourist.unregisterObserver(reviewTrophyAwarder);
+        guide.unregisterObserver(successTrophyAwarder);
+
+        guideRepository.save(guide);
+
         return ReviewMapper.mapToReviewDTO(review);
     }
 
     @Override
+    @Transactional
     public boolean deleteById(Long id) throws ServiceNotFoundException {
         try {
             if (!reviewRepository.existsById(id)) {

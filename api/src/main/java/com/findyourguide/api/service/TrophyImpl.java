@@ -1,14 +1,18 @@
 package com.findyourguide.api.service;
 
 import com.findyourguide.api.dto.trophy.TrophyDTO;
-import com.findyourguide.api.entity.Trophy.Condition;
+import com.findyourguide.api.entity.Trophy.TrophyType;
 import com.findyourguide.api.entity.Trophy.Trophy;
 import com.findyourguide.api.entity.User;
+import com.findyourguide.api.error.ServiceNotFoundException;
 import com.findyourguide.api.error.UserNotFoundException;
 import com.findyourguide.api.mapper.TrophyMapper;
 import com.findyourguide.api.repository.TrophyRepository;
 import com.findyourguide.api.repository.UserRepository;
 import com.findyourguide.api.service.interfaces.ITrophyService;
+
+import org.springframework.transaction.annotation.Transactional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -23,29 +27,26 @@ public class TrophyImpl implements ITrophyService {
     private final TrophyRepository trophyRepository;
     private final UserRepository userRepository;
 
-    public TrophyDTO create(Condition condition) {
-        User user = userRepository
-                .findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(UserNotFoundException::new);
+    @Override
+    @Transactional
+    public TrophyDTO create(TrophyType type, String description, User user) {
         Trophy trophy = new Trophy();
         trophy.setUser(user);
         trophy.setDate(LocalDate.now());
-        if (condition.equals(Condition.SUCCESS)) {
-            trophy.setCondition("Success");
-        }
-        if (condition.equals(Condition.REVIEW)) {
-            trophy.setCondition("Failure");
-        }
+        trophy.setDescription(description);
+        trophy.setType(type);
         trophyRepository.save(trophy);
         return TrophyMapper.toDTO(trophy);
     }
 
+    @Override
     public TrophyDTO findById(Long id) {
         return trophyRepository.findById(id)
                 .map(TrophyMapper::toDTO)
                 .orElseThrow(UserNotFoundException::new);
     }
 
+    @Override
     public List<TrophyDTO> findAllByUser() {
         User user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(UserNotFoundException::new);
@@ -53,7 +54,13 @@ public class TrophyImpl implements ITrophyService {
                 .orElseThrow(UserNotFoundException::new).stream().map(TrophyMapper::toDTO).collect(Collectors.toList());
     }
 
-    public void delete(Long id) {
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        if (!trophyRepository.existsById(id)) {
+            throw new ServiceNotFoundException();
+        }
         trophyRepository.deleteById(id);
+
     }
 }

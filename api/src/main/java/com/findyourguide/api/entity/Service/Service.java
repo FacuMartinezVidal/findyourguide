@@ -23,7 +23,7 @@ public class Service extends Base {
 
     @Column(nullable = false)
     private LocalDate date;
-    
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ServiceType serviceType;

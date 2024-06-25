@@ -1,6 +1,6 @@
 package com.findyourguide.api.dto.buyservice;
 
-import com.findyourguide.api.State.Purchase.PurchasedState;
+import com.findyourguide.api.Strategis.State.Purchase.PurchasedState;
 import com.findyourguide.api.dto.service.ServiceUserDTO;
 import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedStatus;
 import lombok.Data;

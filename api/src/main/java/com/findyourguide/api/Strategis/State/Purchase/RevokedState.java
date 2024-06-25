@@ -1,12 +1,13 @@
-package com.findyourguide.api.State.Purchase;
+package com.findyourguide.api.Strategis.State.Purchase;
 
 import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedService;
 
-public class RefundState implements PurchasedState {
+public class RevokedState implements PurchasedState {
 
     @Override
     public void process(PurchasedService service) throws Exception {
-        service.getTourist().refundFunds(service.getService().getPrice());
+        // TODO Logica de negocios de revokado de servicio
+        System.out.println("You dont have any balance in your wallet");
     }
 
     @Override
