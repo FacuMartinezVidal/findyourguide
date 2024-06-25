@@ -47,8 +47,8 @@ public class AuthController {
     @PostMapping("/register/{type}")
     public ResponseEntity<ResponseDTO<String>> registerService(@Valid @RequestBody CreateServiceDTO request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                new ResponseDTO<String>(HttpStatus.CREATED, "Register Successfully",
-                        authService.registerService(request)));
+                new ResponseDTO<String>(HttpStatus.CREATED, "Register Successfully", null));
+        //authService.registerService(request)));
     }
 
 }
