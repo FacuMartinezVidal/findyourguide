@@ -1,11 +1,9 @@
 package com.findyourguide.api.mapper;
 
-import com.findyourguide.api.dto.buyservice.PurchaseUserDTO;
 import com.findyourguide.api.dto.service.CreateServiceDTO;
 import com.findyourguide.api.dto.service.ServiceDTO;
 import com.findyourguide.api.dto.service.ServiceUserDTO;
 import com.findyourguide.api.entity.Guide;
-import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedService;
 import com.findyourguide.api.entity.Service.Service;
 
 public class ServiceMapper {
@@ -48,19 +46,6 @@ public class ServiceMapper {
         return dto;
     }
 
-    public static PurchaseUserDTO mapToPurchaseUserDTO(PurchasedService service) {
-        if (service == null) {
-            return null;
-        }
-        PurchaseUserDTO dto = new PurchaseUserDTO();
-        dto.setService(mapToServiceUserDTO(service.getService()));
-        dto.setId(service.getId());
-        dto.setDate(service.getDate());
-        //TODO fix this
-//        dto.setStatus(service.getStatus());
-//        dto.setState(service.getState());
-        return dto;
-    }
 
     public static Service mapToServiceEntityFromCreateServiceDTO(CreateServiceDTO serviceDTO, Guide guide) {
         Service service = new Service();
