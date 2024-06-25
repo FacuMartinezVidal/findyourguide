@@ -1,6 +1,7 @@
 package com.findyourguide.api.controller;
 
 import com.findyourguide.api.dto.UserLoginDTO;
+import com.findyourguide.api.dto.service.CreateServiceDTO;
 import com.findyourguide.api.dto.user.LoginDTO;
 import com.findyourguide.api.dto.user.RegisterDTO;
 import com.findyourguide.api.dto.user.ResponseDTO;
@@ -41,6 +42,13 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 new ResponseDTO<UserDTO>(HttpStatus.CREATED, "Register Successfully",
                         authService.register(request)));
+    }
+
+    @PostMapping("/register/{type}")
+    public ResponseEntity<ResponseDTO<String>> registerService(@Valid @RequestBody CreateServiceDTO request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                new ResponseDTO<String>(HttpStatus.CREATED, "Register Successfully",
+                        authService.registerService(request)));
     }
 
 }

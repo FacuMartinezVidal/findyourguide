@@ -1,5 +1,6 @@
 package com.findyourguide.api.service;
 
+import com.findyourguide.api.Strategis.register.IRegisterStrategy;
 import com.findyourguide.api.adapter.IAdapter;
 import com.findyourguide.api.dto.UserLoginDTO;
 import com.findyourguide.api.dto.user.LoginDTO;
@@ -31,6 +32,7 @@ public class AuthServiceImpl {
     private final GuideRepository guideRepository;
     private final UserRepository userRepository;
     private final IAdapter adapter;
+    private final IRegisterStrategy strategy;
 
     public UserLoginDTO login(LoginDTO request) {
         authenticationManager
