@@ -1,6 +1,6 @@
 package com.findyourguide.api.service;
 
-import com.findyourguide.api.Strategis.register.IRegisterStrategy;
+import com.findyourguide.api.Strategis.register.RegisterService;
 import com.findyourguide.api.adapter.IAdapter;
 import com.findyourguide.api.dto.UserLoginDTO;
 import com.findyourguide.api.dto.user.LoginDTO;
@@ -21,9 +21,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl {
@@ -35,9 +32,8 @@ public class AuthServiceImpl {
     private final GuideRepository guideRepository;
     private final UserRepository userRepository;
     private final IAdapter adapter;
-    private final Map<String, IRegisterStrategy> strategies = new HashMap<>();
+    private final RegisterService registerService;
 
-   
     public UserLoginDTO login(LoginDTO request) {
         authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
@@ -55,7 +51,9 @@ public class AuthServiceImpl {
                 touristRepository.save(tourist);
                 return TouristMapper.mapToTouristDTO(tourist, false, false);
             case "GUIDE":
-                adapter.verificate(request.getCredentialPhoto());
+                if (!adapter.verification(request.getCredentialPhoto())) {
+                    throw new IllegalArgumentException("Credential photo is not valid");
+                }
                 Guide guide = GuideMapper.mapToGuideEntityFromCreateGuideDTO(request, passwordEncoder);
                 guideRepository.save(guide);
                 return GuideMapper.mapToGuideDTO(guide, false);
@@ -63,6 +61,22 @@ public class AuthServiceImpl {
             default:
                 throw new TypeNotValidException(request.getRole());
         }
+    }
+
+    public String registerService(RegisterDTO request, String type) {
+        return switch (type.toUpperCase()) {
+            case "GOOGLE":
+                registerService.changeStrategy("google");
+
+            case "APPLE":
+                registerService.changeStrategy("apple");
+                yield registerService.register(request);
+            case "FACEBOOK":
+                registerService.changeStrategy("facebook");
+                yield registerService.register(request);
+            default:
+                throw new TypeNotValidException(type);
+        };
     }
 
 }

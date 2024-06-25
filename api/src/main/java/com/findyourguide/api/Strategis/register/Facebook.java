@@ -1,12 +1,12 @@
 package com.findyourguide.api.Strategis.register;
 
-import com.findyourguide.api.entity.User;
+import com.findyourguide.api.dto.user.RegisterDTO;
 import org.springframework.stereotype.Service;
 
 @Service("facebook")
 public class Facebook implements IRegisterStrategy {
     @Override
-    public void register(User user) {
-
+    public String register(RegisterDTO user) {
+        return "Successfully Registered with Facebook!";
     }
 }

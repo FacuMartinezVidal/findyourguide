@@ -1,7 +1,6 @@
 package com.findyourguide.api.controller;
 
 import com.findyourguide.api.dto.UserLoginDTO;
-import com.findyourguide.api.dto.service.CreateServiceDTO;
 import com.findyourguide.api.dto.user.LoginDTO;
 import com.findyourguide.api.dto.user.RegisterDTO;
 import com.findyourguide.api.dto.user.ResponseDTO;
@@ -13,18 +12,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 @Validated
 public class AuthController {
-    // TODO improve body dto
-    // TODO use interface dependency
     final AuthServiceImpl authService;
 
     @PostMapping("/login")
@@ -45,10 +39,10 @@ public class AuthController {
     }
 
     @PostMapping("/register/{type}")
-    public ResponseEntity<ResponseDTO<String>> registerService(@Valid @RequestBody CreateServiceDTO request) {
+    public ResponseEntity<ResponseDTO<String>> registerService(@Valid @RequestBody RegisterDTO request, @PathVariable String type) {
+
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                new ResponseDTO<String>(HttpStatus.CREATED, "Register Successfully", null));
-        //authService.registerService(request)));
+                new ResponseDTO<String>(HttpStatus.CREATED, "Register Successfully", authService.registerService(request, type)));
     }
 
 }

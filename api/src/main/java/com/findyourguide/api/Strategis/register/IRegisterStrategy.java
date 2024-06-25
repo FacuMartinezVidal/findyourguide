@@ -1,8 +1,9 @@
 package com.findyourguide.api.Strategis.register;
 
-import com.findyourguide.api.entity.User;
+import com.findyourguide.api.dto.user.RegisterDTO;
 
 public interface IRegisterStrategy {
 
-    void register(User user);
+    String register(RegisterDTO user);
+
 }
