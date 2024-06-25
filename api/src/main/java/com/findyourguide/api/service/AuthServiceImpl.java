@@ -1,5 +1,6 @@
 package com.findyourguide.api.service;
 
+import com.findyourguide.api.adapter.IAdapter;
 import com.findyourguide.api.dto.UserLoginDTO;
 import com.findyourguide.api.dto.user.LoginDTO;
 import com.findyourguide.api.dto.user.RegisterDTO;
@@ -29,6 +30,7 @@ public class AuthServiceImpl {
     private final TouristRepository touristRepository;
     private final GuideRepository guideRepository;
     private final UserRepository userRepository;
+    private final IAdapter adapter;
 
     public UserLoginDTO login(LoginDTO request) {
         authenticationManager
@@ -47,6 +49,7 @@ public class AuthServiceImpl {
                 touristRepository.save(tourist);
                 return TouristMapper.mapToTouristDTO(tourist, false, false);
             case "GUIDE":
+                adapter.verificate(request.getCredentialPhoto());
                 Guide guide = GuideMapper.mapToGuideEntityFromCreateGuideDTO(request, passwordEncoder);
                 guideRepository.save(guide);
                 return GuideMapper.mapToGuideDTO(guide, false);
