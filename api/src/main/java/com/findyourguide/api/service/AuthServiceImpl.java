@@ -21,6 +21,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl {
@@ -32,8 +35,9 @@ public class AuthServiceImpl {
     private final GuideRepository guideRepository;
     private final UserRepository userRepository;
     private final IAdapter adapter;
-    private final IRegisterStrategy strategy;
+    private final Map<String, IRegisterStrategy> strategies = new HashMap<>();
 
+   
     public UserLoginDTO login(LoginDTO request) {
         authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
