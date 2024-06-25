@@ -5,9 +5,9 @@ import com.findyourguide.api.dto.user.GuideDTO;
 import com.findyourguide.api.dto.user.UpdateUserDTO;
 import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.entity.Guide;
+import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedService;
 import com.findyourguide.api.entity.Tourist;
 import com.findyourguide.api.entity.User;
-import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedService;
 import com.findyourguide.api.error.TypeNotValidException;
 import com.findyourguide.api.error.UserNotFoundException;
 import com.findyourguide.api.mapper.GuideMapper;
@@ -123,6 +123,7 @@ public class UserServiceImpl implements IUserService {
 
     public List<GuideDTO> findByCriteria(SearchRequest request) {
         return guideSearchDAO.findAllByCriteria(request).stream().map(guide -> GuideMapper.mapToGuideDTO(guide, true)).collect(Collectors.toList());
+    }
 
     public void processPayment(Tourist tourist, PurchasedService service) {
         Double balanceToPaid = service.getService().getPrice() - service.getBalancePaid();
