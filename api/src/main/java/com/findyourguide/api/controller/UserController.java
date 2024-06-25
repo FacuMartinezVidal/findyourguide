@@ -1,8 +1,12 @@
 package com.findyourguide.api.controller;
 
+import com.findyourguide.api.dto.user.GuideDTO;
 import com.findyourguide.api.dto.user.ResponseDTO;
 import com.findyourguide.api.dto.user.UpdateUserDTO;
 import com.findyourguide.api.dto.user.UserDTO;
+import com.findyourguide.api.entity.Language;
+import com.findyourguide.api.entity.Service.ServiceType;
+import com.findyourguide.api.repository.SearchRequest;
 import com.findyourguide.api.service.interfaces.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +62,27 @@ public class UserController {
     @PatchMapping("/user/{type}")
     public ResponseEntity<ResponseDTO<UserDTO>> update(@PathVariable String type, @Valid @RequestBody UpdateUserDTO userDTO) {
         return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "Updated Successfully!", userService.update(type, userDTO)));
+    }
+
+    @GetMapping("/user/")
+    public ResponseEntity<ResponseDTO<List<GuideDTO>>> findByCriteria(
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) Language language,
+            @RequestParam(required = false) ServiceType serviceType,
+            @RequestParam(required = false) Double score,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String country
+    ) {
+        SearchRequest searchRequest = new SearchRequest();
+        searchRequest.setFirstName(firstName);
+        searchRequest.setLastName(lastName);
+        searchRequest.setLanguage(language);
+        searchRequest.setServiceType(serviceType);
+        searchRequest.setScore(score);
+        searchRequest.setCity(city);
+        searchRequest.setCountry(country);
+        return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "Guides found", userService.findByCriteria(searchRequest)));
     }
 
 }
