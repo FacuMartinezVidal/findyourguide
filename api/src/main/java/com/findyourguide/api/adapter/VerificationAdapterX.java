@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
 public class VerificationAdapterX implements IAdapter {
     @Override
     public boolean verification(String credential) {
-        return true;
+        return credential.endsWith(".jpg");
     }
 }
