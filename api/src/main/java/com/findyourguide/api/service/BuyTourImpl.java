@@ -54,6 +54,16 @@ public class BuyTourImpl implements IBuyTour {
         }
 
         @Override
+        public List<PurchaseUserDTO> findAllByGuide(Long guideId)
+                        throws UserNotFoundException, ServiceNotFoundException {
+                return serviceRepository.findByGuideId(guideId)
+                                .stream()
+                                .flatMap(service -> buyTourRepository.findByServiceId(service.getId()).stream())
+                                .map(BuyTourMapper::mapToPurchaseUserDTO)
+                                .collect(Collectors.toList());
+        }
+
+        @Override
         public BuyTourDTO findById(Long id) throws ServiceNotFoundException {
                 return buyTourRepository.findById(id)
                                 .map(BuyTourMapper::mapToBuyTourDTO)

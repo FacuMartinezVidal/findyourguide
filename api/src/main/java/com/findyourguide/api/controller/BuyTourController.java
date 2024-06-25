@@ -3,9 +3,10 @@ package com.findyourguide.api.controller;
 import com.findyourguide.api.dto.buyservice.BuyTourDTO;
 import com.findyourguide.api.dto.buyservice.InputChangeStatus;
 import com.findyourguide.api.dto.buyservice.PurchaseUserDTO;
-import com.findyourguide.api.dto.service.UpdateServiceDTO;
 import com.findyourguide.api.dto.user.ResponseDTO;
 import com.findyourguide.api.entity.Role;
+import com.findyourguide.api.error.UserNotFoundException;
+import com.findyourguide.api.mapper.BuyTourMapper;
 import com.findyourguide.api.service.interfaces.IBuyTour;
 import com.findyourguide.api.util.UserValidations;
 
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -40,6 +42,13 @@ public class BuyTourController {
         userValidations.validateRole(Role.TOURIST);
         return ResponseEntity.ok()
                 .body(new ResponseDTO<>(HttpStatus.OK, "All Services", buyService.findAllByTourist(id)));
+    }
+
+    @GetMapping("/buys/guide/{guideId}")
+    public ResponseEntity<ResponseDTO<List<PurchaseUserDTO>>> findAllByGuide(@PathVariable Long guideId) {
+        List<PurchaseUserDTO> services = buyService.findAllByGuide(guideId);
+        return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "Services Found", services));
+
     }
 
     @GetMapping("/buys/{id}")

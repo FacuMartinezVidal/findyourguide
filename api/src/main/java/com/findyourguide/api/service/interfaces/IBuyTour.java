@@ -15,6 +15,8 @@ public interface IBuyTour {
 
     List<PurchaseUserDTO> findAllByTourist(Long id) throws UserNotFoundException;
 
+    List<PurchaseUserDTO> findAllByGuide(Long id) throws UserNotFoundException;
+
     BuyTourDTO findById(Long id) throws ServiceNotFoundException;
 
     BuyTourDTO create(Long serviceID) throws UserNotFoundException;
