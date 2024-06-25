@@ -31,7 +31,7 @@ public class StateFactory {
                 return context.getBean(CanceledState.class);
             case END:
                 return context.getBean(EndState.class);
-            case IN_TOUR:
+            case INTOUR:
                 return context.getBean(InTourState.class);
             default:
                 throw new IllegalStateException("Unknown state: " + status);

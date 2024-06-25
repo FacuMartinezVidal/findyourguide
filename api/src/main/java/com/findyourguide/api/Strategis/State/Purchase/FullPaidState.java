@@ -34,10 +34,10 @@ public class FullPaidState implements PurchasedState {
             service.setStatus(PurchasedStatus.CANCELED);
             service.setState(stateFactory.getState(PurchasedStatus.CANCELED));
 
-        } else if (status.equals(PurchasedStatus.IN_TOUR)) {
+        } else if (status.equals(PurchasedStatus.INTOUR)) {
             userValidations.validateRole(Role.GUIDE);
-            service.setStatus(PurchasedStatus.IN_TOUR);
-            service.setState(stateFactory.getState(PurchasedStatus.IN_TOUR));
+            service.setStatus(PurchasedStatus.INTOUR);
+            service.setState(stateFactory.getState(PurchasedStatus.INTOUR));
 
         }
         return service;

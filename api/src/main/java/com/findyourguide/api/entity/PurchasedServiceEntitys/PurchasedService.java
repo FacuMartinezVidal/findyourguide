@@ -37,7 +37,7 @@ public class PurchasedService extends Base {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private PurchasedStatus status = PurchasedStatus.PENDING;
+    private PurchasedStatus status;
 
     @Column(name = "balance")
     private Double balancePaid;

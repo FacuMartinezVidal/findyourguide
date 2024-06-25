@@ -3,6 +3,7 @@ package com.findyourguide.api.mapper;
 import com.findyourguide.api.dto.buyservice.BuyTourDTO;
 import com.findyourguide.api.dto.buyservice.PurchaseUserDTO;
 import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedService;
+import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedStatus;
 import com.findyourguide.api.entity.Service.Service;
 import com.findyourguide.api.entity.Tourist;
 
@@ -42,6 +43,7 @@ public class BuyTourMapper {
         purchasedService.setService(service);
         purchasedService.setTourist(tourist);
         purchasedService.setDate(LocalDate.now());
+        purchasedService.setStatus(PurchasedStatus.PENDING);
         purchasedService.setBalancePaid(service.getPrice() * 10 / 100);
         return purchasedService;
     }
