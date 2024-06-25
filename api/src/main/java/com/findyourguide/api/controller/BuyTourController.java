@@ -2,6 +2,7 @@ package com.findyourguide.api.controller;
 
 import com.findyourguide.api.dto.buyservice.BuyTourDTO;
 import com.findyourguide.api.dto.buyservice.InputChangeStatus;
+import com.findyourguide.api.dto.buyservice.PurchaseUserDTO;
 import com.findyourguide.api.dto.service.UpdateServiceDTO;
 import com.findyourguide.api.dto.user.ResponseDTO;
 import com.findyourguide.api.entity.Role;
@@ -35,7 +36,7 @@ public class BuyTourController {
     }
 
     @GetMapping("/buys/tourist/{id}")
-    public ResponseEntity<ResponseDTO<List<BuyTourDTO>>> findAllByTourist(@PathVariable Long id) {
+    public ResponseEntity<ResponseDTO<List<PurchaseUserDTO>>> findAllByTourist(@PathVariable Long id) {
         userValidations.validateRole(Role.TOURIST);
         return ResponseEntity.ok()
                 .body(new ResponseDTO<>(HttpStatus.OK, "All Services", buyService.findAllByTourist(id)));

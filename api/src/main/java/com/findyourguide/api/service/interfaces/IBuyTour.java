@@ -2,6 +2,7 @@ package com.findyourguide.api.service.interfaces;
 
 import com.findyourguide.api.dto.buyservice.BuyTourDTO;
 import com.findyourguide.api.dto.buyservice.InputChangeStatus;
+import com.findyourguide.api.dto.buyservice.PurchaseUserDTO;
 import com.findyourguide.api.dto.service.UpdateServiceDTO;
 import com.findyourguide.api.error.ServiceNotFoundException;
 import com.findyourguide.api.error.UserNotFoundException;
@@ -12,7 +13,7 @@ public interface IBuyTour {
 
     List<BuyTourDTO> findAll();
 
-    List<BuyTourDTO> findAllByTourist(Long id) throws UserNotFoundException;
+    List<PurchaseUserDTO> findAllByTourist(Long id) throws UserNotFoundException;
 
     BuyTourDTO findById(Long id) throws ServiceNotFoundException;
 
