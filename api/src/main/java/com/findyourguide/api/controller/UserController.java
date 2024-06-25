@@ -1,11 +1,12 @@
 package com.findyourguide.api.controller;
 
+import com.findyourguide.api.dto.user.ResponseDTO;
 import com.findyourguide.api.dto.user.UpdateUserDTO;
 import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.service.interfaces.IUserService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +25,14 @@ public class UserController {
     // TODO use ResponseDTO
     // TODO improve body dto
 
+    @GetMapping("/user")
+    public ResponseEntity<ResponseDTO<List<UserDTO>>> findAll() {
+        return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "All Users", userService.findAll()));
+    }
+
     @GetMapping("/user/{type}")
-    public ResponseEntity<List<UserDTO>> findAll(@PathVariable String type) {
-        return ResponseEntity.ok().body(userService.findAll(type));
+    public ResponseEntity<ResponseDTO<List<UserDTO>>> findAllByType(@PathVariable String type) {
+        return ResponseEntity.ok().body(new ResponseDTO<>(HttpStatus.OK, "All Users", userService.findAllByType(type)));
     }
 
     @GetMapping("/user/{type}/{id}")

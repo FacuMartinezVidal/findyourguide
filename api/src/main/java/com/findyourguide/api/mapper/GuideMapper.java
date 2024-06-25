@@ -1,16 +1,59 @@
 package com.findyourguide.api.mapper;
 
+import com.findyourguide.api.dto.user.GuideDTO;
+import com.findyourguide.api.dto.user.RegisterDTO;
+import com.findyourguide.api.dto.user.UpdateUserDTO;
+import com.findyourguide.api.entity.Guide;
+import com.findyourguide.api.entity.Role;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.util.Collections;
 import java.util.stream.Collectors;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.findyourguide.api.dto.user.GuideDTO;
-import com.findyourguide.api.dto.user.RegisterDTO;
-import com.findyourguide.api.entity.Guide;
-import com.findyourguide.api.entity.Role;
-
 public class GuideMapper {
+
+    public static Guide mapToGuideEntityFromUpdateGuideDTO(Guide guide, UpdateUserDTO modification) {
+        if (modification.getUsername() != null) {
+            guide.setUsername(modification.getUsername());
+        }
+        if (modification.getEmail() != null) {
+            guide.setEmail(modification.getEmail());
+        }
+        if (modification.getFirstName() != null) {
+            guide.setFirstName(modification.getFirstName());
+        }
+        if (modification.getLastName() != null) {
+            guide.setLastName(modification.getLastName());
+        }
+        if (modification.getPhone() != null) {
+            guide.setPhone(modification.getPhone());
+        }
+        if (modification.getDni() != null) {
+            guide.setDni(modification.getDni());
+        }
+        if (modification.getGender() != null) {
+            guide.setGender(modification.getGender());
+        }
+        if (modification.getProfilePhoto() != null) {
+            guide.setProfilePhoto(modification.getProfilePhoto());
+        }
+        if (modification.getPassword() != null) {
+            guide.setPassword(modification.getPassword());
+        }
+        if (modification.getCountry() != null) {
+            guide.setCountry(modification.getCountry());
+        }
+        if (modification.getCredentialPhoto() != null) {
+            guide.setCredentialPhoto(modification.getCredentialPhoto());
+        }
+        if (modification.getLanguage() != null) {
+            guide.setLanguage(modification.getLanguage());
+        }
+        if (modification.getScore() != null) {
+            guide.setScore(modification.getScore());
+        }
+        return guide;
+    }
 
     public static GuideDTO mapToGuideDTO(Guide guide, boolean includeServices) {
         if (guide == null) {
@@ -32,7 +75,7 @@ public class GuideMapper {
 
         if (includeServices) {
             guideDTO.setServices(guide.getGuideServices() != null ? guide.getGuideServices().stream()
-                    .map(ServiceMapper::mapToServiceDTO)
+                    .map(ServiceMapper::mapToServiceUserDTO)
                     .collect(Collectors.toList()) : Collections.emptyList());
 
         } else {
@@ -43,7 +86,7 @@ public class GuideMapper {
     }
 
     public static Guide mapToGuideEntityFromCreateGuideDTO(RegisterDTO request,
-            PasswordEncoder passwordEncoder) {
+                                                           PasswordEncoder passwordEncoder) {
         Guide guide = new Guide();
         guide.setUsername(request.getUsername());
         guide.setFirstName(request.getFirstName());
