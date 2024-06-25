@@ -2,7 +2,9 @@ package com.findyourguide.api.service.interfaces;
 
 import com.findyourguide.api.dto.user.UpdateUserDTO;
 import com.findyourguide.api.dto.user.UserDTO;
+import com.findyourguide.api.entity.Tourist;
 import com.findyourguide.api.entity.User;
+import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedService;
 import com.findyourguide.api.error.TypeNotValidException;
 import com.findyourguide.api.error.UserNotFoundException;
 
@@ -24,4 +26,8 @@ public interface IUserService {
     User findByUsername(String username) throws UserNotFoundException;
 
     List<UserDTO> findAllByType(String type);
+
+    void processPayment(Tourist tourist, PurchasedService service);
+
+    void processRefound(Tourist tourist, PurchasedService service, Double porcentaje);
 }

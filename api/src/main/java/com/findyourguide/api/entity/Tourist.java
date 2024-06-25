@@ -23,7 +23,7 @@ public class Tourist extends User {
     List<PurchasedService> purchasedService;
 
     @Column(name = "balance", nullable = false)
-    public Long balance;
+    public double balance;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "tourist", cascade = CascadeType.ALL, orphanRemoval = true)

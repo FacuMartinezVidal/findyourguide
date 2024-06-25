@@ -13,12 +13,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TouristDTO extends UserDTO {
-    Long balance;
+    double balance;
     List<PurchaseUserDTO> servicePurchased;
 
     public TouristDTO(Long id, String username, String firstName, String lastName, String email, String phone,
-                      String dni,
-                      String gender, Double score, Long balance) {
+            String dni,
+            String gender, Double score, double balance) {
         super(id, username, firstName, lastName, email, phone, dni, gender, score);
 
         this.balance = balance;

@@ -6,6 +6,7 @@ import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Tourist;
 import com.findyourguide.api.entity.User;
+import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedService;
 import com.findyourguide.api.error.TypeNotValidException;
 import com.findyourguide.api.error.UserNotFoundException;
 import com.findyourguide.api.mapper.GuideMapper;
@@ -43,11 +44,13 @@ public class UserServiceImpl implements IUserService {
         return switch (role.toLowerCase()) {
             case "tourist" -> {
                 List<Tourist> touristList = touristRepository.findAll();
-                yield touristList.stream().map(tourist -> TouristMapper.mapToTouristDTO(tourist, true, true)).collect(Collectors.toList());
+                yield touristList.stream().map(tourist -> TouristMapper.mapToTouristDTO(tourist, true, true))
+                        .collect(Collectors.toList());
             }
             case "guide" -> {
                 List<Guide> guideList = guideRepository.findAll();
-                yield guideList.stream().map(guide -> GuideMapper.mapToGuideDTO(guide, true)).collect(Collectors.toList());
+                yield guideList.stream().map(guide -> GuideMapper.mapToGuideDTO(guide, true))
+                        .collect(Collectors.toList());
             }
             default -> throw new UserNotFoundException();
         };
@@ -90,14 +93,16 @@ public class UserServiceImpl implements IUserService {
     public UserDTO update(String type, UpdateUserDTO userDTO) throws TypeNotValidException, UserNotFoundException {
         return switch (type.toLowerCase()) {
             case "tourist" -> {
-                Tourist tourist = touristRepository.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+                Tourist tourist = touristRepository
+                        .findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                         .orElseThrow(UserNotFoundException::new);
                 Tourist updatedTourist = TouristMapper.mapToTouristEntityFromUpdateTouristDTO(tourist, userDTO);
                 touristRepository.save(updatedTourist);
                 yield TouristMapper.mapToTouristDTO(updatedTourist, true, true);
             }
             case "guide" -> {
-                Guide guide = guideRepository.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+                Guide guide = guideRepository
+                        .findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                         .orElseThrow(UserNotFoundException::new);
                 Guide updatedGuide = GuideMapper.mapToGuideEntityFromUpdateGuideDTO(guide, userDTO);
                 guideRepository.save(updatedGuide);
@@ -113,6 +118,21 @@ public class UserServiceImpl implements IUserService {
         } else if (type.equals("guide")) {
             guideRepository.deleteById(id);
         }
+    }
+
+    public void processPayment(Tourist tourist, PurchasedService service) {
+        Double balanceToPaid = service.getService().getPrice() - service.getBalancePaid();
+        tourist.setBalance(tourist.getBalance() - balanceToPaid);
+
+        userRepository.save(tourist);
+    }
+
+    public void processRefound(Tourist tourist, PurchasedService service, Double porcentaje) {
+        Double balancePaid = service.getBalancePaid();
+        Double refundAmount = balancePaid * porcentaje / 100;
+        tourist.setBalance(tourist.getBalance() + refundAmount);
+
+        userRepository.save(tourist);
     }
 
 }

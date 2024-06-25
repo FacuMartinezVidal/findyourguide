@@ -41,6 +41,9 @@ public class PurchasedService extends Base {
     @Column(name = "status")
     private PurchasedStatus status = PurchasedStatus.PENDING;
 
+    @Column(name = "balance")
+    private double balancePaid;
+
     @Transient
     private PurchasedState state;
 
