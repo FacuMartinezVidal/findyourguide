@@ -1,7 +1,6 @@
 package com.findyourguide.api.service;
 
 import com.findyourguide.api.config.SecurityContextService;
-import com.findyourguide.api.dto.user.GuideDTO;
 import com.findyourguide.api.dto.user.UpdateUserDTO;
 import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.entity.Guide;
@@ -9,17 +8,19 @@ import com.findyourguide.api.entity.Tourist;
 import com.findyourguide.api.entity.User;
 import com.findyourguide.api.error.TypeNotValidException;
 import com.findyourguide.api.error.UserNotFoundException;
-import com.findyourguide.api.mapper.ServiceMapper;
+import com.findyourguide.api.mapper.GuideMapper;
+import com.findyourguide.api.mapper.TouristMapper;
+import com.findyourguide.api.mapper.UserMapper;
 import com.findyourguide.api.repository.GuideRepository;
 import com.findyourguide.api.repository.TouristRepository;
 import com.findyourguide.api.repository.UserRepository;
 import com.findyourguide.api.service.interfaces.IUserService;
 import com.findyourguide.api.util.Populate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,61 +31,43 @@ public class UserServiceImpl implements IUserService {
     private final UserRepository userRepository;
     private final SecurityContextService contextService;
 
-    public List<UserDTO> findAll(String type) {
+    public List<UserDTO> findAll() {
+        List<User> userList = userRepository.findAll();
+        if (userList.isEmpty())
+            throw new UserNotFoundException();
+        return userList.stream().map(UserMapper::mapToUserDTO).collect(Collectors.toList());
 
-        switch (type.toLowerCase()) {
-            case "tourist":
-                return touristRepository.findAll().stream()
-                        .map(t -> new UserDTO(
-                                t.getId(),
-                                t.getUsername(),
-                                t.getFirstName(),
-                                t.getLastName(),
-                                t.getEmail(),
-                                t.getPhone(),
-                                t.getDni(),
-                                t.getGender(),
-                                t.getScore()))
-                        .collect(Collectors.toList());
-            case "guide":
-                return guideRepository.findAll().stream()
-                        .map(g -> new GuideDTO(
-                                g.getId(),
-                                g.getUsername(),
-                                g.getFirstName(),
-                                g.getLastName(),
-                                g.getEmail(),
-                                g.getPhone(),
-                                g.getDni(),
-                                g.getGender(),
-                                g.getScore(),
-                                g.getCountry(),
-                                g.getCredentialPhoto(),
-                                g.getLanguage(),
-                                g.getGuideServices().stream()
-                                        .map(ServiceMapper::mapToServiceDTO)
-                                        .collect(Collectors.toList())))
-                        .collect(Collectors.toList());
-            default:
-                throw new TypeNotValidException(type);
-
-        }
     }
 
-    public Optional<UserDTO> findById(String type, Long id) throws UserNotFoundException {
+    public List<UserDTO> findAllByType(String role) {
+        return switch (role.toLowerCase()) {
+            case "tourist" -> {
+                List<Tourist> touristList = touristRepository.findAll();
+                yield touristList.stream().map(tourist -> TouristMapper.mapToTouristDTO(tourist, true, true)).collect(Collectors.toList());
+            }
+            case "guide" -> {
+                List<Guide> guideList = guideRepository.findAll();
+                yield guideList.stream().map(guide -> GuideMapper.mapToGuideDTO(guide, true)).collect(Collectors.toList());
+            }
+            default -> throw new UserNotFoundException();
+        };
+    }
 
-        switch (type.toLowerCase()) {
-            case "tourist":
-                Optional<Tourist> optionalTourist = touristRepository.findById(id);
-                return optionalTourist.map(tourist -> Populate.populateUserResponse(tourist, type));
+    public UserDTO findById(String type, Long id) throws UserNotFoundException {
 
-            case "guide":
-                Optional<Guide> optionalGuide = guideRepository.findById(id);
-                return optionalGuide.map(guide -> Populate.populateUserResponse(guide, type));
-
-            default:
-                throw new TypeNotValidException(type);
-        }
+        return switch (type.toLowerCase()) {
+            case "tourist" -> {
+                yield touristRepository.findById(id)
+                        .map(tourist -> TouristMapper.mapToTouristDTO(tourist, true, true))
+                        .orElseThrow(UserNotFoundException::new);
+            }
+            case "guide" -> {
+                yield guideRepository.findById(id)
+                        .map(guide -> GuideMapper.mapToGuideDTO(guide, true))
+                        .orElseThrow(UserNotFoundException::new);
+            }
+            default -> throw new TypeNotValidException(type);
+        };
 
     }
 
@@ -104,20 +87,24 @@ public class UserServiceImpl implements IUserService {
                 .orElseThrow(UserNotFoundException::new);
     }
 
-    public void update(String type, UpdateUserDTO userDTO) throws TypeNotValidException {
-        if (type.equals("tourist")) {
-            Optional<Tourist> optionalTourist = touristRepository.findUserByUsername(userDTO.getUsername());
-            if (optionalTourist.isPresent()) {
-                Tourist updatedTourist = (Tourist) Populate.populateUpdateUser(optionalTourist.get(), userDTO);
+    public UserDTO update(String type, UpdateUserDTO userDTO) throws TypeNotValidException, UserNotFoundException {
+        return switch (type.toLowerCase()) {
+            case "tourist" -> {
+                Tourist tourist = touristRepository.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+                        .orElseThrow(UserNotFoundException::new);
+                Tourist updatedTourist = TouristMapper.mapToTouristEntityFromUpdateTouristDTO(tourist, userDTO);
                 touristRepository.save(updatedTourist);
+                yield TouristMapper.mapToTouristDTO(updatedTourist, true, true);
             }
-        } else if (type.equals("guide")) {
-            Optional<Guide> optionalGuide = guideRepository.findUserByUsername(userDTO.getUsername());
-            if (optionalGuide.isPresent()) {
-                Guide updatedGuide = (Guide) Populate.populateUpdateUser(optionalGuide.get(), userDTO);
+            case "guide" -> {
+                Guide guide = guideRepository.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+                        .orElseThrow(UserNotFoundException::new);
+                Guide updatedGuide = GuideMapper.mapToGuideEntityFromUpdateGuideDTO(guide, userDTO);
                 guideRepository.save(updatedGuide);
+                yield GuideMapper.mapToGuideDTO(updatedGuide, true);
             }
-        }
+            default -> throw new TypeNotValidException("Unexpected value: " + type.toLowerCase());
+        };
     }
 
     public void deleteById(String type, Long id) {

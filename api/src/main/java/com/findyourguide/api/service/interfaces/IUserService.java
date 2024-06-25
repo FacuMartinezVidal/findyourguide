@@ -3,18 +3,17 @@ package com.findyourguide.api.service.interfaces;
 import com.findyourguide.api.dto.user.UpdateUserDTO;
 import com.findyourguide.api.dto.user.UserDTO;
 import com.findyourguide.api.entity.User;
-import com.findyourguide.api.error.UserNotFoundException;
 import com.findyourguide.api.error.TypeNotValidException;
+import com.findyourguide.api.error.UserNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IUserService {
-    List<UserDTO> findAll(String type);
+    List<UserDTO> findAll() throws UserNotFoundException;
 
-    Optional<UserDTO> findById(String type, Long id) throws UserNotFoundException, TypeNotValidException;
+    UserDTO findById(String type, Long id) throws UserNotFoundException, TypeNotValidException;
 
-    void update(String type, UpdateUserDTO userDTO);
+    UserDTO update(String type, UpdateUserDTO userDTO);
 
     void deleteById(String type, Long id);
 
@@ -23,4 +22,6 @@ public interface IUserService {
     UserDTO findByJwt() throws UserNotFoundException;
 
     User findByUsername(String username) throws UserNotFoundException;
+
+    List<UserDTO> findAllByType(String type);
 }

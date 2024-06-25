@@ -22,7 +22,8 @@ public class UpdateUserDTO {
     private String dni;
     private String gender;
     private String country;
-    private String cities;
+    private String profilePhoto;
     private String credentialPhoto;
     private Language language;
+    private Double score;
 }

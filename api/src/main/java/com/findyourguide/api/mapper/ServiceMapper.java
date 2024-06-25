@@ -2,6 +2,7 @@ package com.findyourguide.api.mapper;
 
 import com.findyourguide.api.dto.service.CreateServiceDTO;
 import com.findyourguide.api.dto.service.ServiceDTO;
+import com.findyourguide.api.dto.service.ServiceUserDTO;
 import com.findyourguide.api.entity.Guide;
 import com.findyourguide.api.entity.Service.Service;
 
@@ -26,6 +27,25 @@ public class ServiceMapper {
 
         return dto;
     }
+
+    public static ServiceUserDTO mapToServiceUserDTO(Service service) {
+        if (service == null) {
+            return null;
+        }
+        ServiceUserDTO dto = new ServiceUserDTO();
+        dto.setId(service.getId());
+        dto.setName(service.getName());
+        dto.setDescription(service.getDescription());
+        dto.setPrice(service.getPrice());
+        dto.setDate(service.getDate());
+        dto.setServiceType(service.getServiceType());
+        dto.setQuantity(service.getQuantity());
+        dto.setCity(service.getCity());
+        dto.setCountry(service.getCountry());
+        dto.setRate(service.getRate());
+        return dto;
+    }
+
 
     public static Service mapToServiceEntityFromCreateServiceDTO(CreateServiceDTO serviceDTO, Guide guide) {
         Service service = new Service();
