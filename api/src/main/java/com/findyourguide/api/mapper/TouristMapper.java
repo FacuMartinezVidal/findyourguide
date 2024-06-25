@@ -25,13 +25,13 @@ public class TouristMapper {
         touristDTO.setPhone(tourist.getPhone());
         touristDTO.setDni(tourist.getDni());
         touristDTO.setGender(tourist.getGender());
-        touristDTO.setScore(tourist.getScore());
         touristDTO.setBalance(tourist.getBalance());
 
         if (includeServices) {
-            touristDTO.setServicePurchased(tourist.getPurchasedService() != null ? tourist.getPurchasedService().stream()
-                    .map(BuyTourMapper::mapToPurchaseUserDTO)
-                    .collect(Collectors.toList()) : Collections.emptyList());
+            touristDTO
+                    .setServicePurchased(tourist.getPurchasedService() != null ? tourist.getPurchasedService().stream()
+                            .map(BuyTourMapper::mapToPurchaseUserDTO)
+                            .collect(Collectors.toList()) : Collections.emptyList());
         } else {
             touristDTO.setServicePurchased(Collections.emptyList());
         }
@@ -39,7 +39,7 @@ public class TouristMapper {
     }
 
     public static Tourist mapToTouristEntityFromCreateTouristDTO(RegisterDTO request,
-                                                                 PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder) {
         Tourist tourist = new Tourist();
         tourist.setUsername(request.getUsername());
         tourist.setFirstName(request.getFirstName());
@@ -49,7 +49,6 @@ public class TouristMapper {
         tourist.setPhone(request.getPhone());
         tourist.setDni(request.getDni());
         tourist.setGender(request.getGender());
-        tourist.setScore(0.0);
         tourist.setProfilePhoto(request.getProfilePhoto());
         tourist.setActive(true);
 
@@ -87,7 +86,6 @@ public class TouristMapper {
         if (modification.getPassword() != null) {
             tourist.setPassword(modification.getPassword());
         }
-
 
         return tourist;
     }

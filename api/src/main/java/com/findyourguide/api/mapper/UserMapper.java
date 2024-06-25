@@ -19,7 +19,6 @@ public class UserMapper {
         userDTO.setPhone(user.getPhone());
         userDTO.setDni(user.getDni());
         userDTO.setGender(user.getGender());
-        userDTO.setScore(user.getScore());
         return userDTO;
     }
 
@@ -37,7 +36,7 @@ public class UserMapper {
             default:
                 return null; // or throw an exception if type is mandatory
         }
-        //user.setId(userDTO.getId());
+        // user.setId(userDTO.getId());
         user.setUsername(userDTO.getUsername());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
@@ -45,7 +44,6 @@ public class UserMapper {
         user.setPhone(userDTO.getPhone());
         user.setDni(userDTO.getDni());
         user.setGender(userDTO.getGender());
-        user.setScore(userDTO.getScore());
         return user;
     }
 }

@@ -1,11 +1,11 @@
 package com.findyourguide.api.entity.PurchasedServiceEntitys;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.findyourguide.api.State.Purchase.ConfirmedState;
-import com.findyourguide.api.State.Purchase.PendingState;
-import com.findyourguide.api.State.Purchase.PurchasedState;
-import com.findyourguide.api.State.Purchase.RefundState;
-import com.findyourguide.api.State.Purchase.RevokedState;
+import com.findyourguide.api.Strategis.State.Purchase.ConfirmedState;
+import com.findyourguide.api.Strategis.State.Purchase.PendingState;
+import com.findyourguide.api.Strategis.State.Purchase.PurchasedState;
+import com.findyourguide.api.Strategis.State.Purchase.RefundState;
+import com.findyourguide.api.Strategis.State.Purchase.RevokedState;
 import com.findyourguide.api.entity.Base;
 import com.findyourguide.api.entity.Tourist;
 import com.findyourguide.api.entity.Service.Service;
@@ -40,6 +40,9 @@ public class PurchasedService extends Base {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private PurchasedStatus status = PurchasedStatus.PENDING;
+
+    @Column(name = "balance")
+    private double balancePaid;
 
     @Transient
     private PurchasedState state;

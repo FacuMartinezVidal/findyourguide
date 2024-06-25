@@ -36,7 +36,6 @@ public abstract class User extends Base implements UserDetails {
     private String phone;
     private String dni;
     private String gender;
-    private Double score;
     private boolean active;
     @Column(name = "profile_photo")
     private String profilePhoto;

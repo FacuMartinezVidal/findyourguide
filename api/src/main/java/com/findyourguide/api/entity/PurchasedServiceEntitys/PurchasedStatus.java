@@ -1,5 +1,5 @@
 package com.findyourguide.api.entity.PurchasedServiceEntitys;
 
 public enum PurchasedStatus {
-    PENDING, CONFIRMED, REVOKED, REFUND
+    PENDING, PAID_RESERVATION, FULL_PAID, CONFIRMED, CANCELED, REVOKED, REFUND, END
 }
