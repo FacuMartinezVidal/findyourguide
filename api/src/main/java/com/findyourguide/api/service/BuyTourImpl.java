@@ -4,9 +4,12 @@ import com.findyourguide.api.service.interfaces.IBuyTour;
 
 import lombok.RequiredArgsConstructor;
 
+import com.findyourguide.api.Strategis.Factory.StateFactory;
 import com.findyourguide.api.dto.buyservice.BuyTourDTO;
+import com.findyourguide.api.dto.buyservice.InputChangeStatus;
 import com.findyourguide.api.dto.service.UpdateServiceDTO;
 import com.findyourguide.api.entity.Tourist;
+import com.findyourguide.api.entity.User;
 import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedService;
 import com.findyourguide.api.entity.Service.Service;
 import com.findyourguide.api.error.ServiceNotFoundException;
@@ -15,10 +18,12 @@ import com.findyourguide.api.mapper.BuyTourMapper;
 import com.findyourguide.api.repository.BuyTourRepository;
 import com.findyourguide.api.repository.ServiceRepository;
 import com.findyourguide.api.repository.TouristRepository;
+import com.findyourguide.api.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 @org.springframework.stereotype.Service
@@ -28,6 +33,8 @@ public class BuyTourImpl implements IBuyTour {
     private final BuyTourRepository buyTourRepository;
     private final ServiceRepository serviceRepository;
     private final TouristRepository touristRepository;
+    private final UserRepository userRepository;
+    private final StateFactory stateFactory;
 
     @Override
     public List<BuyTourDTO> findAll() {
@@ -64,6 +71,25 @@ public class BuyTourImpl implements IBuyTour {
         PurchasedService purchasedService = BuyTourMapper.mapToEntityFromCreateService(tourist, service);
         buyTourRepository.save(purchasedService);
         return BuyTourMapper.mapToBuyTourDTO(purchasedService);
+    }
+
+    @Override
+    public BuyTourDTO changeStatus(InputChangeStatus inputChangeStatus) throws Exception {
+        User user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+                .orElseThrow(UserNotFoundException::new);
+        PurchasedService purchaseService = buyTourRepository
+                .findById(inputChangeStatus.getId())
+                .orElseThrow(() -> new ServiceNotFoundException());
+        purchaseService.setState(stateFactory.getState(purchaseService.getStatus()));
+
+        purchaseService = purchaseService.nextState(inputChangeStatus.getStatus(), user);
+
+        PurchasedService purchaseServiceSAVED = buyTourRepository.save(purchaseService);
+        BuyTourDTO purchaseService2 = buyTourRepository
+                .findById(purchaseServiceSAVED.getId()).map(BuyTourMapper::mapToBuyTourDTO)
+                .orElseThrow(() -> new ServiceNotFoundException());
+        return purchaseService2;
+
     }
 
     @Override

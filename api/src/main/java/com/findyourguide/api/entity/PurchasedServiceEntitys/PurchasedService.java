@@ -1,13 +1,11 @@
 package com.findyourguide.api.entity.PurchasedServiceEntitys;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.findyourguide.api.Strategis.State.Purchase.ConfirmedState;
 import com.findyourguide.api.Strategis.State.Purchase.PendingState;
 import com.findyourguide.api.Strategis.State.Purchase.PurchasedState;
-import com.findyourguide.api.Strategis.State.Purchase.RefundState;
-import com.findyourguide.api.Strategis.State.Purchase.RevokedState;
 import com.findyourguide.api.entity.Base;
 import com.findyourguide.api.entity.Tourist;
+import com.findyourguide.api.entity.User;
 import com.findyourguide.api.entity.Service.Service;
 
 import jakarta.persistence.*;
@@ -47,32 +45,12 @@ public class PurchasedService extends Base {
     @Transient
     private PurchasedState state;
 
-    @PostLoad
-    private void initializeState() {
-        switch (status) {
-            case PENDING:
-                this.state = new PendingState();
-                break;
-            case CONFIRMED:
-                this.state = new ConfirmedState();
-                break;
-            case REVOKED:
-                this.state = new RevokedState();
-                break;
-            case REFUND:
-                this.state = new RefundState();
-                break;
-            default:
-                throw new IllegalStateException("Unknown state");
-        }
-    }
-
     public PurchasedService() {
         this.state = new PendingState(); // Estado inicial
     }
 
-    public void nextState() throws Exception {
-        state.process(this);
+    public PurchasedService nextState(PurchasedStatus status, User user) throws Exception {
+        return state.process(this, status, user);
     }
 
     public void setState(PurchasedState state) {

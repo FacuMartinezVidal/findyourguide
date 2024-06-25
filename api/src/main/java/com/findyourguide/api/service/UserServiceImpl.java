@@ -120,9 +120,10 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
-
     public List<GuideDTO> findByCriteria(SearchRequest request) {
-        return guideSearchDAO.findAllByCriteria(request).stream().map(guide -> GuideMapper.mapToGuideDTO(guide, true)).collect(Collectors.toList());
+        return guideSearchDAO.findAllByCriteria(request).stream().map(guide -> GuideMapper.mapToGuideDTO(guide, true))
+                .collect(Collectors.toList());
+    }
 
     public void processPayment(Tourist tourist, PurchasedService service) {
         Double balanceToPaid = service.getService().getPrice() - service.getBalancePaid();
