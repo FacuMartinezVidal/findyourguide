@@ -30,7 +30,7 @@ public class TouristMapper {
 
         if (includeServices) {
             touristDTO.setServicePurchased(tourist.getPurchasedService() != null ? tourist.getPurchasedService().stream()
-                    .map(ServiceMapper::mapToPurchaseUserDTO)
+                    .map(BuyTourMapper::mapToPurchaseUserDTO)
                     .collect(Collectors.toList()) : Collections.emptyList());
         } else {
             touristDTO.setServicePurchased(Collections.emptyList());
