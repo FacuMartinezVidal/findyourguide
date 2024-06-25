@@ -67,7 +67,7 @@ public class AuthServiceImpl {
         return switch (type.toUpperCase()) {
             case "GOOGLE":
                 registerService.changeStrategy("google");
-
+                yield registerService.register(request);
             case "APPLE":
                 registerService.changeStrategy("apple");
                 yield registerService.register(request);
