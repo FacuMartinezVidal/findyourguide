@@ -1,4 +1,4 @@
-package com.findyourguide.api.dto;
+package com.findyourguide.api.dto.user;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginDTO {
-    @NotEmpty(message = "username cannot be empty")
-    String username;
+    @NotEmpty(message = "email cannot be empty")
+    String email;
 
     @NotEmpty(message = "password cannot be empty")
     String password;

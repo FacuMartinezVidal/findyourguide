@@ -1,6 +1,5 @@
-package com.findyourguide.api.dto;
+package com.findyourguide.api.dto.user;
 
-import com.findyourguide.api.entity.Country;
 import com.findyourguide.api.entity.Language;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -12,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateUserDTO {
-    @NotEmpty(message = "must have an username")
+    @NotEmpty(message = "must have an email")
     private String username;
     @Email(message = "must be an email")
     private String email;
@@ -22,8 +21,9 @@ public class UpdateUserDTO {
     private String phone;
     private String dni;
     private String gender;
-    private Country country;
-    private String cities;
+    private String country;
+    private String profilePhoto;
     private String credentialPhoto;
     private Language language;
+    private Double score;
 }
