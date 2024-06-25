@@ -1,6 +1,5 @@
 package com.findyourguide.api.dto.buyservice;
 
-import com.findyourguide.api.Strategis.State.Purchase.PurchasedState;
 import com.findyourguide.api.dto.service.ServiceUserDTO;
 import com.findyourguide.api.entity.PurchasedServiceEntitys.PurchasedStatus;
 import lombok.Data;
@@ -13,5 +12,5 @@ public class PurchaseUserDTO {
     private LocalDate date;
     private ServiceUserDTO service;
     private PurchasedStatus status;
-    private PurchasedState state;
+    private Double balancePaid;
 }

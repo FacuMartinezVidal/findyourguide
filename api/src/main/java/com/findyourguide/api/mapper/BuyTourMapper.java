@@ -32,9 +32,8 @@ public class BuyTourMapper {
         dto.setService(mapToServiceUserDTO(service.getService()));
         dto.setId(service.getId());
         dto.setDate(service.getDate());
-        // TODO fix this
-        // dto.setStatus(service.getStatus());
-        // dto.setState(service.getState());
+        dto.setStatus(service.getStatus());
+        dto.setBalancePaid(service.getBalancePaid());
         return dto;
     }
 

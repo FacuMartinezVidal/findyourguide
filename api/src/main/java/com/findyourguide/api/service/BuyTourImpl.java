@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import com.findyourguide.api.Strategis.Factory.StateFactory;
 import com.findyourguide.api.dto.buyservice.BuyTourDTO;
 import com.findyourguide.api.dto.buyservice.InputChangeStatus;
+import com.findyourguide.api.dto.buyservice.PurchaseUserDTO;
 import com.findyourguide.api.dto.service.UpdateServiceDTO;
 import com.findyourguide.api.entity.Tourist;
 import com.findyourguide.api.entity.User;
@@ -23,7 +24,6 @@ import com.findyourguide.api.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 @org.springframework.stereotype.Service
@@ -45,10 +45,10 @@ public class BuyTourImpl implements IBuyTour {
         }
 
         @Override
-        public List<BuyTourDTO> findAllByTourist(Long id) throws UserNotFoundException {
+        public List<PurchaseUserDTO> findAllByTourist(Long id) throws UserNotFoundException {
                 return touristRepository.findById(id)
                                 .map(tourist -> tourist.getPurchasedService().stream()
-                                                .map(BuyTourMapper::mapToBuyTourDTO)
+                                                .map(BuyTourMapper::mapToPurchaseUserDTO)
                                                 .collect(Collectors.toList()))
                                 .orElseThrow(() -> new UserNotFoundException());
         }
