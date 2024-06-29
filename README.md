@@ -1,4 +1,4 @@
-# findyourguide
+# Find Your Guide
 
 Este repositorio contiene el backend principal de la aplicación TourFinder. Esta API REST está desarrollada usando Spring Boot y está diseñada para manejar todas las operaciones críticas de la aplicación, incluyendo la gestión de usuarios, autenticación, y transacciones con la base de datos.
 
@@ -13,8 +13,8 @@ Este repositorio contiene el backend principal de la aplicación TourFinder. Est
 - [x] CRUD de usuarios
 - [x] Autenticación y autorización de usuarios
 - [x] Gestión de guías y turistas
-- [ ] CRUD de servicios
-- [ ] Reservas y gestión de servicios ofrecidos
+- [x] CRUD de servicios
+- [x] Reservas y gestión de servicios ofrecidos
 
 ## Comenzando
 
